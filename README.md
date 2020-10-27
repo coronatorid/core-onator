@@ -2,6 +2,8 @@
 
 Coronator is corona detection application that aim perfect contact tracing between it's user anonymously.
 
+[Presentation](https://docs.google.com/presentation/d/1B1wPEZKtG-sUSVK--z16QpEKHrt8e94ErVX_Xv3sHKI/edit#slide=id.ga50e610f2f_0_15).
+
 ## Background
 
 ### Problem

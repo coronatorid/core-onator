@@ -61,4 +61,12 @@ Table confirmed_cases {
   created_at datetime  [not null]
   updated_at datetime  [not null]
 }
+
+Table exposed_users {
+  ud int [pk, increment]
+  user_id int  [not null]
+  confirmed_cases_id int  [not null]
+  created_at datetime  [not null]
+  updated_at datetime  [not null]
+}
 ```

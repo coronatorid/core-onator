@@ -55,7 +55,7 @@ Table locations {
 }
 
 Table confirmed_cases {
-  ud int [pk, increment]
+  id int [pk, increment]
   user_id int  [not null]
   status int  [not null, note:'1 -> positive, 2 -> suspek, 3 -> probable, 4 -> kontak erat']
   created_at datetime  [not null]
@@ -63,7 +63,7 @@ Table confirmed_cases {
 }
 
 Table exposed_users {
-  ud int [pk, increment]
+  id int [pk, increment]
   user_id int  [not null]
   confirmed_cases_id int  [not null]
   created_at datetime  [not null]

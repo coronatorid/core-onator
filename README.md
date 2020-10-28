@@ -24,7 +24,7 @@ Create the perfect contact tracing app that lets users know if they've been expo
 
 ## Database Diagram
 
-![coronator](https://user-images.githubusercontent.com/20650401/97368361-53efde00-18dd-11eb-84ed-af5b8cddac57.png)
+![coronator](https://user-images.githubusercontent.com/20650401/97459181-14250700-196e-11eb-847f-3e4a89a5e773.png)
 
 ```
 Table users {

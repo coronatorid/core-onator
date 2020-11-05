@@ -20,23 +20,24 @@ Create the perfect contact tracing app that lets users know if they've been expo
 
 ## Architecture Diagram
 
-![architecture-diagram](https://user-images.githubusercontent.com/20650401/97368364-55b9a180-18dd-11eb-9ab2-267edfb7d848.jpg)
+![architecture-diagram](https://user-images.githubusercontent.com/20650401/98181121-276b4000-1f35-11eb-88ee-3ee94800f7bb.png)
 
 ## Database Diagram
 
-![coronator](https://user-images.githubusercontent.com/20650401/97459480-66febe80-196e-11eb-9a3f-2ee42f164eb4.png)
+![coronator](https://user-images.githubusercontent.com/20650401/98182546-9eee9e80-1f38-11eb-92fc-ca2a6fce2066.png)
 
 ```
 Table users {
   id int [pk, increment] // auto-increment
-  phone varchar(12) [not null]
-  active boolean [default: 1, not null]
+  phone varchar(255) [not null]
+  state tinyint [not null]
+  long double [not null]
   created_at datetime [not null]
   updated_at datetime [not null]
 
   indexes {
     phone [unique]
-    (phone,active) [name:'phone_active']
+    (phone,state) [name:'phone_state']
   }
 }
 
@@ -60,13 +61,28 @@ Table confirmed_cases {
   status int  [not null, note:'1 -> positive, 2 -> suspek, 3 -> probable, 4 -> kontak erat']
   created_at datetime  [not null]
   updated_at datetime  [not null]
+
+  indexes {
+    (user_id) [name:'user_id']
+  }
 }
 
 Table exposed_users {
   id int [pk, increment]
   user_id int  [not null]
   confirmed_cases_id int  [not null]
+  lat double [not null]
+  long double [not null]
   created_at datetime  [not null]
   updated_at datetime  [not null]
+
+  indexes {
+    (user_id) [name:'user_id']
+  }
 }
+
+Ref: exposed_users.user_id > users.id
+Ref: locations.user_id > users.id
+Ref: users.id - confirmed_cases.user_id
+Ref: confirmed_cases.id < exposed_users.confirmed_cases_id
 ```

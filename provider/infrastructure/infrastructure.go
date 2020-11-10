@@ -24,12 +24,11 @@ func Fabricate() *Infrastructure {
 
 // MYSQL provide mysql interface
 func (i *Infrastructure) MYSQL() (*sql.DB, error) {
-	var db *sql.DB
 	i.mysqlMutex.Do(func() {
 		// Currently there are no possible error while fabricating this so the error handling is ignored
-		db, _ = sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true&interpolateParams=true", os.Getenv("DATABASE_USERNAME"), os.Getenv("DATABASE_PASSWORD"), os.Getenv("DATABASE_HOST"), os.Getenv("DATABASE_PORT"), os.Getenv("DATABASE_NAME")))
+		db, _ := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true&interpolateParams=true", os.Getenv("DATABASE_USERNAME"), os.Getenv("DATABASE_PASSWORD"), os.Getenv("DATABASE_HOST"), os.Getenv("DATABASE_PORT"), os.Getenv("DATABASE_NAME")))
 		i.mysqlDB = db
 	})
 
-	return db, nil
+	return i.mysqlDB, nil
 }

@@ -6,9 +6,9 @@ type root struct{}
 
 func newRoot() *cobra.Command {
 	return &cobra.Command{
-		Use:     "core-onator",
+		Use:     "coronator",
 		Short:   "Core business logic of coronator",
-		Example: "core-onator",
+		Example: "coronator",
 		Run: func(cmd *cobra.Command, args []string) {
 			_ = cmd.Help()
 		},

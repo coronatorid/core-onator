@@ -6,16 +6,20 @@ import (
 )
 
 // Provider ...
-type Provider struct{}
+type Provider struct {
+	cmd *command.Command
+}
 
 // Fabricate new provider
 func Fabricate() *Provider {
-	return &Provider{}
+	return &Provider{
+		cmd: command.Fabricate(),
+	}
 }
 
-// Command provide command for core-onator CLI
-func (p *Provider) Command() Command {
-	return command.Fabricate()
+// InjectCommand inject other provider command
+func (p *Provider) InjectCommand(scaffold command.Scaffold) {
+	p.cmd.InjectCommand(scaffold)
 }
 
 // Infrastructure return Infrastructure interface

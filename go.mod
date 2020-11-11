@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
+	github.com/Rhymen/go-whatsapp v0.1.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/mock v1.3.1
 	github.com/spf13/cobra v1.1.1

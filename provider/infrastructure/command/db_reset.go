@@ -3,8 +3,6 @@ package command
 import (
 	"database/sql"
 	"fmt"
-
-	_ "github.com/golang-migrate/migrate/v4/source/file" // importing file path for mysql migrator
 )
 
 // DBReset is a command to migrating mysql database all way down

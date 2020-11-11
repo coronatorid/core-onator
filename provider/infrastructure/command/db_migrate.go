@@ -38,7 +38,7 @@ func (d *DBMigrate) Short() string {
 
 // Run the command with the args given by the caller
 func (d *DBMigrate) Run(args []string) {
-	m, err := d.migrator()
+	m, err := migrator(d.db, d.databaseName, d.migrationPath)
 	if err != nil {
 		fmt.Printf("Migration error because of: %v (%s)\n", err, err.Error())
 		return
@@ -52,16 +52,16 @@ func (d *DBMigrate) Run(args []string) {
 	fmt.Println("Migration process success")
 }
 
-func (d *DBMigrate) migrator() (*migrate.Migrate, error) {
-	driver, err := mysql.WithInstance(d.db, &mysql.Config{
+func migrator(db *sql.DB, databaseName, migrationPath string) (*migrate.Migrate, error) {
+	driver, err := mysql.WithInstance(db, &mysql.Config{
 		MigrationsTable: "db_versions",
-		DatabaseName:    d.databaseName,
+		DatabaseName:    databaseName,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	migrator, err := migrate.NewWithDatabaseInstance(d.migrationPath, "mysql", driver)
+	migrator, err := migrate.NewWithDatabaseInstance(migrationPath, "mysql", driver)
 	if err != nil {
 		return nil, err
 	}

@@ -46,6 +46,7 @@ func (i *Infrastructure) FabricateCommand(cmd provider.Command) error {
 	cmd.InjectCommand(
 		command.NewPingMYSQL(db),
 		command.NewDBMigrate(db, i.mysqlConfig.name, "file://migration"),
+		command.NewDBReset(db, i.mysqlConfig.name, "file://migration"),
 	)
 
 	return nil

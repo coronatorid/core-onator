@@ -6,6 +6,9 @@ import (
 	"os"
 	"sync"
 
+	"github.com/coronatorid/core-onator/provider/infrastructure/command"
+
+	"github.com/coronatorid/core-onator/provider"
 	_ "github.com/go-sql-driver/mysql" // Import mysql driver
 )
 
@@ -20,6 +23,20 @@ func Fabricate() *Infrastructure {
 	return &Infrastructure{
 		mysqlMutex: &sync.Once{},
 	}
+}
+
+// FabricateCommand fabricate all infrastructure related commands
+func (i *Infrastructure) FabricateCommand(cmd provider.Command) error {
+	db, err := i.MYSQL()
+	if err != nil {
+		return err
+	}
+
+	cmd.InjectCommand(
+		command.NewPingMYSQL(db),
+	)
+
+	return nil
 }
 
 // MYSQL provide mysql interface

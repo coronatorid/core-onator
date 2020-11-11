@@ -3,7 +3,7 @@ package command_test
 import (
 	"testing"
 
-	mockCommand "github.com/coronatorid/core-onator/provider/command/mocks"
+	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
 
 	"github.com/golang/mock/gomock"
 
@@ -25,7 +25,8 @@ func TestCommand(t *testing.T) {
 		cmd := command.Fabricate()
 		cmd.SetArgs([]string{"others"})
 
-		scaffolding := mockCommand.NewMockScaffold(mockCtrl)
+		scaffolding := mockProvider.NewMockCommandScaffold(mockCtrl)
+
 		scaffolding.EXPECT().Use().Return("others")
 		scaffolding.EXPECT().Short().Return("Others command")
 		scaffolding.EXPECT().Example().Return("others [command]")

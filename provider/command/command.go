@@ -1,6 +1,7 @@
 package command
 
 import (
+	"github.com/coronatorid/core-onator/provider"
 	"github.com/spf13/cobra"
 )
 
@@ -27,16 +28,17 @@ func (c *Command) Execute() error {
 }
 
 // InjectCommand inject new command into command list
-func (c *Command) InjectCommand(s Scaffold) {
-	c.rootCmd.AddCommand(
-		&cobra.Command{
-			Use:     s.Use(),
-			Short:   s.Short(),
-			Example: s.Example(),
-			Run: func(cmd *cobra.Command, args []string) {
-				s.Run(args)
+func (c *Command) InjectCommand(scaffolds ...provider.CommandScaffold) {
+	for _, scaffold := range scaffolds {
+		c.rootCmd.AddCommand(
+			&cobra.Command{
+				Use:     scaffold.Use(),
+				Short:   scaffold.Short(),
+				Example: scaffold.Example(),
+				Run: func(cmd *cobra.Command, args []string) {
+					scaffold.Run(args)
+				},
 			},
-		},
-	)
-
+		)
+	}
 }

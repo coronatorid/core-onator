@@ -30,15 +30,14 @@ func (c *Command) Execute() error {
 // InjectCommand inject new command into command list
 func (c *Command) InjectCommand(scaffolds ...provider.CommandScaffold) {
 	for _, scaffold := range scaffolds {
-		c.rootCmd.AddCommand(
-			&cobra.Command{
-				Use:     scaffold.Use(),
-				Short:   scaffold.Short(),
-				Example: scaffold.Example(),
-				Run: func(cmd *cobra.Command, args []string) {
-					scaffold.Run(args)
-				},
+		cmd := &cobra.Command{
+			Use:     scaffold.Use(),
+			Short:   scaffold.Short(),
+			Example: scaffold.Example(),
+			Run: func(cmd *cobra.Command, args []string) {
+				scaffold.Run(args)
 			},
-		)
+		}
+		c.rootCmd.AddCommand(cmd)
 	}
 }

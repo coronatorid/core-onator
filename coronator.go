@@ -12,6 +12,8 @@ func main() {
 	cmd := command.Fabricate()
 
 	infra := infrastructure.Fabricate()
+	defer infra.Close()
+
 	if err := infra.FabricateCommand(cmd); err != nil {
 		panic(err)
 	}

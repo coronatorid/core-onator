@@ -66,3 +66,8 @@ type APIContext interface {
 	// Logger returns the `Logger` instance.
 	// Logger() Logger
 }
+
+// APIHandler handling api request from client
+type APIHandler interface {
+	Handle(context APIContext) error
+}

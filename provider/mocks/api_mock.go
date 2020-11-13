@@ -5,6 +5,7 @@
 package mockProvider
 
 import (
+	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
 	multipart "mime/multipart"
 	http "net/http"
@@ -269,4 +270,41 @@ func (m *MockAPIContext) NoContent(code int) error {
 func (mr *MockAPIContextMockRecorder) NoContent(code interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NoContent", reflect.TypeOf((*MockAPIContext)(nil).NoContent), code)
+}
+
+// MockAPIHandler is a mock of APIHandler interface
+type MockAPIHandler struct {
+	ctrl     *gomock.Controller
+	recorder *MockAPIHandlerMockRecorder
+}
+
+// MockAPIHandlerMockRecorder is the mock recorder for MockAPIHandler
+type MockAPIHandlerMockRecorder struct {
+	mock *MockAPIHandler
+}
+
+// NewMockAPIHandler creates a new mock instance
+func NewMockAPIHandler(ctrl *gomock.Controller) *MockAPIHandler {
+	mock := &MockAPIHandler{ctrl: ctrl}
+	mock.recorder = &MockAPIHandlerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockAPIHandler) EXPECT() *MockAPIHandlerMockRecorder {
+	return m.recorder
+}
+
+// Handle mocks base method
+func (m *MockAPIHandler) Handle(context provider.APIContext) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Handle", context)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Handle indicates an expected call of Handle
+func (mr *MockAPIHandlerMockRecorder) Handle(context interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Handle", reflect.TypeOf((*MockAPIHandler)(nil).Handle), context)
 }

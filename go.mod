@@ -8,7 +8,12 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang-migrate/migrate/v4 v4.13.0
 	github.com/golang/mock v1.4.4
+	github.com/labstack/echo v3.3.10+incompatible
+	github.com/labstack/echo/v4 v4.1.17
+	github.com/labstack/gommon v0.3.0 // indirect
 	github.com/spf13/cobra v1.1.1
 	github.com/stretchr/testify v1.5.1
 	github.com/subosito/gotenv v1.2.0
+	golang.org/x/net v0.0.0-20200822124328-c89045814202 // indirect
+	golang.org/x/sys v0.0.0-20200826173525-f9321e4c35a6 // indirect
 )

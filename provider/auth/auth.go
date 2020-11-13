@@ -7,3 +7,8 @@ type Auth struct{}
 func Fabricate() *Auth {
 	return &Auth{}
 }
+
+// RequestOTP send otp based on request by the client
+func (a *Auth) RequestOTP() {
+
+}

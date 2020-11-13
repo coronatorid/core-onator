@@ -40,7 +40,7 @@ func TestInfrastructure(t *testing.T) {
 			i := infrastructure.Fabricate()
 
 			commandProvider := mockProvider.NewMockCommand(mockCtrl)
-			commandProvider.EXPECT().InjectCommand(gomock.Any()).Times(2)
+			commandProvider.EXPECT().InjectCommand(gomock.Any()).Times(1)
 
 			_ = i.FabricateCommand(commandProvider)
 		})
@@ -51,6 +51,15 @@ func TestInfrastructure(t *testing.T) {
 			i := infrastructure.Fabricate()
 			_, _ = i.MYSQL()
 			i.Close()
+		})
+	})
+
+	t.Run("Memcached", func(t *testing.T) {
+		t.Run("Return memcached object", func(t *testing.T) {
+			i := infrastructure.Fabricate()
+			assert.NotPanics(t, func() {
+				_ = i.Memcached()
+			})
 		})
 	})
 }

@@ -6,6 +6,9 @@ import (
 	"os"
 	"sync"
 
+	"github.com/coronatorid/core-onator/provider/infrastructure/adapter"
+
+	"github.com/bradfitz/gomemcache/memcache"
 	"github.com/coronatorid/core-onator/provider/infrastructure/command"
 
 	"github.com/coronatorid/core-onator/provider"
@@ -23,12 +26,19 @@ type Infrastructure struct {
 		port     string
 		name     string
 	}
+
+	memcachedMutex  *sync.Once
+	memcached       *adapter.Memcached
+	memcachedConfig struct {
+		host string
+	}
 }
 
 // Fabricate infrastructure interface for coronator
 func Fabricate() *Infrastructure {
 	i := &Infrastructure{
-		mysqlMutex: &sync.Once{},
+		mysqlMutex:     &sync.Once{},
+		memcachedMutex: &sync.Once{},
 	}
 
 	i.mysqlConfig.username = os.Getenv("DATABASE_USERNAME")
@@ -36,6 +46,9 @@ func Fabricate() *Infrastructure {
 	i.mysqlConfig.host = os.Getenv("DATABASE_HOST")
 	i.mysqlConfig.port = os.Getenv("DATABASE_PORT")
 	i.mysqlConfig.name = os.Getenv("DATABASE_NAME")
+
+	i.memcachedConfig.host = os.Getenv("MEMCACHE_HOST")
+
 	return i
 }
 
@@ -68,4 +81,13 @@ func (i *Infrastructure) MYSQL() (*sql.DB, error) {
 	})
 
 	return i.mysqlDB, nil
+}
+
+// Memcached provide cache interface
+func (i *Infrastructure) Memcached() provider.Cache {
+	i.memcachedMutex.Do(func() {
+		i.memcached = adapter.AdaptMemcache(memcache.New(i.memcachedConfig.host))
+	})
+
+	return i.memcached
 }

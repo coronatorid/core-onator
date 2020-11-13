@@ -5,10 +5,9 @@
 package mockProvider
 
 import (
-	reflect "reflect"
-
 	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
+	reflect "reflect"
 )
 
 // MockCommand is a mock of Command interface

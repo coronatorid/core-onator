@@ -9,6 +9,7 @@ import (
 	"github.com/coronatorid/core-onator/provider/api/handler"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 // API ...
@@ -45,6 +46,7 @@ func (a *API) InjectAPI(handler provider.APIHandler) {
 
 // Run api engine
 func (a *API) Run() error {
+	a.engine.Use(middleware.Logger())
 	a.InjectAPI(handler.NewHealth())
 	return a.engine.Start(fmt.Sprintf(":%d", a.port))
 }

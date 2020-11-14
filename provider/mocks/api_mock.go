@@ -5,6 +5,7 @@
 package mockProvider
 
 import (
+	context "context"
 	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
 	multipart "mime/multipart"
@@ -307,4 +308,83 @@ func (m *MockAPIHandler) Handle(context provider.APIContext) error {
 func (mr *MockAPIHandlerMockRecorder) Handle(context interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Handle", reflect.TypeOf((*MockAPIHandler)(nil).Handle), context)
+}
+
+// Method mocks base method
+func (m *MockAPIHandler) Method() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Method")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// Method indicates an expected call of Method
+func (mr *MockAPIHandlerMockRecorder) Method() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Method", reflect.TypeOf((*MockAPIHandler)(nil).Method))
+}
+
+// Path mocks base method
+func (m *MockAPIHandler) Path() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Path")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// Path indicates an expected call of Path
+func (mr *MockAPIHandlerMockRecorder) Path() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Path", reflect.TypeOf((*MockAPIHandler)(nil).Path))
+}
+
+// MockAPIEngine is a mock of APIEngine interface
+type MockAPIEngine struct {
+	ctrl     *gomock.Controller
+	recorder *MockAPIEngineMockRecorder
+}
+
+// MockAPIEngineMockRecorder is the mock recorder for MockAPIEngine
+type MockAPIEngineMockRecorder struct {
+	mock *MockAPIEngine
+}
+
+// NewMockAPIEngine creates a new mock instance
+func NewMockAPIEngine(ctrl *gomock.Controller) *MockAPIEngine {
+	mock := &MockAPIEngine{ctrl: ctrl}
+	mock.recorder = &MockAPIEngineMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockAPIEngine) EXPECT() *MockAPIEngineMockRecorder {
+	return m.recorder
+}
+
+// Run mocks base method
+func (m *MockAPIEngine) Run() error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Run")
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Run indicates an expected call of Run
+func (mr *MockAPIEngineMockRecorder) Run() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Run", reflect.TypeOf((*MockAPIEngine)(nil).Run))
+}
+
+// Shutdown mocks base method
+func (m *MockAPIEngine) Shutdown(ctx context.Context) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Shutdown", ctx)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Shutdown indicates an expected call of Shutdown
+func (mr *MockAPIEngineMockRecorder) Shutdown(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Shutdown", reflect.TypeOf((*MockAPIEngine)(nil).Shutdown), ctx)
 }

@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"context"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -70,4 +71,12 @@ type APIContext interface {
 // APIHandler handling api request from client
 type APIHandler interface {
 	Handle(context APIContext) error
+	Method() string
+	Path() string
+}
+
+// APIEngine ...
+type APIEngine interface {
+	Run() error
+	Shutdown(ctx context.Context) error
 }

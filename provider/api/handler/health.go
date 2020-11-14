@@ -1,6 +1,10 @@
 package handler
 
-import "github.com/coronatorid/core-onator/provider"
+import (
+	"net/http"
+
+	"github.com/coronatorid/core-onator/provider"
+)
 
 // Health api handler
 type Health struct{}
@@ -21,7 +25,6 @@ func (h *Health) Method() string {
 }
 
 // Handle health which always return 200
-func (h *Health) Handle(context provider.APIContext) error {
-
-	return nil
+func (h *Health) Handle(context provider.APIContext) {
+	_ = context.JSON(http.StatusOK, map[string]interface{}{"status": "ok"})
 }

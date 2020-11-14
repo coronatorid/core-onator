@@ -297,11 +297,9 @@ func (m *MockAPIHandler) EXPECT() *MockAPIHandlerMockRecorder {
 }
 
 // Handle mocks base method
-func (m *MockAPIHandler) Handle(context provider.APIContext) error {
+func (m *MockAPIHandler) Handle(context provider.APIContext) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Handle", context)
-	ret0, _ := ret[0].(error)
-	return ret0
+	m.ctrl.Call(m, "Handle", context)
 }
 
 // Handle indicates an expected call of Handle

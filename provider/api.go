@@ -70,7 +70,7 @@ type APIContext interface {
 
 // APIHandler handling api request from client
 type APIHandler interface {
-	Handle(context APIContext) error
+	Handle(context APIContext)
 	Method() string
 	Path() string
 }

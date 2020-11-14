@@ -7,6 +7,7 @@ import (
 
 	"github.com/coronatorid/core-onator/provider/api"
 	"github.com/coronatorid/core-onator/provider/api/handler"
+	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
 	"github.com/golang/mock/gomock"
 )
 
@@ -27,6 +28,17 @@ func TestAPI(t *testing.T) {
 		defer cancelFunc()
 
 		_ = apiEngine.Shutdown(ctx)
+	})
+
+	t.Run("FabricateCommand", func(t *testing.T) {
+		t.Run("Given provider.Command", func(t *testing.T) {
+			apiEngine := api.Fabricate()
+
+			commandProvider := mockProvider.NewMockCommand(mockCtrl)
+			commandProvider.EXPECT().InjectCommand(gomock.Any()).Times(1)
+
+			apiEngine.FabricateCommand(commandProvider)
+		})
 	})
 
 	t.Run("Inject API", func(t *testing.T) {

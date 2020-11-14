@@ -1,6 +1,7 @@
 package handler_test
 
 import (
+	"net/http"
 	"testing"
 
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
@@ -26,6 +27,7 @@ func TestHealth(t *testing.T) {
 
 	t.Run("Handle", func(t *testing.T) {
 		apiContext := mockProvider.NewMockAPIContext(mockCtrl)
+		apiContext.EXPECT().JSON(http.StatusOK, map[string]interface{}{"status": "ok"}).Return(nil)
 		assert.NotPanics(t, func() {
 			healthHandler.Handle(apiContext)
 		})

@@ -6,6 +6,7 @@ import (
 
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/provider/api/command"
+	"github.com/coronatorid/core-onator/provider/api/handler"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
@@ -36,6 +37,7 @@ func (a *API) InjectAPI(handler provider.APIHandler) {
 	a.engine.Add(handler.Method(), handler.Path(), func(context echo.Context) error {
 		requestID := uuid.New()
 		context.Set("request_id", requestID.String())
+		handler.Handle(context)
 
 		return nil
 	})
@@ -43,6 +45,7 @@ func (a *API) InjectAPI(handler provider.APIHandler) {
 
 // Run api engine
 func (a *API) Run() error {
+	a.InjectAPI(handler.NewHealth())
 	return a.engine.Start(fmt.Sprintf(":%d", a.port))
 }
 

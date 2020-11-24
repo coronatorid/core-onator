@@ -3,7 +3,9 @@ module github.com/coronatorid/core-onator
 go 1.14
 
 require (
+	github.com/Baozisoftware/qrcode-terminal-go v0.0.0-20170407111555-c0650d8dff0f
 	github.com/DATA-DOG/go-sqlmock v1.5.0
+	github.com/Rhymen/go-whatsapp v0.1.1
 	github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang-migrate/migrate/v4 v4.13.0

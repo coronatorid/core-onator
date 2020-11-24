@@ -1,6 +1,7 @@
 package adapter
 
 import (
+	"context"
 	"time"
 
 	"github.com/bradfitz/gomemcache/memcache"
@@ -26,7 +27,7 @@ func AdaptMemcache(client MemcachedClient) *Memcached {
 }
 
 // Set cache value
-func (m *Memcached) Set(key string, value []byte, expiration time.Duration) error {
+func (m *Memcached) Set(ctx context.Context, key string, value []byte, expiration time.Duration) error {
 	return m.client.Set(&memcache.Item{
 		Key:        key,
 		Value:      value,
@@ -35,7 +36,7 @@ func (m *Memcached) Set(key string, value []byte, expiration time.Duration) erro
 }
 
 // Get cache value
-func (m *Memcached) Get(key string) (provider.CacheItem, error) {
+func (m *Memcached) Get(ctx context.Context, key string) (provider.CacheItem, error) {
 	i, err := m.client.Get(key)
 	if err == memcache.ErrCacheMiss {
 		return nil, provider.ErrCacheMiss

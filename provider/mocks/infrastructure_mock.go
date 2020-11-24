@@ -5,6 +5,7 @@
 package mockProvider
 
 import (
+	context "context"
 	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
@@ -35,32 +36,32 @@ func (m *MockCache) EXPECT() *MockCacheMockRecorder {
 }
 
 // Set mocks base method
-func (m *MockCache) Set(key string, value []byte, expiration time.Duration) error {
+func (m *MockCache) Set(ctx context.Context, key string, value []byte, expiration time.Duration) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Set", key, value, expiration)
+	ret := m.ctrl.Call(m, "Set", ctx, key, value, expiration)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Set indicates an expected call of Set
-func (mr *MockCacheMockRecorder) Set(key, value, expiration interface{}) *gomock.Call {
+func (mr *MockCacheMockRecorder) Set(ctx, key, value, expiration interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockCache)(nil).Set), key, value, expiration)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockCache)(nil).Set), ctx, key, value, expiration)
 }
 
 // Get mocks base method
-func (m *MockCache) Get(key string) (provider.CacheItem, error) {
+func (m *MockCache) Get(ctx context.Context, key string) (provider.CacheItem, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", key)
+	ret := m.ctrl.Call(m, "Get", ctx, key)
 	ret0, _ := ret[0].(provider.CacheItem)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Get indicates an expected call of Get
-func (mr *MockCacheMockRecorder) Get(key interface{}) *gomock.Call {
+func (mr *MockCacheMockRecorder) Get(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockCache)(nil).Get), key)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockCache)(nil).Get), ctx, key)
 }
 
 // MockCacheItem is a mock of CacheItem interface

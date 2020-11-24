@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"context"
 	"errors"
 	"time"
 )
@@ -13,8 +14,8 @@ var ErrCacheMiss = errors.New("cache miss")
 // Cache is interface to connect to cache infrastructure
 type Cache interface {
 	// To make it not expire set expiration into 0
-	Set(key string, value []byte, expiration time.Duration) error
-	Get(key string) (CacheItem, error)
+	Set(ctx context.Context, key string, value []byte, expiration time.Duration) error
+	Get(ctx context.Context, key string) (CacheItem, error)
 }
 
 // CacheItem contain result get from Cache interface

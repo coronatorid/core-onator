@@ -1,6 +1,7 @@
 package adapter_test
 
 import (
+	"context"
 	"errors"
 	"testing"
 	"time"
@@ -25,7 +26,7 @@ func TestMemcached(t *testing.T) {
 
 		memcachedAdapter := adapter.AdaptMemcache(memcacheClient)
 
-		assert.Nil(t, memcachedAdapter.Set("key", []byte("value"), 0))
+		assert.Nil(t, memcachedAdapter.Set(context.Background(), "key", []byte("value"), 0))
 	})
 
 	t.Run("Get", func(t *testing.T) {
@@ -43,7 +44,7 @@ func TestMemcached(t *testing.T) {
 
 			memcachedAdapter := adapter.AdaptMemcache(memcacheClient)
 
-			cacheItem, err := memcachedAdapter.Get(key)
+			cacheItem, err := memcachedAdapter.Get(context.Background(), key)
 			assert.Nil(t, err)
 			assert.Equal(t, key, cacheItem.Key())
 			assert.Equal(t, value, cacheItem.Value())
@@ -56,7 +57,7 @@ func TestMemcached(t *testing.T) {
 
 			memcachedAdapter := adapter.AdaptMemcache(memcacheClient)
 
-			cacheItem, err := memcachedAdapter.Get("key")
+			cacheItem, err := memcachedAdapter.Get(context.Background(), "key")
 			assert.Nil(t, cacheItem)
 			assert.NotNil(t, err)
 		})
@@ -67,7 +68,7 @@ func TestMemcached(t *testing.T) {
 
 			memcachedAdapter := adapter.AdaptMemcache(memcacheClient)
 
-			cacheItem, err := memcachedAdapter.Get("key")
+			cacheItem, err := memcachedAdapter.Get(context.Background(), "key")
 			assert.Nil(t, cacheItem)
 			assert.Equal(t, provider.ErrCacheMiss, err)
 		})

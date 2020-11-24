@@ -128,3 +128,38 @@ func (mr *MockCacheItemMockRecorder) ExpiresIn() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ExpiresIn", reflect.TypeOf((*MockCacheItem)(nil).ExpiresIn))
 }
+
+// MockTextPublisher is a mock of TextPublisher interface
+type MockTextPublisher struct {
+	ctrl     *gomock.Controller
+	recorder *MockTextPublisherMockRecorder
+}
+
+// MockTextPublisherMockRecorder is the mock recorder for MockTextPublisher
+type MockTextPublisherMockRecorder struct {
+	mock *MockTextPublisher
+}
+
+// NewMockTextPublisher creates a new mock instance
+func NewMockTextPublisher(ctrl *gomock.Controller) *MockTextPublisher {
+	mock := &MockTextPublisher{ctrl: ctrl}
+	mock.recorder = &MockTextPublisherMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockTextPublisher) EXPECT() *MockTextPublisherMockRecorder {
+	return m.recorder
+}
+
+// Publish mocks base method
+func (m *MockTextPublisher) Publish(ctx context.Context, message string) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Publish", ctx, message)
+}
+
+// Publish indicates an expected call of Publish
+func (mr *MockTextPublisherMockRecorder) Publish(ctx, message interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Publish", reflect.TypeOf((*MockTextPublisher)(nil).Publish), ctx, message)
+}

@@ -24,3 +24,8 @@ type CacheItem interface {
 	Value() []byte
 	ExpiresIn() time.Duration
 }
+
+// TextPublisher handle whatsapp message and maybe sms in the future
+type TextPublisher interface {
+	Publish(ctx context.Context, message string)
+}

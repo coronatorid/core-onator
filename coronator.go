@@ -12,7 +12,10 @@ func main() {
 
 	cmd := command.Fabricate()
 
-	infra := infrastructure.Fabricate()
+	infra, err := infrastructure.Fabricate()
+	if err != nil {
+		panic(err)
+	}
 	defer infra.Close()
 
 	if err := infra.FabricateCommand(cmd); err != nil {

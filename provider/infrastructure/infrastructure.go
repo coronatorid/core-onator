@@ -2,10 +2,13 @@ package infrastructure
 
 import (
 	"database/sql"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"sync"
+	"time"
 
+	"github.com/Rhymen/go-whatsapp"
 	"github.com/coronatorid/core-onator/provider/infrastructure/adapter"
 
 	"github.com/bradfitz/gomemcache/memcache"
@@ -32,13 +35,18 @@ type Infrastructure struct {
 	memcachedConfig struct {
 		host string
 	}
+
+	whatsappMutex   *sync.Once
+	whatsapp        *whatsapp.Conn
+	whatsappSession whatsapp.Session
 }
 
 // Fabricate infrastructure interface for coronator
-func Fabricate() *Infrastructure {
+func Fabricate() (*Infrastructure, error) {
 	i := &Infrastructure{
 		mysqlMutex:     &sync.Once{},
 		memcachedMutex: &sync.Once{},
+		whatsappMutex:  &sync.Once{},
 	}
 
 	i.mysqlConfig.username = os.Getenv("DATABASE_USERNAME")
@@ -49,7 +57,24 @@ func Fabricate() *Infrastructure {
 
 	i.memcachedConfig.host = os.Getenv("MEMCACHE_HOST")
 
-	return i
+	decodedEncKey, err := hex.DecodeString(os.Getenv("WHATSAPP_ENC_KEY"))
+	if err != nil {
+		return nil, err
+	}
+
+	decodedMacKey, err := hex.DecodeString(os.Getenv("WHATSAPP_MAC_KEY"))
+	if err != nil {
+		return nil, err
+	}
+
+	i.whatsappSession.ClientId = os.Getenv("WHATSAPP_CLIENT_ID")
+	i.whatsappSession.ClientToken = os.Getenv("WHATSAPP_CLIENT_TOKEN")
+	i.whatsappSession.ServerToken = os.Getenv("WHATSAPP_SERVER_TOKEN")
+	i.whatsappSession.EncKey = decodedEncKey
+	i.whatsappSession.MacKey = decodedMacKey
+	i.whatsappSession.Wid = os.Getenv("WHATSAPP_WID")
+
+	return i, nil
 }
 
 // FabricateCommand fabricate all infrastructure related commands
@@ -60,6 +85,7 @@ func (i *Infrastructure) FabricateCommand(cmd provider.Command) error {
 		command.NewPingMYSQL(db),
 		command.NewDBMigrate(db, i.mysqlConfig.name, "file://migration"),
 		command.NewDBReset(db, i.mysqlConfig.name, "file://migration"),
+		command.NewWhatsappLogin(i.Whatsapp()),
 	)
 
 	return nil
@@ -90,4 +116,26 @@ func (i *Infrastructure) Memcached() provider.Cache {
 	})
 
 	return i.memcached
+}
+
+// WhatsappOldSession return old whatsapp session
+func (i *Infrastructure) WhatsappOldSession() (*whatsapp.Conn, error) {
+	var err error
+	i.whatsappMutex.Do(func() {
+		i.whatsapp = i.Whatsapp()
+		_, err = i.whatsapp.RestoreWithSession(i.whatsappSession)
+	})
+
+	if err != nil {
+		i.whatsappMutex = &sync.Once{}
+		return nil, err
+	}
+
+	return i.whatsapp, nil
+}
+
+// Whatsapp create new whatsapp connection
+func (i *Infrastructure) Whatsapp() *whatsapp.Conn {
+	wac, _ := whatsapp.NewConn(30 * time.Second)
+	return wac
 }

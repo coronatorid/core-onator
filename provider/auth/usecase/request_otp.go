@@ -87,7 +87,7 @@ func (r *RequestOTP) latestRequestCache(ctx context.Context, request entity.Requ
 		err := json.Unmarshal(item.Value(), &lastCacheRequest)
 		if subtractedTime := time.Now().Sub(lastCacheRequest.SentTime); err == nil && subtractedTime < otpRetryDuration {
 			return &entity.ApplicationError{
-				Err:        []error{fmt.Errorf("Please retry in %d seconds", int(subtractedTime.Seconds()))},
+				Err:        []error{fmt.Errorf("Please retry in %d seconds", int(otpRetryDuration.Seconds()-subtractedTime.Seconds()))},
 				HTTPStatus: http.StatusTooEarly,
 			}
 		}

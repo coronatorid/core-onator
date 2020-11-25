@@ -12,6 +12,7 @@ require (
 	github.com/golang/mock v1.4.4
 	github.com/google/uuid v1.1.1
 	github.com/labstack/echo/v4 v4.1.17
+	github.com/pquerna/otp v1.3.0
 	github.com/spf13/cobra v1.1.1
 	github.com/stretchr/testify v1.5.1
 	github.com/subosito/gotenv v1.2.0

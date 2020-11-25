@@ -2,23 +2,31 @@ package usecase
 
 import (
 	"context"
+	"encoding/base32"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"regexp"
 	"time"
+
+	"github.com/pquerna/otp"
+	"github.com/pquerna/otp/totp"
 
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
 )
+
+// OTPMessage template
+const OTPMessage = "JANGAN BERIKAN KODE OTP INI KE SIAPAPUN, TERMASUK KE PIHAK CORONATOR SENDIRI. KODE OTP INI SANGAT RAHASIA DAN DIGUNAKAN UNTUK MASUK KEDALAM APLIKASI CORONATOR. BERIKUT ADALAH KODE OTP ANDA: %s"
 
 // RequestOTP use for sending otp to client
 // Regex indonesian phone number: ^\+62\d{10,12}
 type RequestOTP struct{}
 
 // Perform otp request process
-func (r *RequestOTP) Perform(ctx context.Context, request entity.RequestOTP, regex *regexp.Regexp, cache provider.Cache, otpRetryDuration time.Duration) (*entity.RequestOTPResponse, *entity.ApplicationError) {
+func (r *RequestOTP) Perform(ctx context.Context, request entity.RequestOTP, regex *regexp.Regexp, cache provider.Cache, textPublisher provider.TextPublisher, otpRetryDuration time.Duration) (*entity.RequestOTPResponse, *entity.ApplicationError) {
 	if err := r.validation(request, regex); err != nil {
 		return nil, err
 	}
@@ -27,9 +35,26 @@ func (r *RequestOTP) Perform(ctx context.Context, request entity.RequestOTP, reg
 		return nil, err
 	}
 
-	// TODO should add send whatsapp in here
-
 	otpResponse := r.setLatestRequestCache(ctx, request, cache)
+	otpCode, err := totp.GenerateCodeCustom(base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%s", os.Getenv("OTP_SECRET"), request.PhoneNumber))), otpResponse.SentTime, totp.ValidateOpts{
+		Algorithm: otp.AlgorithmSHA512,
+		Digits:    4,
+		Period:    uint(otpRetryDuration.Seconds()),
+	})
+	if err != nil {
+		return nil, &entity.ApplicationError{
+			Err:        []error{errors.New("There are error when generating otp")},
+			HTTPStatus: http.StatusInternalServerError,
+		}
+	}
+
+	if err := textPublisher.Publish(ctx, request.PhoneNumber, fmt.Sprintf(OTPMessage, otpCode)); err != nil {
+		return nil, &entity.ApplicationError{
+			Err:        []error{errors.New("Error when sending otp to whatsapp")},
+			HTTPStatus: http.StatusInternalServerError,
+		}
+	}
+
 	return &otpResponse, nil
 }
 

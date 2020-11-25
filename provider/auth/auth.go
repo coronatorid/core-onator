@@ -17,11 +17,12 @@ type Auth struct {
 	regexIndonesianPhoneNumber *regexp.Regexp
 	otpRetryDuration           time.Duration
 
-	cache provider.Cache
+	cache         provider.Cache
+	textPublisher provider.TextPublisher
 }
 
 // Fabricate auth service for coronator
-func Fabricate(cache provider.Cache) (*Auth, error) {
+func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher) (*Auth, error) {
 	regexIndonesianPhoneNumber, _ := regexp.Compile(`^\+62\d{10,12}`)
 	d, err := time.ParseDuration(os.Getenv("OTP_RETRY_DURATION"))
 	if err != nil {
@@ -32,12 +33,13 @@ func Fabricate(cache provider.Cache) (*Auth, error) {
 		regexIndonesianPhoneNumber: regexIndonesianPhoneNumber,
 		otpRetryDuration:           d,
 
-		cache: cache,
+		cache:         cache,
+		textPublisher: textPublisher,
 	}, nil
 }
 
 // RequestOTP send otp based on request by the client
 func (a *Auth) RequestOTP(ctx context.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError) {
 	requestOTP := &usecase.RequestOTP{}
-	return requestOTP.Perform(ctx, request, a.regexIndonesianPhoneNumber, a.cache, a.otpRetryDuration)
+	return requestOTP.Perform(ctx, request, a.regexIndonesianPhoneNumber, a.cache, a.textPublisher, a.otpRetryDuration)
 }

@@ -153,13 +153,15 @@ func (m *MockTextPublisher) EXPECT() *MockTextPublisherMockRecorder {
 }
 
 // Publish mocks base method
-func (m *MockTextPublisher) Publish(ctx context.Context, message string) {
+func (m *MockTextPublisher) Publish(ctx context.Context, phoneNumber, message string) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Publish", ctx, message)
+	ret := m.ctrl.Call(m, "Publish", ctx, phoneNumber, message)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // Publish indicates an expected call of Publish
-func (mr *MockTextPublisherMockRecorder) Publish(ctx, message interface{}) *gomock.Call {
+func (mr *MockTextPublisherMockRecorder) Publish(ctx, phoneNumber, message interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Publish", reflect.TypeOf((*MockTextPublisher)(nil).Publish), ctx, message)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Publish", reflect.TypeOf((*MockTextPublisher)(nil).Publish), ctx, phoneNumber, message)
 }

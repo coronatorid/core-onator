@@ -118,6 +118,16 @@ func (i *Infrastructure) Memcached() provider.Cache {
 	return i.memcached
 }
 
+// WhatsappTextPublisher return adapted whatsapp client
+func (i *Infrastructure) WhatsappTextPublisher() (provider.TextPublisher, error) {
+	client, err := i.WhatsappOldSession()
+	if err != nil {
+		return nil, err
+	}
+
+	return adapter.AdaptWhatsapp(client), nil
+}
+
 // WhatsappOldSession return old whatsapp session
 func (i *Infrastructure) WhatsappOldSession() (*whatsapp.Conn, error) {
 	var err error

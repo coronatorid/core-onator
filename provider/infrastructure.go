@@ -27,5 +27,5 @@ type CacheItem interface {
 
 // TextPublisher handle whatsapp message and maybe sms in the future
 type TextPublisher interface {
-	Publish(ctx context.Context, message string)
+	Publish(ctx context.Context, phoneNumber, message string) error
 }

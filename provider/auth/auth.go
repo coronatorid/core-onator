@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/coronatorid/core-onator/provider"
+	"github.com/coronatorid/core-onator/provider/auth/api"
 	"github.com/coronatorid/core-onator/provider/auth/usecase"
 
 	"github.com/coronatorid/core-onator/entity"
@@ -36,6 +37,11 @@ func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher) (*Aut
 		cache:         cache,
 		textPublisher: textPublisher,
 	}, nil
+}
+
+// FabricateAPI fabricating auth related API
+func (a *Auth) FabricateAPI(engine provider.APIEngine) {
+	engine.InjectAPI(api.NewRequestOTP(a))
 }
 
 // RequestOTP send otp based on request by the client

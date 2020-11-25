@@ -54,6 +54,18 @@ func TestAuth(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
+	t.Run("InjectAPI", func(t *testing.T) {
+		apiEngine := mockProvider.NewMockAPIEngine(mockCtrl)
+		apiEngine.EXPECT().InjectAPI(gomock.Any()).Times(1)
+
+		cache := mockProvider.NewMockCache(mockCtrl)
+		textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
+
+		_ = os.Setenv("OTP_RETRY_DURATION", "30s")
+		authProvider, _ := auth.Fabricate(cache, textPublisher)
+		authProvider.FabricateAPI(apiEngine)
+	})
+
 	t.Run("RequestOTP", func(t *testing.T) {
 		t.Run("Normal Scenario", func(t *testing.T) {
 			request := entity.RequestOTP{

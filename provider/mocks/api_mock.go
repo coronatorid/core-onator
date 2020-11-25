@@ -373,6 +373,18 @@ func (mr *MockAPIEngineMockRecorder) Run() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Run", reflect.TypeOf((*MockAPIEngine)(nil).Run))
 }
 
+// InjectAPI mocks base method
+func (m *MockAPIEngine) InjectAPI(handler provider.APIHandler) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "InjectAPI", handler)
+}
+
+// InjectAPI indicates an expected call of InjectAPI
+func (mr *MockAPIEngineMockRecorder) InjectAPI(handler interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InjectAPI", reflect.TypeOf((*MockAPIEngine)(nil).InjectAPI), handler)
+}
+
 // Shutdown mocks base method
 func (m *MockAPIEngine) Shutdown(ctx context.Context) error {
 	m.ctrl.T.Helper()

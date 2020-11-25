@@ -78,5 +78,6 @@ type APIHandler interface {
 // APIEngine ...
 type APIEngine interface {
 	Run() error
+	InjectAPI(handler APIHandler)
 	Shutdown(ctx context.Context) error
 }

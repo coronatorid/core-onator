@@ -20,10 +20,11 @@ type Auth struct {
 
 	cache         provider.Cache
 	textPublisher provider.TextPublisher
+	userProvider  provider.User
 }
 
 // Fabricate auth service for coronator
-func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher) (*Auth, error) {
+func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher, userProvider provider.User) (*Auth, error) {
 	regexIndonesianPhoneNumber, _ := regexp.Compile(`^\+62\d{10,12}`)
 	d, err := time.ParseDuration(os.Getenv("OTP_RETRY_DURATION"))
 	if err != nil {
@@ -36,6 +37,7 @@ func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher) (*Aut
 
 		cache:         cache,
 		textPublisher: textPublisher,
+		userProvider:  userProvider,
 	}, nil
 }
 

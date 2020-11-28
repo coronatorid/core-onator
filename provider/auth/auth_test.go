@@ -23,10 +23,11 @@ func TestAuthFabricate(t *testing.T) {
 
 	cache := mockProvider.NewMockCache(mockCtrl)
 	textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
+	userProvider := mockProvider.NewMockUser(mockCtrl)
 	t.Run("Fabricate", func(t *testing.T) {
 		t.Run("When everything is okay it will not return error", func(t *testing.T) {
 			_ = os.Setenv("OTP_RETRY_DURATION", "30s")
-			_, err := auth.Fabricate(cache, textPublisher)
+			_, err := auth.Fabricate(cache, textPublisher, userProvider)
 
 			assert.Nil(t, err)
 		})
@@ -39,10 +40,11 @@ func TestAuthFabricateFailParseDuration(t *testing.T) {
 
 	cache := mockProvider.NewMockCache(mockCtrl)
 	textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
+	userProvider := mockProvider.NewMockUser(mockCtrl)
 	t.Run("Fabricate", func(t *testing.T) {
 		t.Run("When duration is invalid then it return error", func(t *testing.T) {
 			_ = os.Setenv("OTP_RETRY_DURATION", "abc")
-			_, err := auth.Fabricate(cache, textPublisher)
+			_, err := auth.Fabricate(cache, textPublisher, userProvider)
 
 			assert.NotNil(t, err)
 		})
@@ -60,9 +62,10 @@ func TestAuth(t *testing.T) {
 
 		cache := mockProvider.NewMockCache(mockCtrl)
 		textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
+		userProvider := mockProvider.NewMockUser(mockCtrl)
 
 		_ = os.Setenv("OTP_RETRY_DURATION", "30s")
-		authProvider, _ := auth.Fabricate(cache, textPublisher)
+		authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider)
 		authProvider.FabricateAPI(apiEngine)
 	})
 
@@ -90,8 +93,10 @@ func TestAuth(t *testing.T) {
 			textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
 			textPublisher.EXPECT().Publish(ctx, request.PhoneNumber, gomock.Any()).Return(nil)
 
+			userProvider := mockProvider.NewMockUser(mockCtrl)
+
 			_ = os.Setenv("OTP_RETRY_DURATION", "30s")
-			authProvider, _ := auth.Fabricate(cache, textPublisher)
+			authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider)
 
 			response, err := authProvider.RequestOTP(ctx, request)
 

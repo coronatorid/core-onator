@@ -52,17 +52,17 @@ type NetworkConfig interface {
 
 // DB is database interface wrapper for *sql.DB
 type DB interface {
-	Transaction(ctx context.Context, f func(tx TX) error) error
-	ExecContext(ctx context.Context, query string, args ...interface{}) (Result, error)
-	QueryContext(ctx context.Context, query string, args ...interface{}) (Rows, error)
-	QueryRowContext(ctx context.Context, query string, args ...interface{}) Row
+	Transaction(ctx context.Context, transactionKey string, f func(tx TX) error) error
+	ExecContext(ctx context.Context, queryKey, query string, args ...interface{}) (Result, error)
+	QueryContext(ctx context.Context, queryKey, query string, args ...interface{}) (Rows, error)
+	QueryRowContext(ctx context.Context, queryKey, query string, args ...interface{}) Row
 }
 
 // TX is database transaction
 type TX interface {
-	ExecContext(ctx context.Context, query string, args ...interface{}) (Result, error)
-	QueryContext(ctx context.Context, query string, args ...interface{}) (Rows, error)
-	QueryRowContext(ctx context.Context, query string, args ...interface{}) Row
+	ExecContext(ctx context.Context, queryKey, query string, args ...interface{}) (Result, error)
+	QueryContext(ctx context.Context, queryKey, query string, args ...interface{}) (Rows, error)
+	QueryRowContext(ctx context.Context, queryKey, query string, args ...interface{}) Row
 }
 
 // A Result summarizes an executed SQL command.
@@ -82,7 +82,6 @@ type Result interface {
 
 // Row single result of database query
 type Row interface {
-	Err() error
 	Scan(dest ...interface{}) error
 }
 

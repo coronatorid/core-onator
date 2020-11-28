@@ -100,6 +100,16 @@ func (i *Infrastructure) Close() {
 	}
 }
 
+// DB wrapper for default golang sql
+func (i *Infrastructure) DB() (provider.DB, error) {
+	db, err := i.MYSQL()
+	if err != nil {
+		return nil, err
+	}
+
+	return adapter.AdaptSQL(db), nil
+}
+
 // MYSQL provide mysql interface
 func (i *Infrastructure) MYSQL() (*sql.DB, error) {
 	i.mysqlMutex.Do(func() {

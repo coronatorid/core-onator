@@ -36,10 +36,14 @@ func (a *API) FabricateCommand(cmd provider.Command) {
 // InjectAPI inject new API into coronator
 func (a *API) InjectAPI(handler provider.APIHandler) {
 	a.engine.Add(handler.Method(), handler.Path(), func(context echo.Context) error {
-		requestID := uuid.New()
-		context.Set("request-id", requestID.String())
-		handler.Handle(context)
+		req := context.Request()
+		if reqID := req.Header.Get("X-Request-ID"); reqID != "" {
+			context.Set("request-id", reqID)
+		} else {
+			context.Set("request-id", uuid.New().String())
+		}
 
+		handler.Handle(context)
 		return nil
 	})
 }

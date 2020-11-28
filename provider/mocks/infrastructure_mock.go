@@ -6,8 +6,10 @@ package mockProvider
 
 import (
 	context "context"
+	entity "github.com/coronatorid/core-onator/entity"
 	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
+	io "io"
 	reflect "reflect"
 	time "time"
 )
@@ -164,4 +166,162 @@ func (m *MockTextPublisher) Publish(ctx context.Context, phoneNumber, message st
 func (mr *MockTextPublisherMockRecorder) Publish(ctx, phoneNumber, message interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Publish", reflect.TypeOf((*MockTextPublisher)(nil).Publish), ctx, phoneNumber, message)
+}
+
+// MockNetwork is a mock of Network interface
+type MockNetwork struct {
+	ctrl     *gomock.Controller
+	recorder *MockNetworkMockRecorder
+}
+
+// MockNetworkMockRecorder is the mock recorder for MockNetwork
+type MockNetworkMockRecorder struct {
+	mock *MockNetwork
+}
+
+// NewMockNetwork creates a new mock instance
+func NewMockNetwork(ctrl *gomock.Controller) *MockNetwork {
+	mock := &MockNetwork{ctrl: ctrl}
+	mock.recorder = &MockNetworkMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockNetwork) EXPECT() *MockNetworkMockRecorder {
+	return m.recorder
+}
+
+// GET mocks base method
+func (m *MockNetwork) GET(ctx context.Context, cfg provider.NetworkConfig, path string, successBinder, failedBinder interface{}) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GET", ctx, cfg, path, successBinder, failedBinder)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// GET indicates an expected call of GET
+func (mr *MockNetworkMockRecorder) GET(ctx, cfg, path, successBinder, failedBinder interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GET", reflect.TypeOf((*MockNetwork)(nil).GET), ctx, cfg, path, successBinder, failedBinder)
+}
+
+// POST mocks base method
+func (m *MockNetwork) POST(ctx context.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder, failedBinder interface{}) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "POST", ctx, cfg, path, body, successBinder, failedBinder)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// POST indicates an expected call of POST
+func (mr *MockNetworkMockRecorder) POST(ctx, cfg, path, body, successBinder, failedBinder interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "POST", reflect.TypeOf((*MockNetwork)(nil).POST), ctx, cfg, path, body, successBinder, failedBinder)
+}
+
+// MockNetworkConfig is a mock of NetworkConfig interface
+type MockNetworkConfig struct {
+	ctrl     *gomock.Controller
+	recorder *MockNetworkConfigMockRecorder
+}
+
+// MockNetworkConfigMockRecorder is the mock recorder for MockNetworkConfig
+type MockNetworkConfigMockRecorder struct {
+	mock *MockNetworkConfig
+}
+
+// NewMockNetworkConfig creates a new mock instance
+func NewMockNetworkConfig(ctrl *gomock.Controller) *MockNetworkConfig {
+	mock := &MockNetworkConfig{ctrl: ctrl}
+	mock.recorder = &MockNetworkConfigMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockNetworkConfig) EXPECT() *MockNetworkConfigMockRecorder {
+	return m.recorder
+}
+
+// Host mocks base method
+func (m *MockNetworkConfig) Host() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Host")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// Host indicates an expected call of Host
+func (mr *MockNetworkConfigMockRecorder) Host() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Host", reflect.TypeOf((*MockNetworkConfig)(nil).Host))
+}
+
+// Username mocks base method
+func (m *MockNetworkConfig) Username() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Username")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// Username indicates an expected call of Username
+func (mr *MockNetworkConfigMockRecorder) Username() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Username", reflect.TypeOf((*MockNetworkConfig)(nil).Username))
+}
+
+// Password mocks base method
+func (m *MockNetworkConfig) Password() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Password")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// Password indicates an expected call of Password
+func (mr *MockNetworkConfigMockRecorder) Password() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Password", reflect.TypeOf((*MockNetworkConfig)(nil).Password))
+}
+
+// Timeout mocks base method
+func (m *MockNetworkConfig) Timeout() time.Duration {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Timeout")
+	ret0, _ := ret[0].(time.Duration)
+	return ret0
+}
+
+// Timeout indicates an expected call of Timeout
+func (mr *MockNetworkConfigMockRecorder) Timeout() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Timeout", reflect.TypeOf((*MockNetworkConfig)(nil).Timeout))
+}
+
+// Retry mocks base method
+func (m *MockNetworkConfig) Retry() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Retry")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Retry indicates an expected call of Retry
+func (mr *MockNetworkConfigMockRecorder) Retry() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Retry", reflect.TypeOf((*MockNetworkConfig)(nil).Retry))
+}
+
+// RetrySleepDuration mocks base method
+func (m *MockNetworkConfig) RetrySleepDuration() time.Duration {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RetrySleepDuration")
+	ret0, _ := ret[0].(time.Duration)
+	return ret0
+}
+
+// RetrySleepDuration indicates an expected call of RetrySleepDuration
+func (mr *MockNetworkConfigMockRecorder) RetrySleepDuration() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrySleepDuration", reflect.TypeOf((*MockNetworkConfig)(nil).RetrySleepDuration))
 }

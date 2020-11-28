@@ -37,7 +37,7 @@ func (a *API) FabricateCommand(cmd provider.Command) {
 func (a *API) InjectAPI(handler provider.APIHandler) {
 	a.engine.Add(handler.Method(), handler.Path(), func(context echo.Context) error {
 		requestID := uuid.New()
-		context.Set("request_id", requestID.String())
+		context.Set("request-id", requestID.String())
 		handler.Handle(context)
 
 		return nil

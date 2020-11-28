@@ -13,7 +13,6 @@
 
 .env
 
-levelup
 deploy/_output
 vendor
 

@@ -8,6 +8,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/dghubble/sling"
+
 	"github.com/Rhymen/go-whatsapp"
 	"github.com/coronatorid/core-onator/provider/infrastructure/adapter"
 
@@ -148,4 +150,14 @@ func (i *Infrastructure) WhatsappOldSession() (*whatsapp.Conn, error) {
 func (i *Infrastructure) Whatsapp() *whatsapp.Conn {
 	wac, _ := whatsapp.NewConn(30 * time.Second)
 	return wac
+}
+
+// Network provider
+func (i *Infrastructure) Network() provider.Network {
+	return adapter.AdaptNetwork(i.Sling())
+}
+
+// Sling return sling library used for network feature
+func (i *Infrastructure) Sling() *sling.Sling {
+	return sling.New()
 }

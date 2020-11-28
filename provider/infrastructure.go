@@ -14,6 +14,9 @@ import (
 // ErrCacheMiss returned when value from cache is not found
 var ErrCacheMiss = errors.New("cache miss")
 
+// ErrDBNotFound returned when there is no data found in the database
+var ErrDBNotFound = errors.New("data not found")
+
 // Cache is interface to connect to cache infrastructure
 type Cache interface {
 	// To make it not expire set expiration into 0

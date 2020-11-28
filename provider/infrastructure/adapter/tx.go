@@ -41,7 +41,10 @@ func (t *Tx) QueryContext(ctx context.Context, queryKey, query string, args ...i
 
 	_ = runWithSQLAnalyzer(ctx, "tx", func() error {
 		rows, err = t.tx.QueryContext(ctx, query, args...)
-		if err != nil {
+		if err == sql.ErrNoRows {
+			err = provider.ErrDBNotFound
+			return provider.ErrDBNotFound
+		} else if err != nil {
 			return err
 		}
 
@@ -60,5 +63,5 @@ func (t *Tx) QueryRowContext(ctx context.Context, queryKey, query string, args .
 		return nil
 	})
 
-	return row
+	return AdaptSQLRow(row)
 }

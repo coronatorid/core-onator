@@ -46,6 +46,7 @@ func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher, userP
 // FabricateAPI fabricating auth related API
 func (a *Auth) FabricateAPI(engine provider.APIEngine) {
 	engine.InjectAPI(api.NewRequestOTP(a))
+	engine.InjectAPI(api.NewLogin(a))
 }
 
 // RequestOTP send otp based on request by the client

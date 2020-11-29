@@ -34,6 +34,21 @@ func (m *MockAuth) EXPECT() *MockAuthMockRecorder {
 	return m.recorder
 }
 
+// Login mocks base method
+func (m *MockAuth) Login(ctx context.Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Login", ctx, request)
+	ret0, _ := ret[0].(entity.LoginResponse)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// Login indicates an expected call of Login
+func (mr *MockAuthMockRecorder) Login(ctx, request interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Login", reflect.TypeOf((*MockAuth)(nil).Login), ctx, request)
+}
+
 // RequestOTP mocks base method
 func (m *MockAuth) RequestOTP(ctx context.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError) {
 	m.ctrl.T.Helper()

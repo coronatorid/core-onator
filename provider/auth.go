@@ -10,5 +10,6 @@ import (
 
 // Auth provider handle all authorization and authentication domain
 type Auth interface {
+	Login(ctx context.Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError)
 	RequestOTP(ctx context.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError)
 }

@@ -20,26 +20,41 @@ import (
 type Login struct{}
 
 // Perform login process
-func (l *Login) Perform(ctx context.Context, request entity.Login, otpRetryDuration time.Duration, userProvider provider.User) *entity.ApplicationError {
+func (l *Login) Perform(ctx context.Context, request entity.Login, otpRetryDuration time.Duration, userProvider provider.User, altair provider.Altair) (entity.LoginResponse, *entity.ApplicationError) {
+	var loginResponse entity.LoginResponse
+
 	valid, err := totp.ValidateCustom(request.OTPCode, base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%s", os.Getenv("OTP_SECRET"), request.PhoneNumber))), request.OTPSentTime, totp.ValidateOpts{
 		Algorithm: otp.AlgorithmSHA512,
 		Digits:    4,
 		Period:    uint(otpRetryDuration.Seconds()),
 	})
 	if err != nil {
-		return l.invalidOtpError()
+		return entity.LoginResponse{}, l.invalidOtpError()
 	} else if valid == false {
-		return l.invalidOtpError()
+		return entity.LoginResponse{}, l.invalidOtpError()
 	}
 
-	_, errProvider := userProvider.CreateOrFind(ctx, request.PhoneNumber)
+	user, errProvider := userProvider.CreateOrFind(ctx, request.PhoneNumber)
 	if errProvider != nil {
-		return errProvider
+		return entity.LoginResponse{}, errProvider
 	}
 
-	// TODO Altair http call to get oauth token
+	oauthAccessToken, entityError := altair.GrantToken(ctx, entity.GrantTokenRequest{
+		ResourceOwnerID: user.ID,
+		ResponseType:    "token",
+		Scopes:          "users",
+		ClientUID:       request.ClientUID,
+		ClientSecret:    request.ClientSecret,
+	})
+	if entityError != nil {
+		return entity.LoginResponse{}, entityError
+	}
 
-	return nil
+	loginResponse.User = user
+	loginResponse.Auth.ExpiresIn = oauthAccessToken.ExpiresIn
+	loginResponse.Auth.Scopes = oauthAccessToken.Scopes
+	loginResponse.Auth.Token = oauthAccessToken.Token
+	return loginResponse, nil
 }
 
 func (l *Login) invalidOtpError() *entity.ApplicationError {

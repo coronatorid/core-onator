@@ -21,10 +21,11 @@ type Auth struct {
 	cache         provider.Cache
 	textPublisher provider.TextPublisher
 	userProvider  provider.User
+	altair        provider.Altair
 }
 
 // Fabricate auth service for coronator
-func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher, userProvider provider.User) (*Auth, error) {
+func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher, userProvider provider.User, altair provider.Altair) (*Auth, error) {
 	regexIndonesianPhoneNumber, _ := regexp.Compile(`^\+62\d{10,12}`)
 	d, err := time.ParseDuration(os.Getenv("OTP_RETRY_DURATION"))
 	if err != nil {
@@ -38,6 +39,7 @@ func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher, userP
 		cache:         cache,
 		textPublisher: textPublisher,
 		userProvider:  userProvider,
+		altair:        altair,
 	}, nil
 }
 
@@ -50,4 +52,10 @@ func (a *Auth) FabricateAPI(engine provider.APIEngine) {
 func (a *Auth) RequestOTP(ctx context.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError) {
 	requestOTP := &usecase.RequestOTP{}
 	return requestOTP.Perform(ctx, request, a.regexIndonesianPhoneNumber, a.cache, a.textPublisher, a.otpRetryDuration)
+}
+
+// Login ...
+func (a *Auth) Login(ctx context.Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError) {
+	login := &usecase.Login{}
+	return login.Perform(ctx, request, a.otpRetryDuration, a.userProvider, a.altair)
 }

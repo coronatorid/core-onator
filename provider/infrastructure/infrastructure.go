@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"database/sql"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"os"
 	"sync"
@@ -142,6 +143,10 @@ func (i *Infrastructure) WhatsappTextPublisher() (provider.TextPublisher, error)
 
 // WhatsappOldSession return old whatsapp session
 func (i *Infrastructure) WhatsappOldSession() (*whatsapp.Conn, error) {
+	if i.whatsappSession.ClientId == "" || i.whatsappSession.ClientToken == "" || i.whatsappSession.ServerToken == "" {
+		return nil, errors.New("whatsapp not initiated yet")
+	}
+
 	var err error
 	i.whatsappMutex.Do(func() {
 		i.whatsapp = i.Whatsapp()

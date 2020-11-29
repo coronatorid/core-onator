@@ -21,3 +21,13 @@ type Login struct {
 	ClientUID    string    `json:"client_uid"`
 	ClientSecret string    `json:"client_secret"`
 }
+
+// LoginResponse ...
+type LoginResponse struct {
+	User User `json:"user"`
+	Auth struct {
+		Token     string `json:"token"`
+		Scopes    string `json:"scopes"`
+		ExpiresIn int    `json:"expires_in"`
+	} `json:"auth"`
+}

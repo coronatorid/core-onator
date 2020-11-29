@@ -16,7 +16,7 @@ type FindByPhoneNumber struct{}
 func (f *FindByPhoneNumber) Perform(ctx context.Context, phoneNumber string, db provider.DB) (entity.User, *entity.ApplicationError) {
 	var user entity.User
 
-	row := db.QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone_number = ?", phoneNumber)
+	row := db.QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone = ?", phoneNumber)
 	if err := row.Scan(
 		&user.ID,
 		&user.Phone,

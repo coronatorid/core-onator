@@ -26,7 +26,7 @@ func TestFindByPhoneNumber(t *testing.T) {
 			row := mockProvider.NewMockRow(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone_number = ?", phoneNumber).Return(row)
+			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone = ?", phoneNumber).Return(row)
 			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
 
 			find := &usecase.FindByPhoneNumber{}
@@ -38,7 +38,7 @@ func TestFindByPhoneNumber(t *testing.T) {
 			row := mockProvider.NewMockRow(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone_number = ?", phoneNumber).Return(row)
+			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone = ?", phoneNumber).Return(row)
 			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(provider.ErrDBNotFound)
 
 			expectedError := &entity.ApplicationError{
@@ -56,7 +56,7 @@ func TestFindByPhoneNumber(t *testing.T) {
 			row := mockProvider.NewMockRow(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone_number = ?", phoneNumber).Return(row)
+			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone = ?", phoneNumber).Return(row)
 			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(errors.New("unexpected error"))
 
 			expectedError := &entity.ApplicationError{

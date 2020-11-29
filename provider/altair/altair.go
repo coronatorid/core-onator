@@ -2,6 +2,9 @@ package altair
 
 import (
 	"context"
+	"os"
+	"strconv"
+	"time"
 
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
@@ -15,10 +18,28 @@ type Altair struct {
 }
 
 // Fabricate altair plugin connector
-func Fabricate(network provider.Network, altairNetworkCfg provider.NetworkConfig) (*Altair, error) {
+func Fabricate(network provider.Network) (*Altair, error) {
+	networkCfg := &usecase.NetworkConfig{}
+
+	networkCfg.Cfg.Host = os.Getenv("ALTAIR_HOST")
+	networkCfg.Cfg.Username = os.Getenv("ALTAIR_BASIC_USERNAME")
+	networkCfg.Cfg.Password = os.Getenv("ALTAIR_BASIC_PASSWORD")
+
+	retryCount, err := strconv.Atoi(os.Getenv("ALTAIR_RETRY_COUNT"))
+	if err != nil {
+		return nil, err
+	}
+	networkCfg.Cfg.Retry = retryCount
+
+	retrySleepDuration, err := time.ParseDuration(os.Getenv("ALTAIR_RETRY_SLEEP_DURATION"))
+	if err != nil {
+		return nil, err
+	}
+	networkCfg.Cfg.SleepDuration = retrySleepDuration
+
 	return &Altair{
 		network:          network,
-		altairNetworkCfg: altairNetworkCfg,
+		altairNetworkCfg: networkCfg,
 	}, nil
 }
 

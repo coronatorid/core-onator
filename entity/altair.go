@@ -14,14 +14,16 @@ type GrantTokenRequest struct {
 
 // OauthAccessToken represent Altair's response for oauth access token
 type OauthAccessToken struct {
-	ID                 int       `json:"id"`
-	OauthApplicationID int       `json:"oauth_application_id"`
-	ResourceOwnerID    int       `json:"resource_owner_id"`
-	Token              string    `json:"token"`
-	Scopes             string    `json:"scopes"`
-	ExpiresIn          int       `json:"expires_in"`
-	RedirectURI        string    `json:"redirect_uri"`
-	CreatedAt          time.Time `json:"created_at"`
+	Data struct {
+		ID                 int       `json:"id"`
+		OauthApplicationID int       `json:"oauth_application_id"`
+		ResourceOwnerID    int       `json:"resource_owner_id"`
+		Token              string    `json:"token"`
+		Scopes             string    `json:"scopes"`
+		ExpiresIn          int       `json:"expires_in"`
+		RedirectURI        string    `json:"redirect_uri"`
+		CreatedAt          time.Time `json:"created_at"`
+	} `json:"data"`
 }
 
 // AltairError format error got from Altair

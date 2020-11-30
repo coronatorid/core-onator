@@ -52,9 +52,9 @@ func (l *Login) Perform(ctx context.Context, request entity.Login, otpRetryDurat
 	}
 
 	loginResponse.User = user
-	loginResponse.Auth.ExpiresIn = oauthAccessToken.ExpiresIn
-	loginResponse.Auth.Scopes = oauthAccessToken.Scopes
-	loginResponse.Auth.Token = oauthAccessToken.Token
+	loginResponse.Auth.ExpiresIn = oauthAccessToken.Data.ExpiresIn
+	loginResponse.Auth.Scopes = oauthAccessToken.Data.Scopes
+	loginResponse.Auth.Token = oauthAccessToken.Data.Token
 	return loginResponse, nil
 }
 

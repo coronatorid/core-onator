@@ -42,9 +42,8 @@ func TestLogin(t *testing.T) {
 				ID: 99,
 			}
 
-			oauthAccessToken := entity.OauthAccessToken{
-				ExpiresIn: 3000,
-			}
+			oauthAccessToken := entity.OauthAccessToken{}
+			oauthAccessToken.Data.ExpiresIn = 3000
 
 			otpCode, _ := totp.GenerateCodeCustom(base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%s", otpSecret, request.PhoneNumber))), request.OTPSentTime, totp.ValidateOpts{
 				Algorithm: otp.AlgorithmSHA512,

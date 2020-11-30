@@ -84,6 +84,11 @@ func (n *Network) do(ctx context.Context, client *sling.Sling, cfg provider.Netw
 			if resp != nil {
 				// TODO. Adding log here
 			}
+
+			applicationError = &entity.ApplicationError{
+				Err:        []error{errors.New("service unavailable")},
+				HTTPStatus: http.StatusServiceUnavailable,
+			}
 			continue
 		}
 

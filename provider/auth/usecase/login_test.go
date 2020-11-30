@@ -64,6 +64,7 @@ func TestLogin(t *testing.T) {
 				Scopes:          "users",
 				ClientUID:       request.ClientUID,
 				ClientSecret:    request.ClientSecret,
+				RedirectURI:     "http://localhost:2019",
 			}).Return(oauthAccessToken, nil)
 
 			login := &usecase.Login{}

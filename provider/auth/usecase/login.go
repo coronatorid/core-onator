@@ -45,6 +45,7 @@ func (l *Login) Perform(ctx context.Context, request entity.Login, otpRetryDurat
 		Scopes:          "users",
 		ClientUID:       request.ClientUID,
 		ClientSecret:    request.ClientSecret,
+		RedirectURI:     "http://localhost:2019",
 	})
 	if entityError != nil {
 		return entity.LoginResponse{}, entityError

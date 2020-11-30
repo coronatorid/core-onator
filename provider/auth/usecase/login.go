@@ -26,7 +26,6 @@ func (l *Login) Perform(ctx context.Context, request entity.Login, otpRetryDurat
 	valid, err := totp.ValidateCustom(request.OTPCode, base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%sT%s", os.Getenv("OTP_SECRET"), request.PhoneNumber, request.OTPSentTime.Format(time.RFC3339)))), time.Now().UTC(), totp.ValidateOpts{
 		Algorithm: otp.AlgorithmSHA512,
 		Digits:    4,
-		Period:    uint(otpRetryDuration.Seconds()),
 	})
 	if err != nil {
 		return entity.LoginResponse{}, l.invalidOtpError()

@@ -52,7 +52,7 @@ func TestGrantToken(t *testing.T) {
 
 			encodedJSON, _ := json.Marshal(request)
 			network := mockProvider.NewMockNetwork(mockCtrl)
-			network.EXPECT().POST(ctx, networkCfg, "/_plugin/oauth/authorizations", bytes.NewBuffer(encodedJSON), gomock.Any(), nil).DoAndReturn(func(ctx context.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) error {
+			network.EXPECT().POST(ctx, networkCfg, "/_plugins/oauth/authorizations", bytes.NewBuffer(encodedJSON), gomock.Any(), nil).DoAndReturn(func(ctx context.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) error {
 				binder := successBinder.(*entity.OauthAccessToken)
 				binder.CreatedAt = expectedAccessToken.CreatedAt
 				binder.ExpiresIn = expectedAccessToken.ExpiresIn
@@ -93,7 +93,7 @@ func TestGrantToken(t *testing.T) {
 
 			encodedJSON, _ := json.Marshal(request)
 			network := mockProvider.NewMockNetwork(mockCtrl)
-			network.EXPECT().POST(ctx, networkCfg, "/_plugin/oauth/authorizations", bytes.NewBuffer(encodedJSON), gomock.Any(), nil).DoAndReturn(func(ctx context.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) error {
+			network.EXPECT().POST(ctx, networkCfg, "/_plugins/oauth/authorizations", bytes.NewBuffer(encodedJSON), gomock.Any(), nil).DoAndReturn(func(ctx context.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) error {
 				return &entity.ApplicationError{
 					Err:        []error{errors.New("internal server error")},
 					HTTPStatus: http.StatusInternalServerError,

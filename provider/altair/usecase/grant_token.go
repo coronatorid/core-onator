@@ -17,7 +17,7 @@ func (g *GrantToken) Perform(ctx context.Context, request entity.GrantTokenReque
 	var oauthAccessToken entity.OauthAccessToken
 
 	encodedJSON, _ := json.Marshal(request)
-	if err := network.POST(ctx, altairCfg, "/_plugin/oauth/authorizations", bytes.NewBuffer(encodedJSON), &oauthAccessToken, nil); err != nil {
+	if err := network.POST(ctx, altairCfg, "/_plugins/oauth/authorizations", bytes.NewBuffer(encodedJSON), &oauthAccessToken, nil); err != nil {
 		return oauthAccessToken, err
 	}
 

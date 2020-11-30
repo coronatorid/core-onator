@@ -33,6 +33,7 @@ func (n *Network) GET(ctx context.Context, cfg provider.NetworkConfig, path stri
 // POST request
 func (n *Network) POST(ctx context.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError {
 	client := n.buildClient(cfg)
+	client.Body(body)
 	return n.do(ctx, client.Post(path), cfg, successBinder, failedBinder)
 }
 

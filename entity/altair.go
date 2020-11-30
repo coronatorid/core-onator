@@ -23,3 +23,11 @@ type OauthAccessToken struct {
 	RedirectURI        string    `json:"redirect_uri"`
 	CreatedAt          time.Time `json:"created_at"`
 }
+
+// AltairError format error got from Altair
+type AltairError struct {
+	Error []struct {
+		Message string `json:"message"`
+		Code    string `json:"code"`
+	} `json:"errors"`
+}

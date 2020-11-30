@@ -45,7 +45,7 @@ func TestLogin(t *testing.T) {
 			oauthAccessToken := entity.OauthAccessToken{}
 			oauthAccessToken.Data.ExpiresIn = 3000
 
-			otpCode, _ := totp.GenerateCodeCustom(base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%s", otpSecret, request.PhoneNumber))), request.OTPSentTime, totp.ValidateOpts{
+			otpCode, _ := totp.GenerateCodeCustom(base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%sT%s", otpSecret, request.PhoneNumber, request.OTPSentTime.Format(time.RFC3339)))), request.OTPSentTime, totp.ValidateOpts{
 				Algorithm: otp.AlgorithmSHA512,
 				Digits:    4,
 				Period:    uint(otpRetryDuration.Seconds()),
@@ -81,7 +81,7 @@ func TestLogin(t *testing.T) {
 				PhoneNumber:  "+6287609870987",
 			}
 
-			otpCode, _ := totp.GenerateCodeCustom(base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%s", otpSecret, request.PhoneNumber))), request.OTPSentTime, totp.ValidateOpts{
+			otpCode, _ := totp.GenerateCodeCustom(base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%sT%s", otpSecret, request.PhoneNumber, request.OTPSentTime.Format(time.RFC3339)))), request.OTPSentTime, totp.ValidateOpts{
 				Algorithm: otp.AlgorithmSHA512,
 				Digits:    4,
 				Period:    uint(otpRetryDuration.Seconds()),

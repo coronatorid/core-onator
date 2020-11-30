@@ -36,7 +36,7 @@ func (r *RequestOTP) Perform(ctx context.Context, request entity.RequestOTP, reg
 	}
 
 	otpResponse := r.setLatestRequestCache(ctx, request, cache)
-	otpCode, err := totp.GenerateCodeCustom(base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%s", os.Getenv("OTP_SECRET"), request.PhoneNumber))), otpResponse.SentTime, totp.ValidateOpts{
+	otpCode, err := totp.GenerateCodeCustom(base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%sT%s", os.Getenv("OTP_SECRET"), request.PhoneNumber, otpResponse.SentTime.Format(time.RFC3339)))), otpResponse.SentTime, totp.ValidateOpts{
 		Algorithm: otp.AlgorithmSHA512,
 		Digits:    4,
 		Period:    uint(otpRetryDuration.Seconds()),

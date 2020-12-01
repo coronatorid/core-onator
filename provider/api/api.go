@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/provider/api/command"
@@ -41,6 +42,13 @@ func (a *API) InjectAPI(handler provider.APIHandler) {
 			context.Set("request-id", reqID)
 		} else {
 			context.Set("request-id", uuid.New().String())
+		}
+
+		if userID := req.Header.Get("Resource-Owner-ID"); userID != "" {
+			convertedUserID, err := strconv.Atoi(userID)
+			if err == nil {
+				context.Set("user-id", convertedUserID)
+			}
 		}
 
 		handler.Handle(context)

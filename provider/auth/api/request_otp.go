@@ -49,5 +49,5 @@ func (r *RequestOTP) Handle(context provider.APIContext) {
 		return
 	}
 
-	_ = context.JSON(http.StatusOK, response)
+	_ = context.JSON(http.StatusOK, map[string]interface{}{"data": response})
 }

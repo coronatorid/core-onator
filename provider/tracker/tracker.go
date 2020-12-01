@@ -5,6 +5,7 @@ import (
 
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
+	"github.com/coronatorid/core-onator/provider/tracker/api"
 	"github.com/coronatorid/core-onator/provider/tracker/usecase"
 )
 
@@ -16,6 +17,11 @@ type Tracker struct {
 // Fabricate tracker
 func Fabricate(db provider.DB) *Tracker {
 	return &Tracker{db: db}
+}
+
+// FabricateAPI fabricating tracker related API
+func (t *Tracker) FabricateAPI(engine provider.APIEngine) {
+	engine.InjectAPI(api.NewTrack(t))
 }
 
 // Track user based on given latitude and longitude

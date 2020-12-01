@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	"github.com/coronatorid/core-onator/provider/tracker"
+
 	"github.com/coronatorid/core-onator/provider/altair"
 	"github.com/coronatorid/core-onator/provider/api"
 	"github.com/coronatorid/core-onator/provider/auth"
@@ -63,6 +65,10 @@ func main() {
 		panic(err)
 	}
 	auth.FabricateAPI(apiEngine)
+
+	// Tracker
+	tracker := tracker.Fabricate(db)
+	tracker.FabricateAPI(apiEngine)
 
 	if err := cmd.Execute(); err != nil {
 		panic(err)

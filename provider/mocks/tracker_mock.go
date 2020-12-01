@@ -35,15 +35,46 @@ func (m *MockTracker) EXPECT() *MockTrackerMockRecorder {
 }
 
 // Track mocks base method
-func (m *MockTracker) Track(ctx context.Context, request entity.TrackRequest) *entity.ApplicationError {
+func (m *MockTracker) Track(ctx context.Context, userID int, request entity.TrackRequest) (entity.Location, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Track", ctx, request)
-	ret0, _ := ret[0].(*entity.ApplicationError)
-	return ret0
+	ret := m.ctrl.Call(m, "Track", ctx, userID, request)
+	ret0, _ := ret[0].(entity.Location)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
 }
 
 // Track indicates an expected call of Track
-func (mr *MockTrackerMockRecorder) Track(ctx, request interface{}) *gomock.Call {
+func (mr *MockTrackerMockRecorder) Track(ctx, userID, request interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Track", reflect.TypeOf((*MockTracker)(nil).Track), ctx, request)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Track", reflect.TypeOf((*MockTracker)(nil).Track), ctx, userID, request)
+}
+
+// Create mocks base method
+func (m *MockTracker) Create(ctx context.Context, locationInsertable entity.LocationInsertable) (int, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", ctx, locationInsertable)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create
+func (mr *MockTrackerMockRecorder) Create(ctx, locationInsertable interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockTracker)(nil).Create), ctx, locationInsertable)
+}
+
+// Find mocks base method
+func (m *MockTracker) Find(ctx context.Context, locationID int) (entity.Location, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", ctx, locationID)
+	ret0, _ := ret[0].(entity.Location)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find
+func (mr *MockTrackerMockRecorder) Find(ctx, locationID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockTracker)(nil).Find), ctx, locationID)
 }

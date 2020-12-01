@@ -10,5 +10,7 @@ import (
 
 // Tracker logic of coronator
 type Tracker interface {
-	Track(ctx context.Context, request entity.TrackRequest) *entity.ApplicationError
+	Track(ctx context.Context, userID int, request entity.TrackRequest) (entity.Location, *entity.ApplicationError)
+	Create(ctx context.Context, locationInsertable entity.LocationInsertable) (int, *entity.ApplicationError)
+	Find(ctx context.Context, locationID int) (entity.Location, *entity.ApplicationError)
 }

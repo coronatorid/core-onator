@@ -2,8 +2,11 @@ package usecase_test
 
 import (
 	"context"
+	"crypto/sha256"
 	"errors"
+	"fmt"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/coronatorid/core-onator/entity"
@@ -22,6 +25,10 @@ func TestCreate(t *testing.T) {
 	ctx := context.Background()
 	phoneNumber := "+6289765430918"
 
+	h := sha256.New()
+	_, _ = h.Write([]byte(fmt.Sprintf("%sXXX%s", phoneNumber, os.Getenv("APP_ENCRIPTION_KEY"))))
+	compiledPhoneNumber := fmt.Sprintf("%x", h.Sum(nil))
+
 	t.Run("Perform", func(t *testing.T) {
 		t.Run("When user creation is success then it will return newly created id", func(t *testing.T) {
 			userInsertable := entity.UserInsertable{
@@ -31,7 +38,7 @@ func TestCreate(t *testing.T) {
 			result := mockProvider.NewMockResult(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", userInsertable.PhoneNumber).Return(result, nil)
+			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", compiledPhoneNumber).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(99), nil)
 
 			create := &usecase.Create{}
@@ -47,7 +54,7 @@ func TestCreate(t *testing.T) {
 			}
 
 			db := mockProvider.NewMockDB(mockCtrl)
-			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", userInsertable.PhoneNumber).Return(nil, errors.New("unexpected error"))
+			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", compiledPhoneNumber).Return(nil, errors.New("unexpected error"))
 
 			expectedError := &entity.ApplicationError{
 				Err:        []error{errors.New("service unavailable")},
@@ -70,7 +77,7 @@ func TestCreate(t *testing.T) {
 			result := mockProvider.NewMockResult(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", userInsertable.PhoneNumber).Return(result, nil)
+			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", compiledPhoneNumber).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(0), errors.New("unexpected error"))
 
 			expectedError := &entity.ApplicationError{

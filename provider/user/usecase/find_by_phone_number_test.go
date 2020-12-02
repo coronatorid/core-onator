@@ -2,8 +2,11 @@ package usecase_test
 
 import (
 	"context"
+	"crypto/sha256"
 	"errors"
+	"fmt"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/coronatorid/core-onator/entity"
@@ -19,7 +22,12 @@ func TestFindByPhoneNumber(t *testing.T) {
 	defer mockCtrl.Finish()
 
 	ctx := context.Background()
-	phoneNumber := "+6289787657891"
+	precompiledPhoneNumber := "+6289787657891"
+
+	// We should protect our user no matter what
+	h := sha256.New()
+	_, _ = h.Write([]byte(fmt.Sprintf("%sXXX%s", precompiledPhoneNumber, os.Getenv("APP_ENCRIPTION_KEY"))))
+	phoneNumber := fmt.Sprintf("%x", h.Sum(nil))
 
 	t.Run("Perform", func(t *testing.T) {
 		t.Run("When user is found then it will return user", func(t *testing.T) {
@@ -30,7 +38,7 @@ func TestFindByPhoneNumber(t *testing.T) {
 			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
 
 			find := &usecase.FindByPhoneNumber{}
-			_, err := find.Perform(ctx, phoneNumber, db)
+			_, err := find.Perform(ctx, precompiledPhoneNumber, db)
 			assert.Nil(t, err)
 		})
 
@@ -47,7 +55,7 @@ func TestFindByPhoneNumber(t *testing.T) {
 			}
 
 			find := &usecase.FindByPhoneNumber{}
-			_, err := find.Perform(ctx, phoneNumber, db)
+			_, err := find.Perform(ctx, precompiledPhoneNumber, db)
 			assert.Equal(t, expectedError.Error(), err.Error())
 			assert.Equal(t, expectedError.HTTPStatus, err.HTTPStatus)
 		})
@@ -65,7 +73,7 @@ func TestFindByPhoneNumber(t *testing.T) {
 			}
 
 			find := &usecase.FindByPhoneNumber{}
-			_, err := find.Perform(ctx, phoneNumber, db)
+			_, err := find.Perform(ctx, precompiledPhoneNumber, db)
 			assert.Equal(t, expectedError.Error(), err.Error())
 			assert.Equal(t, expectedError.HTTPStatus, err.HTTPStatus)
 		})

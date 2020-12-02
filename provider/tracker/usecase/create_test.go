@@ -34,7 +34,7 @@ func TestCreate(t *testing.T) {
 			result := mockProvider.NewMockResult(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().ExecContext(ctx, "location-create", "insert into locations (user_id, lat, long, created_at, updated_at) values(?, ?, ?, now(), now())", locationInsertable.UserID, locationInsertable.Lat, locationInsertable.Long).Return(result, nil)
+			db.EXPECT().ExecContext(ctx, "location-create", "insert into locations (`user_id`, `lat`, `long`, `created_at`, `updated_at`) values(?, ?, ?, now(), now())", locationInsertable.UserID, locationInsertable.Lat, locationInsertable.Long).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(99), nil)
 
 			create := &usecase.Create{}
@@ -52,7 +52,7 @@ func TestCreate(t *testing.T) {
 			}
 
 			db := mockProvider.NewMockDB(mockCtrl)
-			db.EXPECT().ExecContext(ctx, "location-create", "insert into locations (user_id, lat, long, created_at, updated_at) values(?, ?, ?, now(), now())", locationInsertable.UserID, locationInsertable.Lat, locationInsertable.Long).Return(nil, errors.New("unexpected error"))
+			db.EXPECT().ExecContext(ctx, "location-create", "insert into locations (`user_id`, `lat`, `long`, `created_at`, `updated_at`) values(?, ?, ?, now(), now())", locationInsertable.UserID, locationInsertable.Lat, locationInsertable.Long).Return(nil, errors.New("unexpected error"))
 
 			expectedError := &entity.ApplicationError{
 				Err:        []error{errors.New("service unavailable")},
@@ -77,7 +77,7 @@ func TestCreate(t *testing.T) {
 			result := mockProvider.NewMockResult(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().ExecContext(ctx, "location-create", "insert into locations (user_id, lat, long, created_at, updated_at) values(?, ?, ?, now(), now())", locationInsertable.UserID, locationInsertable.Lat, locationInsertable.Long).Return(result, nil)
+			db.EXPECT().ExecContext(ctx, "location-create", "insert into locations (`user_id`, `lat`, `long`, `created_at`, `updated_at`) values(?, ?, ?, now(), now())", locationInsertable.UserID, locationInsertable.Lat, locationInsertable.Long).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(0), errors.New("unexpected error"))
 
 			expectedError := &entity.ApplicationError{

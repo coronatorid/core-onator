@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/coronatorid/core-onator/entity"
@@ -14,8 +15,9 @@ type Create struct{}
 
 // Perform ...
 func (t *Create) Perform(ctx context.Context, locationInsertable entity.LocationInsertable, db provider.DB) (int, *entity.ApplicationError) {
-	result, err := db.ExecContext(ctx, "location-create", "insert into locations (user_id, lat, long, created_at, updated_at) values(?, ?, ?, now(), now())", locationInsertable.UserID, locationInsertable.Lat, locationInsertable.Long)
+	result, err := db.ExecContext(ctx, "location-create", "insert into locations (`user_id`, `lat`, `long`, `created_at`, `updated_at`) values(?, ?, ?, now(), now())", locationInsertable.UserID, locationInsertable.Lat, locationInsertable.Long)
 	if err != nil {
+		fmt.Println("ERROR", err)
 		return 0, &entity.ApplicationError{
 			Err:        []error{errors.New("service unavailable")},
 			HTTPStatus: http.StatusServiceUnavailable,

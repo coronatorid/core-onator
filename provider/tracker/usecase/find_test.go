@@ -26,7 +26,7 @@ func TestFind(t *testing.T) {
 			row := mockProvider.NewMockRow(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().QueryRowContext(ctx, "find-location", "select `id`, `user_id`, `lat`, `long`, `created_at`, `updated_at` where id = ?", ID).Return(row)
+			db.EXPECT().QueryRowContext(ctx, "find-location", "select `id`, `user_id`, `lat`, `long`, `created_at`, `updated_at` from locations  where id = ?", ID).Return(row)
 			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
 
 			find := &usecase.Find{}
@@ -38,7 +38,7 @@ func TestFind(t *testing.T) {
 			row := mockProvider.NewMockRow(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().QueryRowContext(ctx, "find-location", "select `id`, `user_id`, `lat`, `long`, `created_at`, `updated_at` where id = ?", ID).Return(row)
+			db.EXPECT().QueryRowContext(ctx, "find-location", "select `id`, `user_id`, `lat`, `long`, `created_at`, `updated_at` from locations  where id = ?", ID).Return(row)
 			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(provider.ErrDBNotFound)
 
 			expectedError := &entity.ApplicationError{
@@ -56,7 +56,7 @@ func TestFind(t *testing.T) {
 			row := mockProvider.NewMockRow(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().QueryRowContext(ctx, "find-location", "select `id`, `user_id`, `lat`, `long`, `created_at`, `updated_at` where id = ?", ID).Return(row)
+			db.EXPECT().QueryRowContext(ctx, "find-location", "select `id`, `user_id`, `lat`, `long`, `created_at`, `updated_at` from locations  where id = ?", ID).Return(row)
 			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(errors.New("unexpected error"))
 
 			expectedError := &entity.ApplicationError{

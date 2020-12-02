@@ -16,7 +16,7 @@ type Find struct{}
 func (f *Find) Perform(ctx context.Context, locationID int, db provider.DB) (entity.Location, *entity.ApplicationError) {
 	var location entity.Location
 
-	row := db.QueryRowContext(ctx, "find-location", "select id, user_id, lat, long, created_at, updated_at where id = ?", locationID)
+	row := db.QueryRowContext(ctx, "find-location", "select `id`, `user_id`, `lat`, `long`, `created_at`, `updated_at` where id = ?", locationID)
 	err := row.Scan(&location.ID, &location.UserID, &location.Lat, &location.Long, &location.CreatedAt, &location.UpdatedAt)
 	if err == provider.ErrDBNotFound {
 		return location, &entity.ApplicationError{

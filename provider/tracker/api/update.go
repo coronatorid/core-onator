@@ -49,7 +49,7 @@ func (r *Track) Handle(context provider.APIContext) {
 		return
 	}
 
-	response, err := r.trackProvider.Track(context.Request().Context(), 0, request)
+	response, err := r.trackProvider.Track(context.Request().Context(), userID, request)
 	if err != nil {
 		_ = context.JSON(err.HTTPStatus, map[string]interface{}{
 			"errors":  err.ErrorString(),

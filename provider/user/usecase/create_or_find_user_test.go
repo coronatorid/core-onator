@@ -26,8 +26,8 @@ func TestCreateOrFindUser(t *testing.T) {
 		ID:        99,
 		Phone:     phoneNumber,
 		State:     1,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 	}
 
 	t.Run("Perform", func(t *testing.T) {

@@ -34,7 +34,7 @@ func TestLogin(t *testing.T) {
 			request := entity.Login{
 				ClientSecret: "secret",
 				ClientUID:    "uid",
-				OTPSentTime:  time.Now(),
+				OTPSentTime:  time.Now().UTC(),
 				PhoneNumber:  "+6287609870987",
 			}
 
@@ -77,7 +77,7 @@ func TestLogin(t *testing.T) {
 			request := entity.Login{
 				ClientSecret: "secret",
 				ClientUID:    "uid",
-				OTPSentTime:  time.Now(),
+				OTPSentTime:  time.Now().UTC(),
 				PhoneNumber:  "+6287609870987",
 			}
 

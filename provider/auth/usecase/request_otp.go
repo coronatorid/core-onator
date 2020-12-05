@@ -72,7 +72,7 @@ func (r *RequestOTP) validation(request entity.RequestOTP, regex *regexp.Regexp)
 func (r *RequestOTP) setLatestRequestCache(ctx context.Context, request entity.RequestOTP, cache provider.Cache) entity.RequestOTPResponse {
 	otpResponse := entity.RequestOTPResponse{
 		PhoneNumber: request.PhoneNumber,
-		SentTime:    time.Now(),
+		SentTime:    time.Now().UTC(),
 	}
 	encodedOTPResponse, _ := json.Marshal(otpResponse)
 	_ = cache.Set(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber), encodedOTPResponse, 0)
@@ -85,7 +85,7 @@ func (r *RequestOTP) latestRequestCache(ctx context.Context, request entity.Requ
 	if err == nil {
 		var lastCacheRequest entity.RequestOTPResponse
 		err := json.Unmarshal(item.Value(), &lastCacheRequest)
-		if subtractedTime := time.Now().Sub(lastCacheRequest.SentTime); err == nil && subtractedTime < otpRetryDuration {
+		if subtractedTime := time.Now().UTC().Sub(lastCacheRequest.SentTime); err == nil && subtractedTime < otpRetryDuration {
 			return &entity.ApplicationError{
 				Err:        []error{fmt.Errorf("Please retry in %d seconds", int(otpRetryDuration.Seconds()-subtractedTime.Seconds()))},
 				HTTPStatus: http.StatusTooEarly,

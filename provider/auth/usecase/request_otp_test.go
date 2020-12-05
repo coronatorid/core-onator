@@ -63,7 +63,7 @@ func TestRequestOTP(t *testing.T) {
 				PhoneNumber: "+6289762562712",
 			}
 
-			cachedResponse := entity.RequestOTPResponse{PhoneNumber: request.PhoneNumber, SentTime: time.Now().Add(-60 * time.Second)}
+			cachedResponse := entity.RequestOTPResponse{PhoneNumber: request.PhoneNumber, SentTime: time.Now().UTC().Add(-60 * time.Second)}
 			encodedCachedResponse, _ := json.Marshal(cachedResponse)
 
 			cacheItem := mockProvider.NewMockCacheItem(mockCtrl)
@@ -97,7 +97,7 @@ func TestRequestOTP(t *testing.T) {
 				PhoneNumber: "+6289762562712",
 			}
 
-			cachedResponse := entity.RequestOTPResponse{PhoneNumber: request.PhoneNumber, SentTime: time.Now().Add(-20 * time.Second)}
+			cachedResponse := entity.RequestOTPResponse{PhoneNumber: request.PhoneNumber, SentTime: time.Now().UTC().Add(-20 * time.Second)}
 			encodedCachedResponse, _ := json.Marshal(cachedResponse)
 
 			cacheItem := mockProvider.NewMockCacheItem(mockCtrl)

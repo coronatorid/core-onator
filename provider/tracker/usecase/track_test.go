@@ -39,8 +39,8 @@ func TestTrack(t *testing.T) {
 				UserID:    userID,
 				Lat:       lat,
 				Long:      long,
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
+				CreatedAt: time.Now().UTC(),
+				UpdatedAt: time.Now().UTC(),
 			}
 
 			tracker := mockProvider.NewMockTracker(mockCtrl)

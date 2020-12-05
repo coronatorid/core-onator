@@ -39,7 +39,7 @@ func TestGrantToken(t *testing.T) {
 
 			expectedAccessToken := entity.OauthAccessToken{}
 
-			expectedAccessToken.Data.CreatedAt = time.Now()
+			expectedAccessToken.Data.CreatedAt = time.Now().UTC()
 			expectedAccessToken.Data.ExpiresIn = 3000
 			expectedAccessToken.Data.ID = 1
 			expectedAccessToken.Data.OauthApplicationID = 1

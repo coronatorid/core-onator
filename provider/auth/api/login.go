@@ -34,7 +34,7 @@ func (r *Login) Handle(context provider.APIContext) {
 	var request entity.Login
 	if err := json.NewDecoder(context.Request().Body).Decode(&request); err != nil {
 		_ = context.JSON(http.StatusBadRequest, map[string]interface{}{
-			"errors":  []string{"bad request given by client"},
+			"errors":  []entity.APIError{entity.ErrorBadRequest()},
 			"message": "Bad request",
 		})
 		return

@@ -1,6 +1,8 @@
 package entity
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // ApplicationError cover all application error
 type ApplicationError struct {
@@ -36,4 +38,12 @@ func (a *ApplicationError) Error() string {
 	}
 
 	return errString
+}
+
+// ErrorBadRequest create new API error bad request
+func ErrorBadRequest() APIError {
+	return APIError{
+		Status: "400",
+		Detail: "bad request given by client",
+	}
 }

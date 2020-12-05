@@ -34,7 +34,7 @@ func (r *Track) Handle(context provider.APIContext) {
 	userID := context.Get("user-id").(int)
 	if userID <= 0 {
 		_ = context.JSON(http.StatusBadRequest, map[string]interface{}{
-			"errors":  []string{"bad request given by client"},
+			"errors":  []entity.APIError{entity.ErrorBadRequest()},
 			"message": "Bad request",
 		})
 		return
@@ -43,7 +43,7 @@ func (r *Track) Handle(context provider.APIContext) {
 	var request entity.TrackRequest
 	if err := json.NewDecoder(context.Request().Body).Decode(&request); err != nil {
 		_ = context.JSON(http.StatusBadRequest, map[string]interface{}{
-			"errors":  []string{"bad request given by client"},
+			"errors":  []entity.APIError{entity.ErrorBadRequest()},
 			"message": "Bad request",
 		})
 		return

@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"time"
 
+	"github.com/rs/zerolog"
+
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/util"
 	"github.com/rs/zerolog/log"
@@ -103,6 +105,7 @@ func runWithSQLAnalyzer(ctx context.Context, executionLevel, function string, f 
 			Str("execution_level", executionLevel).
 			Str("status", "failed").
 			Float64("duration_in_seconds", time.Since(startTime).Seconds()).
+			Array("tags", zerolog.Arr().Str("sql").Str(function)).
 			Msg("sql process failed")
 		return err
 	}
@@ -112,6 +115,7 @@ func runWithSQLAnalyzer(ctx context.Context, executionLevel, function string, f 
 		Str("execution_level", executionLevel).
 		Str("status", "success").
 		Float64("duration_in_seconds", time.Since(startTime).Seconds()).
+		Array("tags", zerolog.Arr().Str("sql").Str(function)).
 		Msg("sql process success")
 	return nil
 }

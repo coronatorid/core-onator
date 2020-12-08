@@ -22,7 +22,7 @@ func (t *Tx) ExecContext(ctx context.Context, queryKey, query string, args ...in
 	var result provider.Result
 	var err error
 
-	_ = runWithSQLAnalyzer(ctx, "tx", func() error {
+	_ = runWithSQLAnalyzer(ctx, "tx", "ExecContext", func() error {
 		result, err = t.tx.ExecContext(ctx, query, args...)
 		if err != nil {
 			return err
@@ -39,7 +39,7 @@ func (t *Tx) QueryContext(ctx context.Context, queryKey, query string, args ...i
 	var rows provider.Rows
 	var err error
 
-	_ = runWithSQLAnalyzer(ctx, "tx", func() error {
+	_ = runWithSQLAnalyzer(ctx, "tx", "QueryContext", func() error {
 		rows, err = t.tx.QueryContext(ctx, query, args...)
 		if err == sql.ErrNoRows {
 			err = provider.ErrDBNotFound
@@ -58,7 +58,7 @@ func (t *Tx) QueryContext(ctx context.Context, queryKey, query string, args ...i
 func (t *Tx) QueryRowContext(ctx context.Context, queryKey, query string, args ...interface{}) provider.Row {
 	var row provider.Row
 
-	_ = runWithSQLAnalyzer(ctx, "tx", func() error {
+	_ = runWithSQLAnalyzer(ctx, "tx", "QueryRowContext", func() error {
 		row = t.tx.QueryRowContext(ctx, query, args...)
 		return nil
 	})

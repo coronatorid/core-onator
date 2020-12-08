@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/coronatorid/core-onator/provider/tracker"
+	"github.com/rs/zerolog"
 
 	"github.com/coronatorid/core-onator/provider/altair"
 	"github.com/coronatorid/core-onator/provider/api"
@@ -16,6 +17,9 @@ import (
 
 func main() {
 	_ = gotenv.Load()
+
+	// Initiate zero log
+	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
 	// Command
 	cmd := command.Fabricate()

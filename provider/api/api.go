@@ -21,8 +21,13 @@ type API struct {
 
 // Fabricate API
 func Fabricate() *API {
+	engine := echo.New()
+
+	// We will do this one later on
+	// engine.Logger.SetLevel(log.OFF)
+
 	return &API{
-		engine: echo.New(),
+		engine: engine,
 		port:   2019,
 	}
 }

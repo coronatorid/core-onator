@@ -4,6 +4,9 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"time"
+
+	"github.com/rs/zerolog/log"
 
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/provider/api/command"
@@ -11,6 +14,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	logEcho "github.com/labstack/gommon/log"
 )
 
 // API ...
@@ -22,6 +26,7 @@ type API struct {
 // Fabricate API
 func Fabricate() *API {
 	engine := echo.New()
+	engine.Logger.SetLevel(logEcho.OFF)
 
 	// We will do this one later on
 	// engine.Logger.SetLevel(log.OFF)
@@ -42,11 +47,15 @@ func (a *API) FabricateCommand(cmd provider.Command) {
 // InjectAPI inject new API into coronator
 func (a *API) InjectAPI(handler provider.APIHandler) {
 	a.engine.Add(handler.Method(), handler.Path(), func(context echo.Context) error {
+		startTime := time.Now()
 		req := context.Request()
-		if reqID := req.Header.Get("X-Request-ID"); reqID != "" {
+		reqID := ""
+
+		if reqID = req.Header.Get("X-Request-ID"); reqID != "" {
 			context.Set("request-id", reqID)
 		} else {
-			context.Set("request-id", uuid.New().String())
+			reqID = uuid.New().String()
+			context.Set("request-id", reqID)
 		}
 
 		if userID := req.Header.Get("Resource-Owner-ID"); userID != "" {
@@ -57,6 +66,20 @@ func (a *API) InjectAPI(handler provider.APIHandler) {
 		}
 
 		handler.Handle(FabricateContext(context))
+
+		log.Info().
+			Str("request_id", reqID).
+			Str("remote_ip", context.RealIP()).
+			Str("method", context.Request().Method).
+			Str("uri", context.Request().URL.String()).
+			Str("host", context.Request().Host).
+			Dur("duration", time.Since(startTime)).
+			Str("user_agent", context.Request().Header.Get("User-Agent")).
+			Str("user_id", context.Request().Header.Get("Resource-Owner-ID")).
+			Str("path", context.Path()).
+			Int("response_status", context.Response().Status).
+			Int("response_status_group", (context.Response().Status/100)*100).
+			Msg(fmt.Sprintf("coronator api watcher: %s %s", context.Request().Method, context.Path()))
 		return nil
 	})
 }

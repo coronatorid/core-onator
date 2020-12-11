@@ -28,9 +28,6 @@ func Fabricate() *API {
 	engine := echo.New()
 	engine.Logger.SetLevel(logEcho.OFF)
 
-	// We will do this one later on
-	// engine.Logger.SetLevel(log.OFF)
-
 	return &API{
 		engine: engine,
 		port:   2019,

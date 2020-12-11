@@ -8,6 +8,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/coronatorid/core-onator/provider"
 	_ "github.com/golang-migrate/migrate/v4/source/file" // importing file path for mysql migrator
 )
@@ -39,6 +41,8 @@ func (r *Run) Short() string {
 
 // Run the command with the args given by the caller
 func (r *Run) Run(args []string) {
+	log.Info().Msg("start coronator server")
+
 	go func() {
 		_ = r.engine.Run()
 	}()

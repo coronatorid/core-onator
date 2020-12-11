@@ -14,7 +14,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	logEcho "github.com/labstack/gommon/log"
 )
 
 // API ...
@@ -26,7 +25,7 @@ type API struct {
 // Fabricate API
 func Fabricate() *API {
 	engine := echo.New()
-	engine.Logger.SetLevel(logEcho.OFF)
+	engine.Logger = &dummyLogger{}
 
 	return &API{
 		engine: engine,

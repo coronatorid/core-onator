@@ -103,7 +103,7 @@ func runWithSQLAnalyzer(ctx provider.Context, executionLevel, function string, f
 			Str("request_id", util.GetRequestID(ctx)).
 			Str("execution_level", executionLevel).
 			Str("status", "failed").
-			Float64("duration_in_seconds", time.Since(startTime).Seconds()).
+			Int64("duration_in_ms", time.Since(startTime).Milliseconds()).
 			Array("tags", zerolog.Arr().Str("sql").Str(function)).
 			Msg("sql process failed")
 		return err
@@ -113,7 +113,7 @@ func runWithSQLAnalyzer(ctx provider.Context, executionLevel, function string, f
 		Str("request_id", util.GetRequestID(ctx)).
 		Str("execution_level", executionLevel).
 		Str("status", "success").
-		Float64("duration_in_seconds", time.Since(startTime).Seconds()).
+		Int64("duration_in_ms", time.Since(startTime).Milliseconds()).
 		Array("tags", zerolog.Arr().Str("sql").Str(function)).
 		Msg("sql process success")
 	return nil

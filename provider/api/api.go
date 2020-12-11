@@ -73,8 +73,8 @@ func (a *API) InjectAPI(handler provider.APIHandler) {
 			Str("method", context.Request().Method).
 			Str("uri", context.Request().URL.String()).
 			Str("host", context.Request().Host).
-			Dur("duration", time.Since(startTime)).
-			Float64("duration_in_seconds", time.Since(startTime).Seconds()).
+			Str("duration", time.Since(startTime).String()).
+			Int64("duration_in_ms", time.Since(startTime).Milliseconds()).
 			Str("user_agent", context.Request().Header.Get("User-Agent")).
 			Str("user_id", context.Request().Header.Get("Resource-Owner-ID")).
 			Str("path", context.Path()).

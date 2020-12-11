@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"context"
 	"errors"
 	"net/http"
 
@@ -13,7 +12,7 @@ import (
 type Find struct{}
 
 // Perform find location by user id
-func (f *Find) Perform(ctx context.Context, locationID int, db provider.DB) (entity.Location, *entity.ApplicationError) {
+func (f *Find) Perform(ctx provider.Context, locationID int, db provider.DB) (entity.Location, *entity.ApplicationError) {
 	var location entity.Location
 
 	row := db.QueryRowContext(ctx, "find-location", "select `id`, `user_id`, `lat`, `long`, `created_at`, `updated_at` from locations where id = ?", locationID)

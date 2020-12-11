@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"context"
 	"errors"
 	"net/http"
 
@@ -13,7 +12,7 @@ import (
 type Create struct{}
 
 // Perform ...
-func (t *Create) Perform(ctx context.Context, locationInsertable entity.LocationInsertable, db provider.DB) (int, *entity.ApplicationError) {
+func (t *Create) Perform(ctx provider.Context, locationInsertable entity.LocationInsertable, db provider.DB) (int, *entity.ApplicationError) {
 	result, err := db.ExecContext(ctx, "location-create", "insert into locations (`user_id`, `lat`, `long`, `created_at`, `updated_at`) values(?, ?, ?, now(), now())", locationInsertable.UserID, locationInsertable.Lat, locationInsertable.Long)
 	if err != nil {
 		return 0, &entity.ApplicationError{

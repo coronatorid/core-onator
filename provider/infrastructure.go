@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"context"
 	"errors"
 	"io"
 	"time"
@@ -20,8 +19,8 @@ var ErrDBNotFound = errors.New("data not found")
 // Cache is interface to connect to cache infrastructure
 type Cache interface {
 	// To make it not expire set expiration into 0
-	Set(ctx context.Context, key string, value []byte, expiration time.Duration) error
-	Get(ctx context.Context, key string) (CacheItem, error)
+	Set(ctx Context, key string, value []byte, expiration time.Duration) error
+	Get(ctx Context, key string) (CacheItem, error)
 }
 
 // CacheItem contain result get from Cache interface
@@ -33,14 +32,14 @@ type CacheItem interface {
 
 // TextPublisher handle whatsapp message and maybe sms in the future
 type TextPublisher interface {
-	Publish(ctx context.Context, phoneNumber, message string) error
+	Publish(ctx Context, phoneNumber, message string) error
 }
 
 // Network are external connecion for infrastructure
 type Network interface {
 	// successBinder must json assignable struct
-	GET(ctx context.Context, cfg NetworkConfig, path string, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError
-	POST(ctx context.Context, cfg NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError
+	GET(ctx Context, cfg NetworkConfig, path string, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError
+	POST(ctx Context, cfg NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError
 }
 
 // NetworkConfig given for network request
@@ -55,17 +54,17 @@ type NetworkConfig interface {
 
 // DB is database interface wrapper for *sql.DB
 type DB interface {
-	Transaction(ctx context.Context, transactionKey string, f func(tx TX) error) error
-	ExecContext(ctx context.Context, queryKey, query string, args ...interface{}) (Result, error)
-	QueryContext(ctx context.Context, queryKey, query string, args ...interface{}) (Rows, error)
-	QueryRowContext(ctx context.Context, queryKey, query string, args ...interface{}) Row
+	Transaction(ctx Context, transactionKey string, f func(tx TX) error) error
+	ExecContext(ctx Context, queryKey, query string, args ...interface{}) (Result, error)
+	QueryContext(ctx Context, queryKey, query string, args ...interface{}) (Rows, error)
+	QueryRowContext(ctx Context, queryKey, query string, args ...interface{}) Row
 }
 
 // TX is database transaction
 type TX interface {
-	ExecContext(ctx context.Context, queryKey, query string, args ...interface{}) (Result, error)
-	QueryContext(ctx context.Context, queryKey, query string, args ...interface{}) (Rows, error)
-	QueryRowContext(ctx context.Context, queryKey, query string, args ...interface{}) Row
+	ExecContext(ctx Context, queryKey, query string, args ...interface{}) (Result, error)
+	QueryContext(ctx Context, queryKey, query string, args ...interface{}) (Rows, error)
+	QueryRowContext(ctx Context, queryKey, query string, args ...interface{}) Row
 }
 
 // A Result summarizes an executed SQL command.

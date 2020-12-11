@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"context"
 	"crypto/sha256"
 	"errors"
 	"fmt"
@@ -16,7 +15,7 @@ import (
 type FindByPhoneNumber struct{}
 
 // Perform finding user
-func (f *FindByPhoneNumber) Perform(ctx context.Context, phoneNumber string, db provider.DB) (entity.User, *entity.ApplicationError) {
+func (f *FindByPhoneNumber) Perform(ctx provider.Context, phoneNumber string, db provider.DB) (entity.User, *entity.ApplicationError) {
 	// We should protect our user no matter what
 	h := sha256.New()
 	_, _ = h.Write([]byte(fmt.Sprintf("%sXXX%s", phoneNumber, os.Getenv("APP_ENCRIPTION_KEY"))))

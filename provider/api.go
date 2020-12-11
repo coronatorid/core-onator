@@ -52,12 +52,6 @@ type APIContext interface {
 	// Cookies returns the HTTP cookies sent with the request.
 	Cookies() []*http.Cookie
 
-	// Get retrieves data from the context.
-	Get(key string) interface{}
-
-	// Set saves data in the context.
-	Set(key string, val interface{})
-
 	// JSON sends a JSON response with status code.
 	JSON(code int, i interface{}) error
 
@@ -66,6 +60,8 @@ type APIContext interface {
 
 	// Logger returns the `Logger` instance.
 	// Logger() Logger
+
+	Context
 }
 
 // APIHandler handling api request from client

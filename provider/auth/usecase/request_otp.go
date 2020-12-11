@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"context"
 	"encoding/base32"
 	"encoding/json"
 	"errors"
@@ -26,7 +25,7 @@ const OTPMessage = "JANGAN BERIKAN KODE OTP INI KE SIAPAPUN, TERMASUK KE PIHAK C
 type RequestOTP struct{}
 
 // Perform otp request process
-func (r *RequestOTP) Perform(ctx context.Context, request entity.RequestOTP, regex *regexp.Regexp, cache provider.Cache, textPublisher provider.TextPublisher, otpRetryDuration time.Duration) (*entity.RequestOTPResponse, *entity.ApplicationError) {
+func (r *RequestOTP) Perform(ctx provider.Context, request entity.RequestOTP, regex *regexp.Regexp, cache provider.Cache, textPublisher provider.TextPublisher, otpRetryDuration time.Duration) (*entity.RequestOTPResponse, *entity.ApplicationError) {
 	if err := r.validation(request, regex); err != nil {
 		return nil, err
 	}
@@ -69,7 +68,7 @@ func (r *RequestOTP) validation(request entity.RequestOTP, regex *regexp.Regexp)
 	return nil
 }
 
-func (r *RequestOTP) setLatestRequestCache(ctx context.Context, request entity.RequestOTP, cache provider.Cache) entity.RequestOTPResponse {
+func (r *RequestOTP) setLatestRequestCache(ctx provider.Context, request entity.RequestOTP, cache provider.Cache) entity.RequestOTPResponse {
 	otpResponse := entity.RequestOTPResponse{
 		PhoneNumber: request.PhoneNumber,
 		SentTime:    time.Now().UTC(),
@@ -80,7 +79,7 @@ func (r *RequestOTP) setLatestRequestCache(ctx context.Context, request entity.R
 	return otpResponse
 }
 
-func (r *RequestOTP) latestRequestCache(ctx context.Context, request entity.RequestOTP, cache provider.Cache, otpRetryDuration time.Duration) *entity.ApplicationError {
+func (r *RequestOTP) latestRequestCache(ctx provider.Context, request entity.RequestOTP, cache provider.Cache, otpRetryDuration time.Duration) *entity.ApplicationError {
 	item, err := cache.Get(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber))
 	if err == nil {
 		var lastCacheRequest entity.RequestOTPResponse

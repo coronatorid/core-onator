@@ -1,10 +1,10 @@
 package util
 
-import "context"
+import "github.com/coronatorid/core-onator/provider"
 
 // GetRequestID from a context
-func GetRequestID(ctx context.Context) string {
-	if requestID, ok := ctx.Value("request-id").(string); ok {
+func GetRequestID(ctx provider.Context) string {
+	if requestID, ok := ctx.Get("request-id").(string); ok {
 		return requestID
 	}
 

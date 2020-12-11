@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"context"
 	"crypto/sha256"
 	"errors"
 	"fmt"
@@ -16,7 +15,7 @@ import (
 type Create struct{}
 
 // Perform logic to create new user
-func (c *Create) Perform(ctx context.Context, userInsertable entity.UserInsertable, db provider.DB) (int, *entity.ApplicationError) {
+func (c *Create) Perform(ctx provider.Context, userInsertable entity.UserInsertable, db provider.DB) (int, *entity.ApplicationError) {
 	// We should protect our user no matter what
 	h := sha256.New()
 	_, _ = h.Write([]byte(fmt.Sprintf("%sXXX%s", userInsertable.PhoneNumber, os.Getenv("APP_ENCRIPTION_KEY"))))

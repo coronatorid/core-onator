@@ -1,8 +1,6 @@
 package provider
 
 import (
-	"context"
-
 	"github.com/coronatorid/core-onator/entity"
 )
 
@@ -10,7 +8,7 @@ import (
 
 // Tracker logic of coronator
 type Tracker interface {
-	Track(ctx context.Context, userID int, request entity.TrackRequest) (entity.Location, *entity.ApplicationError)
-	Create(ctx context.Context, locationInsertable entity.LocationInsertable) (int, *entity.ApplicationError)
-	Find(ctx context.Context, locationID int) (entity.Location, *entity.ApplicationError)
+	Track(ctx Context, userID int, request entity.TrackRequest) (entity.Location, *entity.ApplicationError)
+	Create(ctx Context, locationInsertable entity.LocationInsertable) (int, *entity.ApplicationError)
+	Find(ctx Context, locationID int) (entity.Location, *entity.ApplicationError)
 }

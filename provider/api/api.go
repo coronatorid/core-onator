@@ -56,7 +56,7 @@ func (a *API) InjectAPI(handler provider.APIHandler) {
 			}
 		}
 
-		handler.Handle(context)
+		handler.Handle(FabricateContext(context))
 		return nil
 	})
 }

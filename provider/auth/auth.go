@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"context"
 	"os"
 	"regexp"
 	"time"
@@ -50,13 +49,13 @@ func (a *Auth) FabricateAPI(engine provider.APIEngine) {
 }
 
 // RequestOTP send otp based on request by the client
-func (a *Auth) RequestOTP(ctx context.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError) {
+func (a *Auth) RequestOTP(ctx provider.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError) {
 	requestOTP := &usecase.RequestOTP{}
 	return requestOTP.Perform(ctx, request, a.regexIndonesianPhoneNumber, a.cache, a.textPublisher, a.otpRetryDuration)
 }
 
 // Login ...
-func (a *Auth) Login(ctx context.Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError) {
+func (a *Auth) Login(ctx provider.Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError) {
 	login := &usecase.Login{}
 	return login.Perform(ctx, request, a.otpRetryDuration, a.userProvider, a.altair)
 }

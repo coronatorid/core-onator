@@ -1,8 +1,6 @@
 package provider
 
 import (
-	"context"
-
 	"github.com/coronatorid/core-onator/entity"
 )
 
@@ -10,5 +8,5 @@ import (
 
 // Altair interface connector
 type Altair interface {
-	GrantToken(ctx context.Context, request entity.GrantTokenRequest) (entity.OauthAccessToken, *entity.ApplicationError)
+	GrantToken(ctx Context, request entity.GrantTokenRequest) (entity.OauthAccessToken, *entity.ApplicationError)
 }

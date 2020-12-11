@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"context"
 	"encoding/base32"
 	"errors"
 	"fmt"
@@ -20,7 +19,7 @@ import (
 type Login struct{}
 
 // Perform login process
-func (l *Login) Perform(ctx context.Context, request entity.Login, otpRetryDuration time.Duration, userProvider provider.User, altair provider.Altair) (entity.LoginResponse, *entity.ApplicationError) {
+func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDuration time.Duration, userProvider provider.User, altair provider.Altair) (entity.LoginResponse, *entity.ApplicationError) {
 	var loginResponse entity.LoginResponse
 
 	valid, err := totp.ValidateCustom(request.OTPCode, base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%sT%s", os.Getenv("OTP_SECRET"), request.PhoneNumber, request.OTPSentTime.UTC().Format(time.RFC3339)))), time.Now().UTC(), totp.ValidateOpts{

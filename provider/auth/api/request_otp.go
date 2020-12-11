@@ -40,7 +40,7 @@ func (r *RequestOTP) Handle(context provider.APIContext) {
 		return
 	}
 
-	response, err := r.authProvider.RequestOTP(context.Request().Context(), request)
+	response, err := r.authProvider.RequestOTP(context, request)
 	if err != nil {
 		_ = context.JSON(err.HTTPStatus, map[string]interface{}{
 			"errors":  err.ErrorString(),

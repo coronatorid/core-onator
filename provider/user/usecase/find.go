@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"context"
 	"errors"
 	"net/http"
 
@@ -13,7 +12,7 @@ import (
 type Find struct{}
 
 // Perform finding user
-func (f *Find) Perform(ctx context.Context, ID int, db provider.DB) (entity.User, *entity.ApplicationError) {
+func (f *Find) Perform(ctx provider.Context, ID int, db provider.DB) (entity.User, *entity.ApplicationError) {
 	var user entity.User
 
 	row := db.QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where id = ?", ID)

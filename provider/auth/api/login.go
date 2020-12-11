@@ -40,7 +40,7 @@ func (r *Login) Handle(context provider.APIContext) {
 		return
 	}
 
-	response, err := r.authProvider.Login(context.Request().Context(), request)
+	response, err := r.authProvider.Login(context, request)
 	if err != nil {
 		_ = context.JSON(err.HTTPStatus, map[string]interface{}{
 			"errors":  err.ErrorString(),

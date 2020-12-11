@@ -1,11 +1,11 @@
 package adapter
 
 import (
-	"context"
 	"fmt"
 	"strings"
 
 	"github.com/Rhymen/go-whatsapp"
+	"github.com/coronatorid/core-onator/provider"
 )
 
 // Whatsapp wrap whatsapp connection into TextPublisher interface
@@ -26,7 +26,7 @@ func AdaptWhatsapp(client WhatsappClient) *Whatsapp {
 }
 
 // Publish message to whatsapp
-func (w *Whatsapp) Publish(ctx context.Context, phoneNumber, message string) error {
+func (w *Whatsapp) Publish(ctx provider.Context, phoneNumber, message string) error {
 	_, err := w.client.Send(whatsapp.TextMessage{
 		Info: whatsapp.MessageInfo{
 			FromMe:    true,

@@ -1,7 +1,6 @@
 package adapter
 
 import (
-	"context"
 	"errors"
 	"io"
 	"net/http"
@@ -25,13 +24,13 @@ func AdaptNetwork(slinger *sling.Sling) *Network {
 }
 
 // GET request
-func (n *Network) GET(ctx context.Context, cfg provider.NetworkConfig, path string, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError {
+func (n *Network) GET(ctx provider.Context, cfg provider.NetworkConfig, path string, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError {
 	client := n.buildClient(cfg)
 	return n.do(ctx, client.Get(path), cfg, successBinder, failedBinder)
 }
 
 // POST request
-func (n *Network) POST(ctx context.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError {
+func (n *Network) POST(ctx provider.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError {
 	client := n.buildClient(cfg)
 	client.Body(body)
 	return n.do(ctx, client.Post(path), cfg, successBinder, failedBinder)
@@ -53,7 +52,7 @@ func (n *Network) buildClient(cfg provider.NetworkConfig) *sling.Sling {
 	return slinger
 }
 
-func (n *Network) do(ctx context.Context, client *sling.Sling, cfg provider.NetworkConfig, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError {
+func (n *Network) do(ctx provider.Context, client *sling.Sling, cfg provider.NetworkConfig, successBinder interface{}, failedBinder interface{}) *entity.ApplicationError {
 	var err error
 	var applicationError *entity.ApplicationError
 	var resp *http.Response
@@ -115,10 +114,10 @@ func (n *Network) do(ctx context.Context, client *sling.Sling, cfg provider.Netw
 	return applicationError
 }
 
-func (n *Network) setRequestID(ctx context.Context, req *http.Request) {
+func (n *Network) setRequestID(ctx provider.Context, req *http.Request) {
 	var requestID string
 
-	if ti, ok := ctx.Value("request-id").(string); ok {
+	if ti, ok := ctx.Get("request-id").(string); ok {
 		requestID = ti
 	} else {
 		requestID = "non-tracked-value"

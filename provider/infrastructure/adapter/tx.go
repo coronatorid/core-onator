@@ -1,7 +1,6 @@
 package adapter
 
 import (
-	"context"
 	"database/sql"
 
 	"github.com/coronatorid/core-onator/provider"
@@ -18,12 +17,12 @@ func AdaptTx(tx *sql.Tx) *Tx {
 }
 
 // ExecContext wrap sql ExecContext function
-func (t *Tx) ExecContext(ctx context.Context, queryKey, query string, args ...interface{}) (provider.Result, error) {
+func (t *Tx) ExecContext(ctx provider.Context, queryKey, query string, args ...interface{}) (provider.Result, error) {
 	var result provider.Result
 	var err error
 
 	_ = runWithSQLAnalyzer(ctx, "tx", "ExecContext", func() error {
-		result, err = t.tx.ExecContext(ctx, query, args...)
+		result, err = t.tx.ExecContext(ctx.Ctx(), query, args...)
 		if err != nil {
 			return err
 		}
@@ -35,12 +34,12 @@ func (t *Tx) ExecContext(ctx context.Context, queryKey, query string, args ...in
 }
 
 // QueryContext wrap sql QueryContext function
-func (t *Tx) QueryContext(ctx context.Context, queryKey, query string, args ...interface{}) (provider.Rows, error) {
+func (t *Tx) QueryContext(ctx provider.Context, queryKey, query string, args ...interface{}) (provider.Rows, error) {
 	var rows provider.Rows
 	var err error
 
 	_ = runWithSQLAnalyzer(ctx, "tx", "QueryContext", func() error {
-		rows, err = t.tx.QueryContext(ctx, query, args...)
+		rows, err = t.tx.QueryContext(ctx.Ctx(), query, args...)
 		if err == sql.ErrNoRows {
 			err = provider.ErrDBNotFound
 			return provider.ErrDBNotFound
@@ -55,11 +54,11 @@ func (t *Tx) QueryContext(ctx context.Context, queryKey, query string, args ...i
 }
 
 // QueryRowContext wrap sql QueryRowContext function
-func (t *Tx) QueryRowContext(ctx context.Context, queryKey, query string, args ...interface{}) provider.Row {
+func (t *Tx) QueryRowContext(ctx provider.Context, queryKey, query string, args ...interface{}) provider.Row {
 	var row provider.Row
 
 	_ = runWithSQLAnalyzer(ctx, "tx", "QueryRowContext", func() error {
-		row = t.tx.QueryRowContext(ctx, query, args...)
+		row = t.tx.QueryRowContext(ctx.Ctx(), query, args...)
 		return nil
 	})
 

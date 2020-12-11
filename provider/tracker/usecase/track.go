@@ -1,8 +1,6 @@
 package usecase
 
 import (
-	"context"
-
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
 )
@@ -11,7 +9,7 @@ import (
 type Track struct{}
 
 // Perform track logic
-func (t *Track) Perform(ctx context.Context, userID int, request entity.TrackRequest, tracker provider.Tracker) (entity.Location, *entity.ApplicationError) {
+func (t *Track) Perform(ctx provider.Context, userID int, request entity.TrackRequest, tracker provider.Tracker) (entity.Location, *entity.ApplicationError) {
 	ID, err := tracker.Create(ctx, entity.LocationInsertable{
 		Lat:    request.Lat,
 		Long:   request.Long,

@@ -1,7 +1,6 @@
 package altair
 
 import (
-	"context"
 	"os"
 	"strconv"
 	"time"
@@ -44,7 +43,7 @@ func Fabricate(network provider.Network) (*Altair, error) {
 }
 
 // GrantToken granting access token from altair
-func (a *Altair) GrantToken(ctx context.Context, request entity.GrantTokenRequest) (entity.OauthAccessToken, *entity.ApplicationError) {
+func (a *Altair) GrantToken(ctx provider.Context, request entity.GrantTokenRequest) (entity.OauthAccessToken, *entity.ApplicationError) {
 	grantToken := usecase.GrantToken{}
 	return grantToken.Perform(ctx, request, a.altairNetworkCfg, a.network)
 }

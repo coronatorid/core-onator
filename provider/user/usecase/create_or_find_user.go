@@ -1,8 +1,6 @@
 package usecase
 
 import (
-	"context"
-
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
 )
@@ -11,7 +9,7 @@ import (
 type CreateOrFindUser struct{}
 
 // Perform create or find user logic
-func (c *CreateOrFindUser) Perform(ctx context.Context, phoneNumber string, userProvider provider.User) (entity.User, *entity.ApplicationError) {
+func (c *CreateOrFindUser) Perform(ctx provider.Context, phoneNumber string, userProvider provider.User) (entity.User, *entity.ApplicationError) {
 	user, err := userProvider.FindByPhoneNumber(ctx, phoneNumber)
 	if err != nil && err.Err[0].Error() == "user not found" {
 		id, err := userProvider.Create(ctx, entity.UserInsertable{PhoneNumber: phoneNumber})

@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 
@@ -14,7 +13,7 @@ import (
 type GrantToken struct{}
 
 // Perform grant token logic
-func (g *GrantToken) Perform(ctx context.Context, request entity.GrantTokenRequest, altairCfg provider.NetworkConfig, network provider.Network) (entity.OauthAccessToken, *entity.ApplicationError) {
+func (g *GrantToken) Perform(ctx provider.Context, request entity.GrantTokenRequest, altairCfg provider.NetworkConfig, network provider.Network) (entity.OauthAccessToken, *entity.ApplicationError) {
 	var oauthAccessToken entity.OauthAccessToken
 	var altairError entity.AltairError
 

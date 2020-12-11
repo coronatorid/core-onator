@@ -1,8 +1,6 @@
 package provider
 
 import (
-	"context"
-
 	"github.com/coronatorid/core-onator/entity"
 )
 
@@ -10,11 +8,11 @@ import (
 
 // User provider handling all scope about managing users
 type User interface {
-	Find(ctx context.Context, ID int) (entity.User, *entity.ApplicationError)
+	Find(ctx Context, ID int) (entity.User, *entity.ApplicationError)
 
 	// Phone number should be in phone number format
-	FindByPhoneNumber(ctx context.Context, phoneNumber string) (entity.User, *entity.ApplicationError)
+	FindByPhoneNumber(ctx Context, phoneNumber string) (entity.User, *entity.ApplicationError)
 
-	Create(ctx context.Context, userInsertable entity.UserInsertable) (int, *entity.ApplicationError)
-	CreateOrFind(ctx context.Context, phoneNumber string) (entity.User, *entity.ApplicationError)
+	Create(ctx Context, userInsertable entity.UserInsertable) (int, *entity.ApplicationError)
+	CreateOrFind(ctx Context, phoneNumber string) (entity.User, *entity.ApplicationError)
 }

@@ -219,32 +219,6 @@ func (mr *MockAPIContextMockRecorder) Cookies() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cookies", reflect.TypeOf((*MockAPIContext)(nil).Cookies))
 }
 
-// Get mocks base method
-func (m *MockAPIContext) Get(key string) interface{} {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", key)
-	ret0, _ := ret[0].(interface{})
-	return ret0
-}
-
-// Get indicates an expected call of Get
-func (mr *MockAPIContextMockRecorder) Get(key interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockAPIContext)(nil).Get), key)
-}
-
-// Set mocks base method
-func (m *MockAPIContext) Set(key string, val interface{}) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Set", key, val)
-}
-
-// Set indicates an expected call of Set
-func (mr *MockAPIContextMockRecorder) Set(key, val interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockAPIContext)(nil).Set), key, val)
-}
-
 // JSON mocks base method
 func (m *MockAPIContext) JSON(code int, i interface{}) error {
 	m.ctrl.T.Helper()
@@ -271,6 +245,46 @@ func (m *MockAPIContext) NoContent(code int) error {
 func (mr *MockAPIContextMockRecorder) NoContent(code interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NoContent", reflect.TypeOf((*MockAPIContext)(nil).NoContent), code)
+}
+
+// Ctx mocks base method
+func (m *MockAPIContext) Ctx() context.Context {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Ctx")
+	ret0, _ := ret[0].(context.Context)
+	return ret0
+}
+
+// Ctx indicates an expected call of Ctx
+func (mr *MockAPIContextMockRecorder) Ctx() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Ctx", reflect.TypeOf((*MockAPIContext)(nil).Ctx))
+}
+
+// Get mocks base method
+func (m *MockAPIContext) Get(key string) interface{} {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", key)
+	ret0, _ := ret[0].(interface{})
+	return ret0
+}
+
+// Get indicates an expected call of Get
+func (mr *MockAPIContextMockRecorder) Get(key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockAPIContext)(nil).Get), key)
+}
+
+// Set mocks base method
+func (m *MockAPIContext) Set(key string, val interface{}) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Set", key, val)
+}
+
+// Set indicates an expected call of Set
+func (mr *MockAPIContextMockRecorder) Set(key, val interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockAPIContext)(nil).Set), key, val)
 }
 
 // MockAPIHandler is a mock of APIHandler interface
@@ -397,4 +411,67 @@ func (m *MockAPIEngine) Shutdown(ctx context.Context) error {
 func (mr *MockAPIEngineMockRecorder) Shutdown(ctx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Shutdown", reflect.TypeOf((*MockAPIEngine)(nil).Shutdown), ctx)
+}
+
+// MockContext is a mock of Context interface
+type MockContext struct {
+	ctrl     *gomock.Controller
+	recorder *MockContextMockRecorder
+}
+
+// MockContextMockRecorder is the mock recorder for MockContext
+type MockContextMockRecorder struct {
+	mock *MockContext
+}
+
+// NewMockContext creates a new mock instance
+func NewMockContext(ctrl *gomock.Controller) *MockContext {
+	mock := &MockContext{ctrl: ctrl}
+	mock.recorder = &MockContextMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockContext) EXPECT() *MockContextMockRecorder {
+	return m.recorder
+}
+
+// Ctx mocks base method
+func (m *MockContext) Ctx() context.Context {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Ctx")
+	ret0, _ := ret[0].(context.Context)
+	return ret0
+}
+
+// Ctx indicates an expected call of Ctx
+func (mr *MockContextMockRecorder) Ctx() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Ctx", reflect.TypeOf((*MockContext)(nil).Ctx))
+}
+
+// Get mocks base method
+func (m *MockContext) Get(key string) interface{} {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", key)
+	ret0, _ := ret[0].(interface{})
+	return ret0
+}
+
+// Get indicates an expected call of Get
+func (mr *MockContextMockRecorder) Get(key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockContext)(nil).Get), key)
+}
+
+// Set mocks base method
+func (m *MockContext) Set(key string, val interface{}) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Set", key, val)
+}
+
+// Set indicates an expected call of Set
+func (mr *MockContextMockRecorder) Set(key, val interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockContext)(nil).Set), key, val)
 }

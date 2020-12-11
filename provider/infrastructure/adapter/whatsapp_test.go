@@ -1,7 +1,6 @@
 package adapter_test
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"strings"
@@ -10,6 +9,7 @@ import (
 	"github.com/Rhymen/go-whatsapp"
 	"github.com/coronatorid/core-onator/provider/infrastructure/adapter"
 	mockAdapter "github.com/coronatorid/core-onator/provider/infrastructure/adapter/mocks"
+	"github.com/coronatorid/core-onator/testhelper"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/golang/mock/gomock"
@@ -19,7 +19,7 @@ func TestWhatsapp(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 	phoneNumber := "+6287687901240"
 	message := "OTP: 130419"
 

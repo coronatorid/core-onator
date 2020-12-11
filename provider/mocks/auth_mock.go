@@ -5,8 +5,8 @@
 package mockProvider
 
 import (
-	context "context"
 	entity "github.com/coronatorid/core-onator/entity"
+	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )
@@ -35,7 +35,7 @@ func (m *MockAuth) EXPECT() *MockAuthMockRecorder {
 }
 
 // Login mocks base method
-func (m *MockAuth) Login(ctx context.Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError) {
+func (m *MockAuth) Login(ctx provider.Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Login", ctx, request)
 	ret0, _ := ret[0].(entity.LoginResponse)
@@ -50,7 +50,7 @@ func (mr *MockAuthMockRecorder) Login(ctx, request interface{}) *gomock.Call {
 }
 
 // RequestOTP mocks base method
-func (m *MockAuth) RequestOTP(ctx context.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError) {
+func (m *MockAuth) RequestOTP(ctx provider.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "RequestOTP", ctx, request)
 	ret0, _ := ret[0].(*entity.RequestOTPResponse)

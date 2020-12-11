@@ -1,13 +1,13 @@
 package usecase_test
 
 import (
-	"context"
 	"errors"
 	"net/http"
 	"testing"
 	"time"
 
 	"github.com/coronatorid/core-onator/entity"
+	"github.com/coronatorid/core-onator/testhelper"
 	"github.com/stretchr/testify/assert"
 
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
@@ -20,7 +20,7 @@ func TestTrack(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 
 	locationID := 1
 	userID := 999

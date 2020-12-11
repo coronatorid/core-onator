@@ -1,7 +1,6 @@
 package usecase_test
 
 import (
-	"context"
 	"errors"
 	"net/http"
 	"testing"
@@ -9,6 +8,7 @@ import (
 	"github.com/coronatorid/core-onator/entity"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
 	"github.com/coronatorid/core-onator/provider/tracker/usecase"
+	"github.com/coronatorid/core-onator/testhelper"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -17,7 +17,7 @@ func TestCreate(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 
 	userID := 99
 	lat := 21.3875022

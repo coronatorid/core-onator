@@ -1,7 +1,6 @@
 package usecase_test
 
 import (
-	"context"
 	"crypto/sha256"
 	"errors"
 	"fmt"
@@ -10,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/coronatorid/core-onator/entity"
+	"github.com/coronatorid/core-onator/testhelper"
 	"github.com/stretchr/testify/assert"
 
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
@@ -22,7 +22,7 @@ func TestCreate(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 	phoneNumber := "+6289765430918"
 
 	h := sha256.New()

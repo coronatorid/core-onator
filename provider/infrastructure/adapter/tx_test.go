@@ -1,7 +1,6 @@
 package adapter_test
 
 import (
-	"context"
 	"database/sql"
 	"errors"
 	"testing"
@@ -9,6 +8,7 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/provider/infrastructure/adapter"
+	"github.com/coronatorid/core-onator/testhelper"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -17,7 +17,7 @@ func TestTx(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 
 	t.Run("QueryRowContext", func(t *testing.T) {
 		t.Run("When querying done it will return provider.Row", func(t *testing.T) {

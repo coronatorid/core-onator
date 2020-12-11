@@ -77,3 +77,14 @@ type APIEngine interface {
 	InjectAPI(handler APIHandler)
 	Shutdown(ctx context.Context) error
 }
+
+// Context used for application flow
+type Context interface {
+	Ctx() context.Context
+
+	// Get retrieves data from the context.
+	Get(key string) interface{}
+
+	// Set saves data in the context.
+	Set(key string, val interface{})
+}

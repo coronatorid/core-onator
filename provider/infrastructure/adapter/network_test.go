@@ -1,12 +1,12 @@
 package adapter_test
 
 import (
-	"context"
 	"net/http"
 	"testing"
 	"time"
 
 	"github.com/coronatorid/core-onator/provider/infrastructure/adapter"
+	"github.com/coronatorid/core-onator/testhelper"
 	"github.com/dghubble/sling"
 	"github.com/golang/mock/gomock"
 	"github.com/labstack/echo"
@@ -86,7 +86,7 @@ func TestNetwork(t *testing.T) {
 
 	slinger := sling.New()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 
 	t.Run("GET", func(t *testing.T) {
 		t.Run("When 200 the it will return nil and parse response in success binder", func(t *testing.T) {
@@ -131,7 +131,7 @@ func TestNetwork(t *testing.T) {
 				sleep:   time.Millisecond * 100,
 			}
 
-			ctx := context.WithValue(ctx, "request-id", "abc")
+			ctx.Set("request-id", "abc")
 			response := responseCatcher{}
 			failedResponse := responseCatcher{}
 			assert.NotNil(t, network.GET(ctx, cfg, "/500", &response, &failedResponse))

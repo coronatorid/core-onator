@@ -5,7 +5,6 @@
 package mockProvider
 
 import (
-	context "context"
 	entity "github.com/coronatorid/core-onator/entity"
 	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
@@ -38,7 +37,7 @@ func (m *MockCache) EXPECT() *MockCacheMockRecorder {
 }
 
 // Set mocks base method
-func (m *MockCache) Set(ctx context.Context, key string, value []byte, expiration time.Duration) error {
+func (m *MockCache) Set(ctx provider.Context, key string, value []byte, expiration time.Duration) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Set", ctx, key, value, expiration)
 	ret0, _ := ret[0].(error)
@@ -52,7 +51,7 @@ func (mr *MockCacheMockRecorder) Set(ctx, key, value, expiration interface{}) *g
 }
 
 // Get mocks base method
-func (m *MockCache) Get(ctx context.Context, key string) (provider.CacheItem, error) {
+func (m *MockCache) Get(ctx provider.Context, key string) (provider.CacheItem, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Get", ctx, key)
 	ret0, _ := ret[0].(provider.CacheItem)
@@ -155,7 +154,7 @@ func (m *MockTextPublisher) EXPECT() *MockTextPublisherMockRecorder {
 }
 
 // Publish mocks base method
-func (m *MockTextPublisher) Publish(ctx context.Context, phoneNumber, message string) error {
+func (m *MockTextPublisher) Publish(ctx provider.Context, phoneNumber, message string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Publish", ctx, phoneNumber, message)
 	ret0, _ := ret[0].(error)
@@ -192,7 +191,7 @@ func (m *MockNetwork) EXPECT() *MockNetworkMockRecorder {
 }
 
 // GET mocks base method
-func (m *MockNetwork) GET(ctx context.Context, cfg provider.NetworkConfig, path string, successBinder, failedBinder interface{}) *entity.ApplicationError {
+func (m *MockNetwork) GET(ctx provider.Context, cfg provider.NetworkConfig, path string, successBinder, failedBinder interface{}) *entity.ApplicationError {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GET", ctx, cfg, path, successBinder, failedBinder)
 	ret0, _ := ret[0].(*entity.ApplicationError)
@@ -206,7 +205,7 @@ func (mr *MockNetworkMockRecorder) GET(ctx, cfg, path, successBinder, failedBind
 }
 
 // POST mocks base method
-func (m *MockNetwork) POST(ctx context.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder, failedBinder interface{}) *entity.ApplicationError {
+func (m *MockNetwork) POST(ctx provider.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder, failedBinder interface{}) *entity.ApplicationError {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "POST", ctx, cfg, path, body, successBinder, failedBinder)
 	ret0, _ := ret[0].(*entity.ApplicationError)
@@ -350,7 +349,7 @@ func (m *MockDB) EXPECT() *MockDBMockRecorder {
 }
 
 // Transaction mocks base method
-func (m *MockDB) Transaction(ctx context.Context, transactionKey string, f func(provider.TX) error) error {
+func (m *MockDB) Transaction(ctx provider.Context, transactionKey string, f func(provider.TX) error) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Transaction", ctx, transactionKey, f)
 	ret0, _ := ret[0].(error)
@@ -364,7 +363,7 @@ func (mr *MockDBMockRecorder) Transaction(ctx, transactionKey, f interface{}) *g
 }
 
 // ExecContext mocks base method
-func (m *MockDB) ExecContext(ctx context.Context, queryKey, query string, args ...interface{}) (provider.Result, error) {
+func (m *MockDB) ExecContext(ctx provider.Context, queryKey, query string, args ...interface{}) (provider.Result, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, queryKey, query}
 	for _, a := range args {
@@ -384,7 +383,7 @@ func (mr *MockDBMockRecorder) ExecContext(ctx, queryKey, query interface{}, args
 }
 
 // QueryContext mocks base method
-func (m *MockDB) QueryContext(ctx context.Context, queryKey, query string, args ...interface{}) (provider.Rows, error) {
+func (m *MockDB) QueryContext(ctx provider.Context, queryKey, query string, args ...interface{}) (provider.Rows, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, queryKey, query}
 	for _, a := range args {
@@ -404,7 +403,7 @@ func (mr *MockDBMockRecorder) QueryContext(ctx, queryKey, query interface{}, arg
 }
 
 // QueryRowContext mocks base method
-func (m *MockDB) QueryRowContext(ctx context.Context, queryKey, query string, args ...interface{}) provider.Row {
+func (m *MockDB) QueryRowContext(ctx provider.Context, queryKey, query string, args ...interface{}) provider.Row {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, queryKey, query}
 	for _, a := range args {
@@ -446,7 +445,7 @@ func (m *MockTX) EXPECT() *MockTXMockRecorder {
 }
 
 // ExecContext mocks base method
-func (m *MockTX) ExecContext(ctx context.Context, queryKey, query string, args ...interface{}) (provider.Result, error) {
+func (m *MockTX) ExecContext(ctx provider.Context, queryKey, query string, args ...interface{}) (provider.Result, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, queryKey, query}
 	for _, a := range args {
@@ -466,7 +465,7 @@ func (mr *MockTXMockRecorder) ExecContext(ctx, queryKey, query interface{}, args
 }
 
 // QueryContext mocks base method
-func (m *MockTX) QueryContext(ctx context.Context, queryKey, query string, args ...interface{}) (provider.Rows, error) {
+func (m *MockTX) QueryContext(ctx provider.Context, queryKey, query string, args ...interface{}) (provider.Rows, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, queryKey, query}
 	for _, a := range args {
@@ -486,7 +485,7 @@ func (mr *MockTXMockRecorder) QueryContext(ctx, queryKey, query interface{}, arg
 }
 
 // QueryRowContext mocks base method
-func (m *MockTX) QueryRowContext(ctx context.Context, queryKey, query string, args ...interface{}) provider.Row {
+func (m *MockTX) QueryRowContext(ctx provider.Context, queryKey, query string, args ...interface{}) provider.Row {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{ctx, queryKey, query}
 	for _, a := range args {

@@ -1,7 +1,6 @@
 package usecase_test
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -15,6 +14,7 @@ import (
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/provider/auth/usecase"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
+	"github.com/coronatorid/core-onator/testhelper"
 
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/golang/mock/gomock"
@@ -24,7 +24,7 @@ func TestRequestOTP(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 	regexIndonesianPhoneNumber, _ := regexp.Compile(`^\+62\d{10,12}`)
 	otpRetryDuration := 30 * time.Second
 
@@ -37,7 +37,7 @@ func TestRequestOTP(t *testing.T) {
 
 			cache := mockProvider.NewMockCache(mockCtrl)
 			cache.EXPECT().Get(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber)).Return(nil, provider.ErrCacheMiss)
-			cache.EXPECT().Set(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber), gomock.Any(), 0*time.Second).DoAndReturn(func(ctx context.Context, key string, value []byte, expiration time.Duration) error {
+			cache.EXPECT().Set(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber), gomock.Any(), 0*time.Second).DoAndReturn(func(ctx provider.Context, key string, value []byte, expiration time.Duration) error {
 				var response entity.RequestOTPResponse
 				err := json.Unmarshal(value, &response)
 
@@ -71,7 +71,7 @@ func TestRequestOTP(t *testing.T) {
 
 			cache := mockProvider.NewMockCache(mockCtrl)
 			cache.EXPECT().Get(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber)).Return(cacheItem, nil)
-			cache.EXPECT().Set(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber), gomock.Any(), 0*time.Second).DoAndReturn(func(ctx context.Context, key string, value []byte, expiration time.Duration) error {
+			cache.EXPECT().Set(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber), gomock.Any(), 0*time.Second).DoAndReturn(func(ctx provider.Context, key string, value []byte, expiration time.Duration) error {
 				var response entity.RequestOTPResponse
 				err := json.Unmarshal(value, &response)
 
@@ -127,7 +127,7 @@ func TestRequestOTP(t *testing.T) {
 
 			cache := mockProvider.NewMockCache(mockCtrl)
 			cache.EXPECT().Get(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber)).Return(nil, provider.ErrCacheMiss)
-			cache.EXPECT().Set(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber), gomock.Any(), 0*time.Second).DoAndReturn(func(ctx context.Context, key string, value []byte, expiration time.Duration) error {
+			cache.EXPECT().Set(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber), gomock.Any(), 0*time.Second).DoAndReturn(func(ctx provider.Context, key string, value []byte, expiration time.Duration) error {
 				var response entity.RequestOTPResponse
 				err := json.Unmarshal(value, &response)
 

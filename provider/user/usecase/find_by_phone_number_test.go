@@ -1,7 +1,6 @@
 package usecase_test
 
 import (
-	"context"
 	"crypto/sha256"
 	"errors"
 	"fmt"
@@ -13,6 +12,7 @@ import (
 	"github.com/coronatorid/core-onator/provider"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
 	"github.com/coronatorid/core-onator/provider/user/usecase"
+	"github.com/coronatorid/core-onator/testhelper"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -21,7 +21,7 @@ func TestFindByPhoneNumber(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 	precompiledPhoneNumber := "+6289787657891"
 
 	// We should protect our user no matter what

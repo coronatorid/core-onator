@@ -5,8 +5,8 @@
 package mockProvider
 
 import (
-	context "context"
 	entity "github.com/coronatorid/core-onator/entity"
+	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )
@@ -35,7 +35,7 @@ func (m *MockUser) EXPECT() *MockUserMockRecorder {
 }
 
 // Find mocks base method
-func (m *MockUser) Find(ctx context.Context, ID int) (entity.User, *entity.ApplicationError) {
+func (m *MockUser) Find(ctx provider.Context, ID int) (entity.User, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Find", ctx, ID)
 	ret0, _ := ret[0].(entity.User)
@@ -50,7 +50,7 @@ func (mr *MockUserMockRecorder) Find(ctx, ID interface{}) *gomock.Call {
 }
 
 // FindByPhoneNumber mocks base method
-func (m *MockUser) FindByPhoneNumber(ctx context.Context, phoneNumber string) (entity.User, *entity.ApplicationError) {
+func (m *MockUser) FindByPhoneNumber(ctx provider.Context, phoneNumber string) (entity.User, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByPhoneNumber", ctx, phoneNumber)
 	ret0, _ := ret[0].(entity.User)
@@ -65,7 +65,7 @@ func (mr *MockUserMockRecorder) FindByPhoneNumber(ctx, phoneNumber interface{}) 
 }
 
 // Create mocks base method
-func (m *MockUser) Create(ctx context.Context, userInsertable entity.UserInsertable) (int, *entity.ApplicationError) {
+func (m *MockUser) Create(ctx provider.Context, userInsertable entity.UserInsertable) (int, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, userInsertable)
 	ret0, _ := ret[0].(int)
@@ -80,7 +80,7 @@ func (mr *MockUserMockRecorder) Create(ctx, userInsertable interface{}) *gomock.
 }
 
 // CreateOrFind mocks base method
-func (m *MockUser) CreateOrFind(ctx context.Context, phoneNumber string) (entity.User, *entity.ApplicationError) {
+func (m *MockUser) CreateOrFind(ctx provider.Context, phoneNumber string) (entity.User, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateOrFind", ctx, phoneNumber)
 	ret0, _ := ret[0].(entity.User)

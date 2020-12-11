@@ -2,7 +2,6 @@ package usecase_test
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -14,6 +13,7 @@ import (
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/provider/altair/usecase"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
+	"github.com/coronatorid/core-onator/testhelper"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/golang/mock/gomock"
@@ -23,7 +23,7 @@ func TestGrantToken(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 
 	t.Run("Perform", func(t *testing.T) {
 		t.Run("When request post to altair success then it will return entity.OauthAccessToken", func(t *testing.T) {
@@ -52,7 +52,7 @@ func TestGrantToken(t *testing.T) {
 
 			encodedJSON, _ := json.Marshal(request)
 			network := mockProvider.NewMockNetwork(mockCtrl)
-			network.EXPECT().POST(ctx, networkCfg, "/_plugins/oauth/authorizations", bytes.NewBuffer(encodedJSON), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) error {
+			network.EXPECT().POST(ctx, networkCfg, "/_plugins/oauth/authorizations", bytes.NewBuffer(encodedJSON), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx provider.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) error {
 				binder := successBinder.(*entity.OauthAccessToken)
 				binder.Data.CreatedAt = expectedAccessToken.Data.CreatedAt
 				binder.Data.ExpiresIn = expectedAccessToken.Data.ExpiresIn
@@ -93,7 +93,7 @@ func TestGrantToken(t *testing.T) {
 
 			encodedJSON, _ := json.Marshal(request)
 			network := mockProvider.NewMockNetwork(mockCtrl)
-			network.EXPECT().POST(ctx, networkCfg, "/_plugins/oauth/authorizations", bytes.NewBuffer(encodedJSON), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) error {
+			network.EXPECT().POST(ctx, networkCfg, "/_plugins/oauth/authorizations", bytes.NewBuffer(encodedJSON), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx provider.Context, cfg provider.NetworkConfig, path string, body io.Reader, successBinder interface{}, failedBinder interface{}) error {
 				return &entity.ApplicationError{
 					Err:        []error{errors.New("internal server error")},
 					HTTPStatus: http.StatusInternalServerError,

@@ -5,8 +5,8 @@
 package mockProvider
 
 import (
-	context "context"
 	entity "github.com/coronatorid/core-onator/entity"
+	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )
@@ -35,7 +35,7 @@ func (m *MockTracker) EXPECT() *MockTrackerMockRecorder {
 }
 
 // Track mocks base method
-func (m *MockTracker) Track(ctx context.Context, userID int, request entity.TrackRequest) (entity.Location, *entity.ApplicationError) {
+func (m *MockTracker) Track(ctx provider.Context, userID int, request entity.TrackRequest) (entity.Location, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Track", ctx, userID, request)
 	ret0, _ := ret[0].(entity.Location)
@@ -50,7 +50,7 @@ func (mr *MockTrackerMockRecorder) Track(ctx, userID, request interface{}) *gomo
 }
 
 // Create mocks base method
-func (m *MockTracker) Create(ctx context.Context, locationInsertable entity.LocationInsertable) (int, *entity.ApplicationError) {
+func (m *MockTracker) Create(ctx provider.Context, locationInsertable entity.LocationInsertable) (int, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", ctx, locationInsertable)
 	ret0, _ := ret[0].(int)
@@ -65,7 +65,7 @@ func (mr *MockTrackerMockRecorder) Create(ctx, locationInsertable interface{}) *
 }
 
 // Find mocks base method
-func (m *MockTracker) Find(ctx context.Context, locationID int) (entity.Location, *entity.ApplicationError) {
+func (m *MockTracker) Find(ctx provider.Context, locationID int) (entity.Location, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Find", ctx, locationID)
 	ret0, _ := ret[0].(entity.Location)

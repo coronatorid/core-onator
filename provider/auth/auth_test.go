@@ -1,7 +1,6 @@
 package auth_test
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -12,6 +11,7 @@ import (
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/provider/auth"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
+	"github.com/coronatorid/core-onator/testhelper"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/golang/mock/gomock"
@@ -79,11 +79,11 @@ func TestAuth(t *testing.T) {
 				PhoneNumber: "+6289762562712",
 			}
 
-			ctx := context.Background()
+			ctx := testhelper.NewTestContext()
 
 			cache := mockProvider.NewMockCache(mockCtrl)
 			cache.EXPECT().Get(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber)).Return(nil, provider.ErrCacheMiss)
-			cache.EXPECT().Set(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber), gomock.Any(), 0*time.Second).DoAndReturn(func(ctx context.Context, key string, value []byte, expiration time.Duration) error {
+			cache.EXPECT().Set(ctx, fmt.Sprintf("last-otp-request-%s", request.PhoneNumber), gomock.Any(), 0*time.Second).DoAndReturn(func(ctx provider.Context, key string, value []byte, expiration time.Duration) error {
 				var response entity.RequestOTPResponse
 				err := json.Unmarshal(value, &response)
 

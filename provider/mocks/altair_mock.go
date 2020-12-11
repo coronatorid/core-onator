@@ -5,8 +5,8 @@
 package mockProvider
 
 import (
-	context "context"
 	entity "github.com/coronatorid/core-onator/entity"
+	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )
@@ -35,7 +35,7 @@ func (m *MockAltair) EXPECT() *MockAltairMockRecorder {
 }
 
 // GrantToken mocks base method
-func (m *MockAltair) GrantToken(ctx context.Context, request entity.GrantTokenRequest) (entity.OauthAccessToken, *entity.ApplicationError) {
+func (m *MockAltair) GrantToken(ctx provider.Context, request entity.GrantTokenRequest) (entity.OauthAccessToken, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GrantToken", ctx, request)
 	ret0, _ := ret[0].(entity.OauthAccessToken)

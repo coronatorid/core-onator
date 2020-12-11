@@ -1,7 +1,6 @@
 package usecase_test
 
 import (
-	"context"
 	"encoding/base32"
 	"errors"
 	"fmt"
@@ -13,6 +12,7 @@ import (
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider/auth/usecase"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
+	"github.com/coronatorid/core-onator/testhelper"
 	"github.com/golang/mock/gomock"
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
@@ -23,7 +23,7 @@ func TestLogin(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 	otpRetryDuration := time.Second * 30
 	otpSecret := "rahasia"
 

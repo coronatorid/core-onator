@@ -1,7 +1,6 @@
 package usecase_test
 
 import (
-	"context"
 	"errors"
 	"net/http"
 	"testing"
@@ -9,6 +8,7 @@ import (
 
 	"github.com/coronatorid/core-onator/entity"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
+	"github.com/coronatorid/core-onator/testhelper"
 
 	"github.com/coronatorid/core-onator/provider/user/usecase"
 	"github.com/golang/mock/gomock"
@@ -19,7 +19,7 @@ func TestCreateOrFindUser(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	ctx := context.Background()
+	ctx := testhelper.NewTestContext()
 	phoneNumber := "+6289787657281"
 
 	expectedUser := entity.User{

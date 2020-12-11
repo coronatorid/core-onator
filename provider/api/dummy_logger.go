@@ -1,7 +1,6 @@
 package api
 
 import (
-	"bytes"
 	"io"
 
 	"github.com/labstack/gommon/log"
@@ -9,7 +8,7 @@ import (
 
 type dummyLogger struct{}
 
-func (d dummyLogger) Output() io.Writer                         { return bytes.NewBuffer([]byte{}) }
+func (d dummyLogger) Output() io.Writer                         { return dummyWriter{} }
 func (d dummyLogger) SetOutput(w io.Writer)                     {}
 func (d dummyLogger) Prefix() string                            { return "" }
 func (d dummyLogger) SetPrefix(p string)                        {}
@@ -37,3 +36,7 @@ func (d dummyLogger) Fatalf(format string, args ...interface{}) {}
 func (d dummyLogger) Panic(i ...interface{})                    {}
 func (d dummyLogger) Panicj(j log.JSON)                         {}
 func (d dummyLogger) Panicf(format string, args ...interface{}) {}
+
+type dummyWriter struct{}
+
+func (d dummyWriter) Write(p []byte) (n int, err error) { return 0, nil }

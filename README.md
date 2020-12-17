@@ -24,7 +24,8 @@ You need to have all of this to run core-onator
 1. Go with a version of 1.14.6 or higher
 2. MYSQL
 3. Redis
-4. Altair, used for API gateway and authentication service. You can install it by clone it in [here](https://github.com/coronatorid/altair)
+4. Kafka & Zookeeper
+5. Altair, used for API gateway and authentication service. You can install it by clone it in [here](https://github.com/coronatorid/altair)
 
 ### Installation
 

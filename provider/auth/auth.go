@@ -46,6 +46,7 @@ func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher, userP
 func (a *Auth) FabricateAPI(engine provider.APIEngine) {
 	engine.InjectAPI(api.NewRequestOTP(a))
 	engine.InjectAPI(api.NewLogin(a))
+	engine.InjectAPI(api.NewLogout(a))
 }
 
 // RequestOTP send otp based on request by the client
@@ -58,4 +59,10 @@ func (a *Auth) RequestOTP(ctx provider.Context, request entity.RequestOTP) (*ent
 func (a *Auth) Login(ctx provider.Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError) {
 	login := &usecase.Login{}
 	return login.Perform(ctx, request, a.otpRetryDuration, a.userProvider, a.altair)
+}
+
+// Logout ...
+func (a *Auth) Logout(ctx provider.Context, request entity.RevokeTokenRequest) *entity.ApplicationError {
+	logout := &usecase.Logout{}
+	return logout.Perform(ctx, request, a.altair)
 }

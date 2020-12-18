@@ -60,7 +60,7 @@ func TestAuth(t *testing.T) {
 
 	t.Run("InjectAPI", func(t *testing.T) {
 		apiEngine := mockProvider.NewMockAPIEngine(mockCtrl)
-		apiEngine.EXPECT().InjectAPI(gomock.Any()).Times(2)
+		apiEngine.EXPECT().InjectAPI(gomock.Any()).Times(3)
 
 		cache := mockProvider.NewMockCache(mockCtrl)
 		textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)

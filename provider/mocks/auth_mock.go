@@ -49,6 +49,20 @@ func (mr *MockAuthMockRecorder) Login(ctx, request interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Login", reflect.TypeOf((*MockAuth)(nil).Login), ctx, request)
 }
 
+// Logout mocks base method
+func (m *MockAuth) Logout(ctx provider.Context, request entity.RevokeTokenRequest) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Logout", ctx, request)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// Logout indicates an expected call of Logout
+func (mr *MockAuthMockRecorder) Logout(ctx, request interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Logout", reflect.TypeOf((*MockAuth)(nil).Logout), ctx, request)
+}
+
 // RequestOTP mocks base method
 func (m *MockAuth) RequestOTP(ctx provider.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError) {
 	m.ctrl.T.Helper()

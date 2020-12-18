@@ -47,3 +47,9 @@ func (a *Altair) GrantToken(ctx provider.Context, request entity.GrantTokenReque
 	grantToken := usecase.GrantToken{}
 	return grantToken.Perform(ctx, request, a.altairNetworkCfg, a.network)
 }
+
+// RevokeToken granting access token from altair
+func (a *Altair) RevokeToken(ctx provider.Context, request entity.RevokeTokenRequest) *entity.ApplicationError {
+	revokeToken := usecase.RevokeToken{}
+	return revokeToken.Perform(ctx, request, a.altairNetworkCfg, a.network)
+}

@@ -48,3 +48,17 @@ func (mr *MockAltairMockRecorder) GrantToken(ctx, request interface{}) *gomock.C
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GrantToken", reflect.TypeOf((*MockAltair)(nil).GrantToken), ctx, request)
 }
+
+// RevokeToken mocks base method
+func (m *MockAltair) RevokeToken(ctx provider.Context, request entity.RevokeTokenRequest) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RevokeToken", ctx, request)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// RevokeToken indicates an expected call of RevokeToken
+func (mr *MockAltairMockRecorder) RevokeToken(ctx, request interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevokeToken", reflect.TypeOf((*MockAltair)(nil).RevokeToken), ctx, request)
+}

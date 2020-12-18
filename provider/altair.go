@@ -9,4 +9,5 @@ import (
 // Altair interface connector
 type Altair interface {
 	GrantToken(ctx Context, request entity.GrantTokenRequest) (entity.OauthAccessToken, *entity.ApplicationError)
+	RevokeToken(ctx Context, request entity.RevokeTokenRequest) *entity.ApplicationError
 }

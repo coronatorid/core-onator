@@ -12,6 +12,11 @@ type GrantTokenRequest struct {
 	Scopes          string `json:"scopes"`
 }
 
+// RevokeTokenRequest used for revoking Altair's token
+type RevokeTokenRequest struct {
+	Token string `json:"token"`
+}
+
 // OauthAccessToken represent Altair's response for oauth access token
 type OauthAccessToken struct {
 	Data struct {

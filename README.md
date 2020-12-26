@@ -58,7 +58,7 @@ All diagram related to core-onator.
 
 ### Architecture Diagram
 
-![architecture-diagram](https://user-images.githubusercontent.com/20650401/98181121-276b4000-1f35-11eb-88ee-3ee94800f7bb.png)
+![architecture-diagram](https://user-images.githubusercontent.com/20650401/103154120-136eec80-47c8-11eb-8935-a22e5a94ecfd.png)
 
 ### Database Diagram
 

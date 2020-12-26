@@ -1,4 +1,4 @@
-name: General workflows
+name: Push and Pull Request
 
 on:
   push:

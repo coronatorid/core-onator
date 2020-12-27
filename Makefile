@@ -9,3 +9,6 @@ build:
 
 build_docker:
 	sudo docker build -t $(IMAGE):$(VERSION) -f ./Dockerfile .
+
+push_docker:
+	sudo docker push $(IMAGE):$(VERSION)

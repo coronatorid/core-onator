@@ -1,0 +1,43 @@
+name: Publish Docker image
+on:
+  release:
+    types: [published]
+jobs:
+  push_to_registry:
+    name: Push Docker image to Github Registry
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Login to github registry
+        run: echo ${{ secrets.DEPLOYMENT_PAT }} | sudo docker login ghcr.io -u ${{ secrets.DEPLOYMENT_USERNAME }} --password-stdin
+
+      - name: Build docker image
+        run: make build_docker
+
+      - name: Push docker image
+        run: make push_docker
+
+  deployment:
+    name: Deploy landingpage into production
+    runs-on: ubuntu-20.04
+    needs: [push_to_registry]
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+        with:
+          repository: coronatorid/contooling
+
+      - name: Deploy the services
+        env:
+          SERVICE: landingpage
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOYMENT_PRIVATE_KEY }}
+          SSH_PUBLIC_KEY: ${{ secrets.DEPLOYMENT_PUBLIC_KEY }}
+          SERVER_USER: root
+          SERVER_HOST: ${{ secrets.DEPLOYMENT_HOST_02 }}
+          DOCKER_PASSWORD: ${{ secrets.DEPLOYMENT_PAT }}
+          DOCKER_USERNAME: ${{ secrets.DEPLOYMENT_USERNAME }}
+        run: |
+          export RELEASE_TAG=$(echo $GITHUB_SHA | awk '{print substr($0,0,7)}')
+          bash ./general/deploy.sh

@@ -1,4 +1,4 @@
-FROM codefluence/altair:latest
+FROM alpine:3.6
 
 COPY coronator /usr/local/bin/
 

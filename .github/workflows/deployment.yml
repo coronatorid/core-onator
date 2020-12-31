@@ -19,19 +19,52 @@ jobs:
       - name: Push docker image
         run: make push_docker
 
-  deployment:
-    name: Deploy landingpage into production
+  checkout_contooling:
+    name: Checkout contooling
     runs-on: ubuntu-20.04
     needs: [push_to_registry]
+    steps:
+      - name: Check out contooling repo
+        uses: actions/checkout@v2
+        with:
+          repository: coronatorid/contooling
+          path: contooling
+
+  checkout_altair:
+    name: Checkout altair
+    runs-on: ubuntu-20.04
+    needs: [checkout_contooling]
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
         with:
-          repository: coronatorid/contooling
+          repository: coronatorid/altair
+          path: altair
+
+  deployment:
+    name: Deploy api into production
+    runs-on: ubuntu-20.04
+    needs: [checkout_altair]
+    steps:
+      - name: Prepare dir
+        run: |
+          mkdir -p ./contooling/api/altair/
+          mkdir -p ./contooling/api/core-onator/
+
+      - name: Move altair config into contooling
+        run: |
+          cp -r ./altair/routes/ ./contooling/api/altair/routes/
+          cp -r ./altair/config/ ./contooling/api/altair/config/
+          cp -r ./altair/migration/ ./contooling/api/altair/migration/
+
+      - name: Move altair & core-onator .env
+        run: |
+          echo ${{ secrets.ALTAIR_ENV }} > ./contooling/api/altair/.env
+          echo ${{ secrets.CORONATOR_ENV }} > ./contooling/api/core-onator/.env
 
       - name: Deploy the services
         env:
-          SERVICE: landingpage
+          SERVICE: api
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOYMENT_PRIVATE_KEY }}
           SSH_PUBLIC_KEY: ${{ secrets.DEPLOYMENT_PUBLIC_KEY }}
           SERVER_USER: root
@@ -40,4 +73,5 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DEPLOYMENT_USERNAME }}
         run: |
           export RELEASE_TAG=$(echo $GITHUB_SHA | awk '{print substr($0,0,7)}')
+          cd contooling
           bash ./general/deploy.sh

@@ -13,6 +13,9 @@ jobs:
       - name: Login to github registry
         run: echo ${{ secrets.DEPLOYMENT_PAT }} | sudo docker login ghcr.io -u ${{ secrets.DEPLOYMENT_USERNAME }} --password-stdin
 
+      - name: Build binary
+        run: make build
+
       - name: Build docker image
         run: make build_docker
 

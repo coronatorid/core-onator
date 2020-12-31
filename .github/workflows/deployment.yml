@@ -22,47 +22,25 @@ jobs:
       - name: Push docker image
         run: make push_docker
 
-  checkout_contooling:
-    name: Checkout contooling
+  deployment:
+    name: Deploy api into production
     runs-on: ubuntu-20.04
     needs: [push_to_registry]
     steps:
+      - name: Check out core-onator repo
+        uses: actions/checkout@v2
+
       - name: Check out contooling repo
         uses: actions/checkout@v2
         with:
           repository: coronatorid/contooling
           path: contooling
 
-      - name: Creating artifact for contooling
-        uses: actions/upload-artifact@v2
-        with:
-          name: contooling-artifact
-          path: contooling
-
-  checkout_altair:
-    name: Checkout altair
-    runs-on: ubuntu-20.04
-    needs: [checkout_contooling]
-    steps:
-      - name: Check out the repo
+      - name: Check out altair repo
         uses: actions/checkout@v2
         with:
           repository: coronatorid/altair
           path: altair
-
-      - name: Creating artifact for altair
-        uses: actions/upload-artifact@v2
-        with:
-          name: altair-artifact
-          path: altair
-
-  deployment:
-    name: Deploy api into production
-    runs-on: ubuntu-20.04
-    needs: [checkout_altair]
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
 
       - name: Prepare dir
         run: |

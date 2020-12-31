@@ -71,6 +71,7 @@ jobs:
 
       - name: Move altair config into contooling
         run: |
+          ls -la
           cp -r ./altair/routes/ ./contooling/api/altair/routes/
           cp -r ./altair/config/ ./contooling/api/altair/config/
           cp -r ./altair/migration/ ./contooling/api/altair/migration/

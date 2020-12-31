@@ -56,8 +56,8 @@ jobs:
 
       - name: Move altair & core-onator .env
         run: |
-          echo "${{ secrets.ALTAIR_ENV }}" > ./contooling/api/altair/.env
-          echo "${{ secrets.CORONATOR_ENV }}" > ./contooling/api/core-onator/.env
+          echo '${{ secrets.ALTAIR_ENV }}' > ./contooling/api/altair/.env
+          echo '${{ secrets.CORONATOR_ENV }}' > ./contooling/api/core-onator/.env
 
       - name: Deploy the services
         env:

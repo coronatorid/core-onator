@@ -53,8 +53,8 @@ jobs:
       - name: Creating artifact for altair
         uses: actions/upload-artifact@v2
         with:
-          name: contooling-artifact
-          path: contooling
+          name: altair-artifact
+          path: altair
 
   deployment:
     name: Deploy api into production

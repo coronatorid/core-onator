@@ -33,6 +33,12 @@ jobs:
           repository: coronatorid/contooling
           path: contooling
 
+      - name: Creating artifact for contooling
+        uses: actions/upload-artifact@v2
+        with:
+          name: contooling-artifact
+          path: contooling
+
   checkout_altair:
     name: Checkout altair
     runs-on: ubuntu-20.04
@@ -44,11 +50,20 @@ jobs:
           repository: coronatorid/altair
           path: altair
 
+      - name: Creating artifact for altair
+        uses: actions/upload-artifact@v2
+        with:
+          name: contooling-artifact
+          path: contooling
+
   deployment:
     name: Deploy api into production
     runs-on: ubuntu-20.04
     needs: [checkout_altair]
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
       - name: Prepare dir
         run: |
           mkdir -p ./contooling/api/altair/

@@ -5,10 +5,11 @@
 package mockProvider
 
 import (
+	reflect "reflect"
+
 	entity "github.com/coronatorid/core-onator/entity"
 	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
-	reflect "reflect"
 )
 
 // MockUser is a mock of User interface

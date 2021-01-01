@@ -22,6 +22,10 @@ type Login struct{}
 func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDuration time.Duration, userProvider provider.User, altair provider.Altair) (entity.LoginResponse, *entity.ApplicationError) {
 	var loginResponse entity.LoginResponse
 
+	if time.Since(request.OTPSentTime.UTC()).Seconds() > otpRetryDuration.Seconds() {
+		return entity.LoginResponse{}, l.invalidOtpError()
+	}
+
 	valid, err := totp.ValidateCustom(request.OTPCode, base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%s", os.Getenv("OTP_SECRET"), request.PhoneNumber))), request.OTPSentTime.UTC(), totp.ValidateOpts{
 		Algorithm: otp.AlgorithmSHA512,
 		Digits:    4,

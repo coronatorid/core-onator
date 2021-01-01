@@ -71,6 +71,40 @@ func TestLogin(t *testing.T) {
 			assert.Nil(t, err)
 		})
 
+		t.Run("When send otp request time is greater than retry duration then it will return invalid otp error", func(t *testing.T) {
+			request := entity.Login{
+				ClientSecret: "secret",
+				ClientUID:    "uid",
+				OTPSentTime:  time.Now().UTC().Add(-time.Second * 50),
+				PhoneNumber:  "+6287609870987",
+			}
+
+			oauthAccessToken := entity.OauthAccessToken{}
+			oauthAccessToken.Data.ExpiresIn = 3000
+
+			otpCode, _ := totp.GenerateCodeCustom(base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%s", otpSecret, request.PhoneNumber))), request.OTPSentTime, totp.ValidateOpts{
+				Algorithm: otp.AlgorithmSHA512,
+				Digits:    4,
+				Period:    uint(otpRetryDuration.Seconds()),
+			})
+
+			request.OTPCode = otpCode
+
+			userProvider := mockProvider.NewMockUser(mockCtrl)
+			altair := mockProvider.NewMockAltair(mockCtrl)
+
+			login := &usecase.Login{}
+
+			expectedErr := &entity.ApplicationError{
+				Err:        []error{errors.New("otp code is invalid")},
+				HTTPStatus: http.StatusUnprocessableEntity,
+			}
+
+			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair)
+			assert.Equal(t, expectedErr.Error(), err.Error())
+			assert.Equal(t, expectedErr.HTTPStatus, err.HTTPStatus)
+		})
+
 		t.Run("When OTP is invalid it will return error", func(t *testing.T) {
 			otpSecret := "xxx"
 

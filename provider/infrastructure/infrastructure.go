@@ -6,10 +6,12 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
 	"github.com/dghubble/sling"
+	"github.com/segmentio/kafka-go"
 
 	"github.com/Rhymen/go-whatsapp"
 	"github.com/coronatorid/core-onator/provider/infrastructure/adapter"
@@ -42,6 +44,13 @@ type Infrastructure struct {
 	whatsappMutex   *sync.Once
 	whatsapp        *whatsapp.Conn
 	whatsappSession whatsapp.Session
+
+	kafkaMutex    *sync.Once
+	kafkaConsumer *sync.Map
+	kafkaDialer   *kafka.Dialer
+	kafkaConfig   struct {
+		host string
+	}
 }
 
 // Fabricate infrastructure interface for coronator
@@ -50,6 +59,7 @@ func Fabricate() (*Infrastructure, error) {
 		mysqlMutex:     &sync.Once{},
 		memcachedMutex: &sync.Once{},
 		whatsappMutex:  &sync.Once{},
+		kafkaMutex:     &sync.Once{},
 	}
 
 	i.mysqlConfig.username = os.Getenv("DATABASE_USERNAME")
@@ -76,6 +86,9 @@ func Fabricate() (*Infrastructure, error) {
 	i.whatsappSession.EncKey = decodedEncKey
 	i.whatsappSession.MacKey = decodedMacKey
 	i.whatsappSession.Wid = os.Getenv("WHATSAPP_WID")
+
+	i.kafkaConsumer = &sync.Map{}
+	i.kafkaConfig.host = os.Getenv("KAFKA_HOST")
 
 	return i, nil
 }
@@ -175,4 +188,49 @@ func (i *Infrastructure) Network() provider.Network {
 // Sling return sling library used for network feature
 func (i *Infrastructure) Sling() *sling.Sling {
 	return sling.New()
+}
+
+// KafkaDialer create new kafka dialer connection
+func (i *Infrastructure) KafkaDialer() *kafka.Dialer {
+	i.kafkaMutex.Do(func() {
+		dialer := &kafka.Dialer{
+			Timeout:   10 * time.Second,
+			DualStack: true,
+		}
+		i.kafkaDialer = dialer
+	})
+
+	return i.kafkaDialer
+}
+
+// KafkaWriter create new kafka writer connection
+func (i *Infrastructure) KafkaWriter(topic string) *kafka.Writer {
+	w := kafka.NewWriter(kafka.WriterConfig{
+		Brokers:  strings.Split(i.kafkaConfig.host, ","),
+		Topic:    topic,
+		Balancer: &kafka.Hash{},
+		Dialer:   i.KafkaDialer(),
+	})
+	return w
+}
+
+// KafkaConsumer create new kafka reader connection
+func (i *Infrastructure) KafkaConsumer(consumerGroup, topic string) *kafka.Reader {
+	consumerKey := fmt.Sprintf("%s-%s", consumerGroup, topic)
+
+	if consumer, ok := i.kafkaConsumer.Load(consumerKey); ok {
+		return consumer.(*kafka.Reader)
+	}
+
+	r := kafka.NewReader(kafka.ReaderConfig{
+		Brokers:  strings.Split(i.kafkaConfig.host, ","),
+		GroupID:  consumerGroup,
+		Topic:    topic,
+		MinBytes: 10e3, // 10KB
+		MaxBytes: 10e6, // 10MB
+	})
+
+	i.kafkaConsumer.Store(consumerKey, r)
+
+	return r
 }

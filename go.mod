@@ -18,7 +18,7 @@ require (
 	github.com/mattn/goveralls v0.0.7 // indirect
 	github.com/pquerna/otp v1.3.0
 	github.com/rs/zerolog v1.20.0
-	github.com/segmentio/kafka-go v0.4.8 // indirect
+	github.com/segmentio/kafka-go v0.4.8
 	github.com/spf13/cobra v1.1.1
 	github.com/stretchr/testify v1.5.1
 	github.com/subosito/gotenv v1.2.0

@@ -64,14 +64,12 @@ All diagram related to core-onator.
 
 ### Database Diagram
 
-![coronator](https://user-images.githubusercontent.com/20650401/98663331-81c43080-237b-11eb-9440-a592e0769869.png)
+![coronator](https://user-images.githubusercontent.com/20650401/103478460-76c8d200-4df9-11eb-8bd6-fbddada521c7.png)
 
-```
 Table users {
   id int [pk, increment] // auto-increment
   phone varchar(255) [not null]
-  state tinyint [not null]
-  long double [not null]
+  state tinyint [not null,note: '1 -> active, 0 -> inactive']
   created_at datetime [not null]
   updated_at datetime [not null]
 
@@ -95,6 +93,22 @@ Table locations {
   }
 }
 
+Table reported_cases {
+  id int [pk, increment]
+  user_id int  [not null]
+  status int  [not null, note:'1 -> confirmed, 0 -> not_confirmed']
+  telegram_message_id varchar(255) [not null]
+  image_path varchar(255) [not null]
+  image_deleted boolean
+  created_at datetime  [not null]
+  updated_at datetime  [not null]
+
+  indexes {
+    (user_id) [name:'user_id',unique]
+  }
+
+}
+
 Table confirmed_cases {
   id int [pk, increment]
   user_id int  [not null]
@@ -103,7 +117,7 @@ Table confirmed_cases {
   updated_at datetime  [not null]
 
   indexes {
-    (user_id) [name:'user_id']
+    (user_id) [name:'user_id',unique]
   }
 }
 
@@ -125,4 +139,5 @@ Ref: exposed_users.user_id > users.id
 Ref: locations.user_id > users.id
 Ref: users.id - confirmed_cases.user_id
 Ref: confirmed_cases.id < exposed_users.confirmed_cases_id
+Ref: users.id - reported_cases.user_id
 ```

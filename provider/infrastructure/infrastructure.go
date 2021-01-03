@@ -114,6 +114,16 @@ func (i *Infrastructure) Close() {
 	if i.mysqlDB != nil {
 		_ = i.mysqlDB.Close()
 	}
+
+	i.kafkaConsumer.Range(func(key, value interface{}) bool {
+		value.(*kafka.Reader).Close()
+		return true
+	})
+
+	i.kafkaPublisher.Range(func(key, value interface{}) bool {
+		value.(*kafka.Writer).Close()
+		return true
+	})
 }
 
 // DB wrapper for default golang sql

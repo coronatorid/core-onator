@@ -45,10 +45,11 @@ type Infrastructure struct {
 	whatsapp        *whatsapp.Conn
 	whatsappSession whatsapp.Session
 
-	kafkaMutex    *sync.Once
-	kafkaConsumer *sync.Map
-	kafkaDialer   *kafka.Dialer
-	kafkaConfig   struct {
+	kafkaMutex     *sync.Once
+	kafkaConsumer  *sync.Map
+	kafkaPublisher *sync.Map
+	kafkaDialer    *kafka.Dialer
+	kafkaConfig    struct {
 		host string
 	}
 }
@@ -88,6 +89,7 @@ func Fabricate() (*Infrastructure, error) {
 	i.whatsappSession.Wid = os.Getenv("WHATSAPP_WID")
 
 	i.kafkaConsumer = &sync.Map{}
+	i.kafkaPublisher = &sync.Map{}
 	i.kafkaConfig.host = os.Getenv("KAFKA_HOST")
 
 	return i, nil
@@ -205,12 +207,18 @@ func (i *Infrastructure) KafkaDialer() *kafka.Dialer {
 
 // KafkaWriter create new kafka writer connection
 func (i *Infrastructure) KafkaWriter(topic string) *kafka.Writer {
+	if writer, ok := i.kafkaPublisher.Load(topic); ok {
+		return writer.(*kafka.Writer)
+	}
+
 	w := kafka.NewWriter(kafka.WriterConfig{
 		Brokers:  strings.Split(i.kafkaConfig.host, ","),
 		Topic:    topic,
 		Balancer: &kafka.Hash{},
 		Dialer:   i.KafkaDialer(),
 	})
+	i.kafkaPublisher.Store(topic, w)
+
 	return w
 }
 

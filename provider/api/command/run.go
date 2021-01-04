@@ -16,12 +16,13 @@ import (
 
 // Run is a command to run api engine
 type Run struct {
-	engine provider.APIEngine
+	engine     provider.APIEngine
+	inappCronn provider.InAppCron
 }
 
 // NewRun return CLI to run api engine
-func NewRun(engine provider.APIEngine) *Run {
-	return &Run{engine: engine}
+func NewRun(engine provider.APIEngine, inappCronn provider.InAppCron) *Run {
+	return &Run{engine: engine, inappCronn: inappCronn}
 }
 
 // Use return how the command used

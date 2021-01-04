@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/coronatorid/core-onator/provider/inappcron"
 	"github.com/coronatorid/core-onator/provider/tracker"
 	"github.com/rs/zerolog"
 
@@ -50,8 +51,11 @@ func main() {
 		panic(err)
 	}
 
+	// InAppCron
+	inAppCron := inappcron.Fabricate()
+
 	// API
-	apiEngine := api.Fabricate()
+	apiEngine := api.Fabricate(inAppCron)
 	apiEngine.FabricateCommand(cmd)
 
 	// User

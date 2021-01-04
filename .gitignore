@@ -17,3 +17,5 @@ deploy/_output
 vendor
 
 build/
+
+storage/

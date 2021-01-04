@@ -4,12 +4,12 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
-	"net/http"
 	"os"
 	"testing"
 
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/testhelper"
+	"github.com/coronatorid/core-onator/util"
 	"github.com/stretchr/testify/assert"
 
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
@@ -56,10 +56,7 @@ func TestCreate(t *testing.T) {
 			db := mockProvider.NewMockDB(mockCtrl)
 			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", compiledPhoneNumber).Return(nil, errors.New("unexpected error"))
 
-			expectedError := &entity.ApplicationError{
-				Err:        []error{errors.New("service unavailable")},
-				HTTPStatus: http.StatusServiceUnavailable,
-			}
+			expectedError := util.CreateInternalServerError(ctx)
 
 			create := &usecase.Create{}
 			ID, err := create.Perform(ctx, userInsertable, db)
@@ -80,10 +77,7 @@ func TestCreate(t *testing.T) {
 			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", compiledPhoneNumber).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(0), errors.New("unexpected error"))
 
-			expectedError := &entity.ApplicationError{
-				Err:        []error{errors.New("internal server error when acquiring last inserted id")},
-				HTTPStatus: http.StatusInternalServerError,
-			}
+			expectedError := util.CreateInternalServerError(ctx)
 
 			create := &usecase.Create{}
 			ID, err := create.Perform(ctx, userInsertable, db)

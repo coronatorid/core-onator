@@ -9,7 +9,10 @@ import (
 
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
+	"github.com/coronatorid/core-onator/util"
 	"github.com/dghubble/sling"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 // Network adapt provider.Network
@@ -65,10 +68,12 @@ func (n *Network) do(ctx provider.Context, client *sling.Sling, cfg provider.Net
 
 		req, err = client.Request()
 		if err != nil {
-			return &entity.ApplicationError{
-				Err:        []error{errors.New("internal server error")},
-				HTTPStatus: http.StatusInternalServerError,
-			}
+			log.Error().
+				Err(err).
+				Str("request_id", util.GetRequestID(ctx)).
+				Array("tags", zerolog.Arr().Str("provider").Str("infra").Str("adapter").Str("network")).
+				Msg("error generating client request")
+			return util.CreateInternalServerError(ctx)
 		}
 
 		if req.Header == nil {
@@ -93,19 +98,19 @@ func (n *Network) do(ctx provider.Context, client *sling.Sling, cfg provider.Net
 		}
 
 		if resp.StatusCode >= http.StatusBadRequest {
+			log.Error().
+				Err(err).
+				Str("request_id", util.GetRequestID(ctx)).
+				Str("response_status", resp.Status).
+				Array("tags", zerolog.Arr().Str("provider").Str("infra").Str("adapter").Str("network")).
+				Msg("error doing the request")
 
 			if resp.StatusCode >= http.StatusInternalServerError {
-				applicationError = &entity.ApplicationError{
-					Err:        []error{errors.New("service unavailable")},
-					HTTPStatus: http.StatusServiceUnavailable,
-				}
+				applicationError = util.CreateInternalServerError(ctx)
 				continue
 			}
 
-			applicationError = &entity.ApplicationError{
-				Err:        []error{errors.New("internal server error")},
-				HTTPStatus: http.StatusInternalServerError,
-			}
+			applicationError = util.CreateInternalServerError(ctx)
 			break
 		}
 		break

@@ -8,6 +8,7 @@ import (
 
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/testhelper"
+	"github.com/coronatorid/core-onator/util"
 	"github.com/stretchr/testify/assert"
 
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
@@ -74,10 +75,7 @@ func TestTrack(t *testing.T) {
 				UserID: userID,
 				Lat:    lat,
 				Long:   long,
-			}).Return(0, &entity.ApplicationError{
-				Err:        []error{errors.New("service unavailable")},
-				HTTPStatus: http.StatusServiceUnavailable,
-			})
+			}).Return(0, util.CreateInternalServerError(ctx))
 
 			track := &usecase.Track{}
 			_, err := track.Perform(ctx, userID, request, tracker)

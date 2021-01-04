@@ -1,11 +1,11 @@
 package usecase
 
 import (
-	"errors"
-	"net/http"
-
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
+	"github.com/coronatorid/core-onator/util"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 // CreateReportCases data
@@ -15,18 +15,22 @@ type CreateReportCases struct{}
 func (c *CreateReportCases) Perform(ctx provider.Context, insertable entity.ReportInsertable, tx provider.TX) (int, *entity.ApplicationError) {
 	result, err := tx.ExecContext(ctx, "reported-cases-create", "insert into users (user_id, status, image_path, image_deleted, created_at, updated_at) values(?, 2, ?, 0, now(), now())", insertable.UserID, insertable.ImagePath)
 	if err != nil {
-		return 0, &entity.ApplicationError{
-			Err:        []error{errors.New("service unavailable")},
-			HTTPStatus: http.StatusServiceUnavailable,
-		}
+		log.Error().
+			Err(err).
+			Str("request_id", util.GetRequestID(ctx)).
+			Array("tags", zerolog.Arr().Str("provider").Str("report").Str("create_report_cases")).
+			Msg("error when creating report cases")
+		return 0, util.CreateInternalServerError(ctx)
 	}
 
 	ID, err := result.LastInsertId()
 	if err != nil {
-		return 0, &entity.ApplicationError{
-			Err:        []error{errors.New("internal server error when acquiring last inserted id")},
-			HTTPStatus: http.StatusInternalServerError,
-		}
+		log.Error().
+			Err(err).
+			Str("request_id", util.GetRequestID(ctx)).
+			Array("tags", zerolog.Arr().Str("provider").Str("report").Str("create_report_cases")).
+			Msg("error when getting last inserted id")
+		return 0, util.CreateInternalServerError(ctx)
 	}
 
 	return int(ID), nil

@@ -9,6 +9,7 @@ import (
 	"github.com/coronatorid/core-onator/entity"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
 	"github.com/coronatorid/core-onator/testhelper"
+	"github.com/coronatorid/core-onator/util"
 
 	"github.com/coronatorid/core-onator/provider/user/usecase"
 	"github.com/golang/mock/gomock"
@@ -66,10 +67,7 @@ func TestCreateOrFindUser(t *testing.T) {
 
 		t.Run("When there is database error then it will return error", func(t *testing.T) {
 			userProvider := mockProvider.NewMockUser(mockCtrl)
-			userProvider.EXPECT().FindByPhoneNumber(ctx, phoneNumber).Return(entity.User{}, &entity.ApplicationError{
-				Err:        []error{errors.New("service unavailable")},
-				HTTPStatus: http.StatusServiceUnavailable,
-			})
+			userProvider.EXPECT().FindByPhoneNumber(ctx, phoneNumber).Return(entity.User{}, util.CreateInternalServerError(ctx))
 
 			createOrFindUser := usecase.CreateOrFindUser{}
 			_, err := createOrFindUser.Perform(ctx, phoneNumber, userProvider)
@@ -82,10 +80,7 @@ func TestCreateOrFindUser(t *testing.T) {
 				Err:        []error{errors.New("user not found")},
 				HTTPStatus: http.StatusNotFound,
 			})
-			userProvider.EXPECT().Create(ctx, entity.UserInsertable{PhoneNumber: phoneNumber}).Return(0, &entity.ApplicationError{
-				Err:        []error{errors.New("service unavailable")},
-				HTTPStatus: http.StatusServiceUnavailable,
-			})
+			userProvider.EXPECT().Create(ctx, entity.UserInsertable{PhoneNumber: phoneNumber}).Return(0, util.CreateInternalServerError(ctx))
 
 			createOrFindUser := usecase.CreateOrFindUser{}
 			_, err := createOrFindUser.Perform(ctx, phoneNumber, userProvider)

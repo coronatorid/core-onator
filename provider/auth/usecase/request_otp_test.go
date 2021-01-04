@@ -15,6 +15,7 @@ import (
 	"github.com/coronatorid/core-onator/provider/auth/usecase"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
 	"github.com/coronatorid/core-onator/testhelper"
+	"github.com/coronatorid/core-onator/util"
 
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/golang/mock/gomock"
@@ -143,10 +144,7 @@ func TestRequestOTP(t *testing.T) {
 			uc := usecase.RequestOTP{}
 			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration)
 
-			expectedError := &entity.ApplicationError{
-				Err:        []error{errors.New("Error when sending otp to whatsapp")},
-				HTTPStatus: http.StatusInternalServerError,
-			}
+			expectedError := util.CreateInternalServerError(ctx)
 
 			assert.Equal(t, expectedError.Error(), err.Error())
 			assert.Equal(t, expectedError.HTTPStatus, err.HTTPStatus)

@@ -2,13 +2,13 @@ package usecase_test
 
 import (
 	"errors"
-	"net/http"
 	"testing"
 
 	"github.com/coronatorid/core-onator/entity"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
 	"github.com/coronatorid/core-onator/provider/report/usecase"
 	"github.com/coronatorid/core-onator/testhelper"
+	"github.com/coronatorid/core-onator/util"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -48,10 +48,7 @@ func TestCreate(t *testing.T) {
 			tx := mockProvider.NewMockTX(mockCtrl)
 			tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into users (user_id, status, image_path, image_deleted, created_at, updated_at) values(?, 2, ?, 0, now(), now())", insertable.UserID, insertable.ImagePath).Return(nil, errors.New("unexpected error"))
 
-			expectedError := &entity.ApplicationError{
-				Err:        []error{errors.New("service unavailable")},
-				HTTPStatus: http.StatusServiceUnavailable,
-			}
+			expectedError := util.CreateInternalServerError(ctx)
 
 			createReportCases := &usecase.CreateReportCases{}
 			ID, err := createReportCases.Perform(ctx, insertable, tx)
@@ -73,10 +70,7 @@ func TestCreate(t *testing.T) {
 			tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into users (user_id, status, image_path, image_deleted, created_at, updated_at) values(?, 2, ?, 0, now(), now())", insertable.UserID, insertable.ImagePath).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(0), errors.New("unexpected error"))
 
-			expectedError := &entity.ApplicationError{
-				Err:        []error{errors.New("internal server error when acquiring last inserted id")},
-				HTTPStatus: http.StatusInternalServerError,
-			}
+			expectedError := util.CreateInternalServerError(ctx)
 
 			createReportCases := &usecase.CreateReportCases{}
 			ID, err := createReportCases.Perform(ctx, insertable, tx)

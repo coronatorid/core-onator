@@ -108,4 +108,19 @@ func TestAuth(t *testing.T) {
 			assert.Equal(t, request.PhoneNumber, response.PhoneNumber)
 		})
 	})
+
+	t.Run("RenewTextPublisher", func(t *testing.T) {
+		cache := mockProvider.NewMockCache(mockCtrl)
+		textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
+		userProvider := mockProvider.NewMockUser(mockCtrl)
+		altair := mockProvider.NewMockAltair(mockCtrl)
+
+		_ = os.Setenv("OTP_RETRY_DURATION", "30s")
+		authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider, altair)
+
+		assert.NotPanics(t, func() {
+			textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
+			authProvider.RenewTextPublisher(textPublisher)
+		})
+	})
 }

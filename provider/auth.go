@@ -11,4 +11,5 @@ type Auth interface {
 	Login(ctx Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError)
 	Logout(ctx Context, request entity.RevokeTokenRequest) *entity.ApplicationError
 	RequestOTP(ctx Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError)
+	RenewTextPublisher(textPublisher TextPublisher)
 }

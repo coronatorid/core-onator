@@ -77,3 +77,15 @@ func (mr *MockAuthMockRecorder) RequestOTP(ctx, request interface{}) *gomock.Cal
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RequestOTP", reflect.TypeOf((*MockAuth)(nil).RequestOTP), ctx, request)
 }
+
+// RenewTextPublisher mocks base method
+func (m *MockAuth) RenewTextPublisher(textPublisher provider.TextPublisher) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "RenewTextPublisher", textPublisher)
+}
+
+// RenewTextPublisher indicates an expected call of RenewTextPublisher
+func (mr *MockAuthMockRecorder) RenewTextPublisher(textPublisher interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RenewTextPublisher", reflect.TypeOf((*MockAuth)(nil).RenewTextPublisher), textPublisher)
+}

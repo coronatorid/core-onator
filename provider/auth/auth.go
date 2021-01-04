@@ -66,3 +66,8 @@ func (a *Auth) Logout(ctx provider.Context, request entity.RevokeTokenRequest) *
 	logout := &usecase.Logout{}
 	return logout.Perform(ctx, request, a.altair)
 }
+
+// RenewTextPublisher session
+func (a *Auth) RenewTextPublisher(textPublisher provider.TextPublisher) {
+	a.textPublisher = textPublisher
+}

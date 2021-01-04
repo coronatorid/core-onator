@@ -64,7 +64,7 @@ All diagram related to core-onator.
 
 ### Database Diagram
 
-![coronator](https://user-images.githubusercontent.com/20650401/103478460-76c8d200-4df9-11eb-8bd6-fbddada521c7.png)
+![coronator](https://user-images.githubusercontent.com/20650401/103537305-c32e1380-4ec6-11eb-98db-bffc41f6878d.png)
 
 Table users {
   id int [pk, increment] // auto-increment
@@ -98,6 +98,7 @@ Table reported_cases {
   user_id int  [not null]
   status int  [not null, note:'1 -> confirmed, 0 -> not_confirmed']
   telegram_message_id varchar(255) [not null]
+  telegram_image_url varchar(255) [not null]
   image_path varchar(255) [not null]
   image_deleted boolean
   created_at datetime  [not null]

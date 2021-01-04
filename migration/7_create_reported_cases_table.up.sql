@@ -3,6 +3,7 @@ CREATE TABLE `reported_cases` (
   `user_id` int NOT NULL,
   `status` int NOT NULL COMMENT '1 -> confirmed, 0 -> not_confirmed',
   `telegram_message_id` varchar(255) NOT NULL,
+  `telegram_image_url` varchar(255) NOT NULL,
   `image_path` varchar(255) NOT NULL,
   `image_deleted` boolean,
   `created_at` datetime NOT NULL,

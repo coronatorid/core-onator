@@ -10,9 +10,12 @@ import (
 
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
+	"github.com/coronatorid/core-onator/util"
 )
 
 // Login handle core-onator login process
@@ -32,6 +35,11 @@ func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDura
 		Period:    uint(otpRetryDuration.Seconds()),
 	})
 	if err != nil {
+		log.Error().
+			Err(err).
+			Str("request_id", util.GetRequestID(ctx)).
+			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("login")).
+			Msg("error when validating otp")
 		return entity.LoginResponse{}, l.invalidOtpError()
 	} else if valid == false {
 		return entity.LoginResponse{}, l.invalidOtpError()
@@ -39,6 +47,11 @@ func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDura
 
 	user, errProvider := userProvider.CreateOrFind(ctx, request.PhoneNumber)
 	if errProvider != nil {
+		log.Error().
+			Err(err).
+			Str("request_id", util.GetRequestID(ctx)).
+			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("login")).
+			Msg("error when create or find user")
 		return entity.LoginResponse{}, errProvider
 	}
 
@@ -51,6 +64,11 @@ func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDura
 		RedirectURI:     "http://localhost:2019",
 	})
 	if entityError != nil {
+		log.Error().
+			Err(err).
+			Str("request_id", util.GetRequestID(ctx)).
+			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("login")).
+			Msg("error when granting access token")
 		return entity.LoginResponse{}, entityError
 	}
 

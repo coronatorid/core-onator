@@ -12,9 +12,12 @@ import (
 
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
+	"github.com/coronatorid/core-onator/util"
 )
 
 // OTPMessage template
@@ -41,6 +44,11 @@ func (r *RequestOTP) Perform(ctx provider.Context, request entity.RequestOTP, re
 		Period:    uint(otpRetryDuration.Seconds()),
 	})
 	if err != nil {
+		log.Error().
+			Err(err).
+			Str("request_id", util.GetRequestID(ctx)).
+			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("request_otp")).
+			Msg("error when generating otp code")
 		return nil, &entity.ApplicationError{
 			Err:        []error{errors.New("There are error when generating otp")},
 			HTTPStatus: http.StatusInternalServerError,
@@ -48,6 +56,11 @@ func (r *RequestOTP) Perform(ctx provider.Context, request entity.RequestOTP, re
 	}
 
 	if err := textPublisher.Publish(ctx, request.PhoneNumber, fmt.Sprintf(OTPMessage, otpCode)); err != nil {
+		log.Error().
+			Err(err).
+			Str("request_id", util.GetRequestID(ctx)).
+			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("request_otp")).
+			Msg("error when publishing message to whatsapp")
 		return nil, &entity.ApplicationError{
 			Err:        []error{errors.New("Error when sending otp to whatsapp")},
 			HTTPStatus: http.StatusInternalServerError,

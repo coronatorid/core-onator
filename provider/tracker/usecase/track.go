@@ -3,6 +3,9 @@ package usecase
 import (
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
+	"github.com/coronatorid/core-onator/util"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 // Track ...
@@ -16,11 +19,21 @@ func (t *Track) Perform(ctx provider.Context, userID int, request entity.TrackRe
 		UserID: userID,
 	})
 	if err != nil {
+		log.Error().
+			Err(err).
+			Str("request_id", util.GetRequestID(ctx)).
+			Array("tags", zerolog.Arr().Str("provider").Str("tracker").Str("track")).
+			Msg("error when creating tracker")
 		return entity.Location{}, err
 	}
 
 	location, err := tracker.Find(ctx, ID)
 	if err != nil {
+		log.Error().
+			Err(err).
+			Str("request_id", util.GetRequestID(ctx)).
+			Array("tags", zerolog.Arr().Str("provider").Str("tracker").Str("track")).
+			Msg("error when finding tracker data")
 		return entity.Location{}, err
 	}
 

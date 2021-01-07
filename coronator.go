@@ -68,7 +68,7 @@ func main() {
 	}
 
 	// Auth
-	auth, err := auth.Fabricate(memcached, whatsappTextPublisher, user, altair)
+	auth, err := auth.Fabricate(memcached, whatsappTextPublisher, user, altair, infra.WhatsappTextPublisher)
 	if err != nil {
 		panic(err)
 	}

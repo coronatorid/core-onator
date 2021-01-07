@@ -73,6 +73,7 @@ func main() {
 		panic(err)
 	}
 	auth.FabricateAPI(apiEngine)
+	auth.FabricateInAppCronjob(inAppCron)
 
 	// Tracker
 	tracker := tracker.Fabricate(db)

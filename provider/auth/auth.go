@@ -7,6 +7,7 @@ import (
 
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/provider/auth/api"
+	"github.com/coronatorid/core-onator/provider/auth/inappcron"
 	"github.com/coronatorid/core-onator/provider/auth/usecase"
 
 	"github.com/coronatorid/core-onator/entity"
@@ -49,6 +50,11 @@ func (a *Auth) FabricateAPI(engine provider.APIEngine) {
 	engine.InjectAPI(api.NewRequestOTP(a))
 	engine.InjectAPI(api.NewLogin(a))
 	engine.InjectAPI(api.NewLogout(a))
+}
+
+// FabricateInAppCronjob fabricating inappcronjob related process
+func (a *Auth) FabricateInAppCronjob(cron provider.InAppCron) {
+	cron.Inject(inappcron.NewRenewTextPublisher(a, a.whatsappPublisherFabricator))
 }
 
 // RequestOTP send otp based on request by the client

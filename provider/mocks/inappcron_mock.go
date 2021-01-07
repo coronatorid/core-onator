@@ -62,6 +62,18 @@ func (mr *MockInAppCronMockRecorder) Close() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockInAppCron)(nil).Close))
 }
 
+// Run mocks base method
+func (m *MockInAppCron) Run() {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "Run")
+}
+
+// Run indicates an expected call of Run
+func (mr *MockInAppCronMockRecorder) Run() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Run", reflect.TypeOf((*MockInAppCron)(nil).Run))
+}
+
 // MockInAppCronAdapter is a mock of InAppCronAdapter interface
 type MockInAppCronAdapter struct {
 	ctrl     *gomock.Controller

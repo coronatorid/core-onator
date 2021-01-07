@@ -48,6 +48,8 @@ func (r *Run) Run(args []string) {
 		_ = r.engine.Run()
 	}()
 
+	r.inappCronn.Run()
+
 	// Wait for interrupt signal to gracefully shutdown the server with
 	// a timeout of 3 seconds.
 	quit := make(chan os.Signal)
@@ -59,6 +61,9 @@ func (r *Run) Run(args []string) {
 
 	// omit the error
 	_ = r.engine.Shutdown(ctx)
+
+	// Closing inappcron
+	r.inappCronn.Close()
 
 	fmt.Println("\nGracefully shutdown the server...")
 }

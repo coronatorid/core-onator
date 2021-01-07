@@ -8,6 +8,7 @@ import "time"
 type InAppCron interface {
 	Inject(inAppCronAdapter ...InAppCronAdapter)
 	Close()
+	Run()
 }
 
 // InAppCronAdapter ...

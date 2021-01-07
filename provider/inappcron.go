@@ -6,6 +6,7 @@ import "time"
 
 // InAppCron provider handle all in application cronjob
 type InAppCron interface {
+	Inject(inAppCronAdapter ...InAppCronAdapter)
 	Close()
 }
 

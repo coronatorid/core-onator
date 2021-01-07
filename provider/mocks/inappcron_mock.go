@@ -5,6 +5,7 @@
 package mockProvider
 
 import (
+	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 	time "time"
@@ -31,6 +32,22 @@ func NewMockInAppCron(ctrl *gomock.Controller) *MockInAppCron {
 // EXPECT returns an object that allows the caller to indicate expected use
 func (m *MockInAppCron) EXPECT() *MockInAppCronMockRecorder {
 	return m.recorder
+}
+
+// Inject mocks base method
+func (m *MockInAppCron) Inject(inAppCronAdapter ...provider.InAppCronAdapter) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{}
+	for _, a := range inAppCronAdapter {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Inject", varargs...)
+}
+
+// Inject indicates an expected call of Inject
+func (mr *MockInAppCronMockRecorder) Inject(inAppCronAdapter ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Inject", reflect.TypeOf((*MockInAppCron)(nil).Inject), inAppCronAdapter...)
 }
 
 // Close mocks base method

@@ -13,11 +13,11 @@ type CreateReportCases struct{}
 
 // Perform logic to new reported cases
 func (c *CreateReportCases) Perform(ctx provider.Context, insertable entity.ReportInsertable, tx provider.TX) (int, *entity.ApplicationError) {
-	result, err := tx.ExecContext(ctx, "reported-cases-create", "insert into users (user_id, status, image_path, image_deleted, created_at, updated_at) values(?, 2, ?, 0, now(), now())", insertable.UserID, insertable.ImagePath)
+	result, err := tx.ExecContext(ctx, "reported-cases-create", "insert into reported_cases (`user_id`, `status`, `image_path`, `image_deleted`, `telegram_message_id`, `telegram_image_url`, `created_at`, `updated_at`) values(?, 2, ?, 0, '', '', now(), now())", insertable.UserID, insertable.ImagePath)
 	if err != nil {
 		log.Error().
-			Err(err).
 			Stack().
+			Err(err).
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("report").Str("create_report_cases")).
 			Msg("error when creating report cases")

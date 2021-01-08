@@ -29,7 +29,7 @@ func TestCreate(t *testing.T) {
 			result := mockProvider.NewMockResult(mockCtrl)
 			tx := mockProvider.NewMockTX(mockCtrl)
 
-			tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into users (user_id, status, image_path, image_deleted, created_at, updated_at) values(?, 2, ?, 0, now(), now())", insertable.UserID, insertable.ImagePath).Return(result, nil)
+			tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into reported_cases (`user_id`, `status`, `image_path`, `image_deleted`, `telegram_message_id`, `telegram_image_url`, `created_at`, `updated_at`) values(?, 2, ?, 0, '', '', now(), now())", insertable.UserID, insertable.ImagePath).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(99), nil)
 
 			createReportCases := &usecase.CreateReportCases{}
@@ -46,7 +46,7 @@ func TestCreate(t *testing.T) {
 			}
 
 			tx := mockProvider.NewMockTX(mockCtrl)
-			tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into users (user_id, status, image_path, image_deleted, created_at, updated_at) values(?, 2, ?, 0, now(), now())", insertable.UserID, insertable.ImagePath).Return(nil, errors.New("unexpected error"))
+			tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into reported_cases (`user_id`, `status`, `image_path`, `image_deleted`, `telegram_message_id`, `telegram_image_url`, `created_at`, `updated_at`) values(?, 2, ?, 0, '', '', now(), now())", insertable.UserID, insertable.ImagePath).Return(nil, errors.New("unexpected error"))
 
 			expectedError := util.CreateInternalServerError(ctx)
 
@@ -67,7 +67,7 @@ func TestCreate(t *testing.T) {
 			result := mockProvider.NewMockResult(mockCtrl)
 			tx := mockProvider.NewMockTX(mockCtrl)
 
-			tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into users (user_id, status, image_path, image_deleted, created_at, updated_at) values(?, 2, ?, 0, now(), now())", insertable.UserID, insertable.ImagePath).Return(result, nil)
+			tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into reported_cases (`user_id`, `status`, `image_path`, `image_deleted`, `telegram_message_id`, `telegram_image_url`, `created_at`, `updated_at`) values(?, 2, ?, 0, '', '', now(), now())", insertable.UserID, insertable.ImagePath).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(0), errors.New("unexpected error"))
 
 			expectedError := util.CreateInternalServerError(ctx)

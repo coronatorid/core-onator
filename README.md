@@ -34,7 +34,7 @@ You need to have all of this to run core-onator
 Here is step by step if you want to contribute to core-onator.
 
 1. clone this repo `git clone git@github.com:coronatorid/core-onator.git`
-2. Run the migration (make sure mysql is on) `go run coronator.go db:migrate`
+2. Run the migration (make sure mysql is on and the schema is already created) `go run coronator.go db:migrate`
 3. Don't forget to run Altair.
 4. Run coronator `go run coronator.go run:api`
 

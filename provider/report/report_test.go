@@ -35,4 +35,18 @@ func TestReport(t *testing.T) {
 		assert.Nil(t, err)
 		assert.Equal(t, 99, ID)
 	})
+
+	t.Run("UploadFile", func(t *testing.T) {
+		testhelper.GenerateDir("./normal_scenario/")
+		testhelper.DownloadFile("https://wikichera.ir/wp-content/uploads/2013/10/wikichera.ir-background.jpg", "./normal_scenario/test.png")
+
+		fh := testhelper.GenerateFileHeader("./normal_scenario/test.png")
+
+		path, err := reportProvider.UploadFile(ctx, 1, fh)
+		assert.Nil(t, err)
+
+		assert.Regexp(t, "./storage/1/", path)
+
+		testhelper.RemoveTempTestFiles("./normal_scenario/")
+	})
 }

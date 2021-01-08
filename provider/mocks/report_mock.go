@@ -8,6 +8,7 @@ import (
 	entity "github.com/coronatorid/core-onator/entity"
 	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
+	multipart "mime/multipart"
 	reflect "reflect"
 )
 
@@ -47,4 +48,19 @@ func (m *MockReport) CreateReportCases(ctx provider.Context, insertable entity.R
 func (mr *MockReportMockRecorder) CreateReportCases(ctx, insertable, tx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReportCases", reflect.TypeOf((*MockReport)(nil).CreateReportCases), ctx, insertable, tx)
+}
+
+// UploadFile mocks base method
+func (m *MockReport) UploadFile(ctx provider.Context, userID int, fileHeader *multipart.FileHeader) (string, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UploadFile", ctx, userID, fileHeader)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// UploadFile indicates an expected call of UploadFile
+func (mr *MockReportMockRecorder) UploadFile(ctx, userID, fileHeader interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UploadFile", reflect.TypeOf((*MockReport)(nil).UploadFile), ctx, userID, fileHeader)
 }

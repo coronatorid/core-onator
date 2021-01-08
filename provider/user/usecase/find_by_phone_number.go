@@ -22,11 +22,12 @@ func (f *FindByPhoneNumber) Perform(ctx provider.Context, phoneNumber string, db
 
 	var user entity.User
 
-	row := db.QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone = ?", fmt.Sprintf("%x", h.Sum(nil)))
+	row := db.QueryRowContext(ctx, "find-user", "select id, phone, state, role, created_at, updated_at from users where phone = ?", fmt.Sprintf("%x", h.Sum(nil)))
 	if err := row.Scan(
 		&user.ID,
 		&user.Phone,
 		&user.State,
+		&user.Role,
 		&user.CreatedAt,
 		&user.UpdatedAt,
 	); err == provider.ErrDBNotFound {

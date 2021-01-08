@@ -34,8 +34,8 @@ func TestFindByPhoneNumber(t *testing.T) {
 			row := mockProvider.NewMockRow(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone = ?", phoneNumber).Return(row)
-			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
+			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, role, created_at, updated_at from users where phone = ?", phoneNumber).Return(row)
+			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
 
 			find := &usecase.FindByPhoneNumber{}
 			_, err := find.Perform(ctx, precompiledPhoneNumber, db)
@@ -46,8 +46,8 @@ func TestFindByPhoneNumber(t *testing.T) {
 			row := mockProvider.NewMockRow(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone = ?", phoneNumber).Return(row)
-			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(provider.ErrDBNotFound)
+			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, role, created_at, updated_at from users where phone = ?", phoneNumber).Return(row)
+			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(provider.ErrDBNotFound)
 
 			expectedError := &entity.ApplicationError{
 				Err:        []error{errors.New("user not found")},
@@ -64,8 +64,8 @@ func TestFindByPhoneNumber(t *testing.T) {
 			row := mockProvider.NewMockRow(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, created_at, updated_at from users where phone = ?", phoneNumber).Return(row)
-			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(errors.New("unexpected error"))
+			db.EXPECT().QueryRowContext(ctx, "find-user", "select id, phone, state, role, created_at, updated_at from users where phone = ?", phoneNumber).Return(row)
+			row.EXPECT().Scan(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(errors.New("unexpected error"))
 
 			expectedError := &entity.ApplicationError{
 				Err:        []error{errors.New("service unavailable")},

@@ -27,7 +27,7 @@ func TestReport(t *testing.T) {
 		result := mockProvider.NewMockResult(mockCtrl)
 		tx := mockProvider.NewMockTX(mockCtrl)
 
-		tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into users (user_id, status, image_path, image_deleted, created_at, updated_at) values(?, 2, ?, 0, now(), now())", insertable.UserID, insertable.ImagePath).Return(result, nil)
+		tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into reported_cases (`user_id`, `status`, `image_path`, `image_deleted`, `telegram_message_id`, `telegram_image_url`, `created_at`, `updated_at`) values(?, 2, ?, 0, '', '', now(), now())", insertable.UserID, insertable.ImagePath).Return(result, nil)
 		result.EXPECT().LastInsertId().Return(int64(99), nil)
 
 		ID, err := reportProvider.CreateReportCases(ctx, insertable, tx)
@@ -45,7 +45,7 @@ func TestReport(t *testing.T) {
 		path, err := reportProvider.UploadFile(ctx, 1, fh)
 		assert.Nil(t, err)
 
-		assert.Regexp(t, "./storage/1/", path)
+		assert.Regexp(t, "storage/1/", path)
 
 		testhelper.RemoveTempTestFiles("./normal_scenario/")
 	})

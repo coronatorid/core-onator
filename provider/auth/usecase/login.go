@@ -22,7 +22,7 @@ import (
 type Login struct{}
 
 // Perform login process
-func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDuration time.Duration, userProvider provider.User, altair provider.Altair) (entity.LoginResponse, *entity.ApplicationError) {
+func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDuration time.Duration, userProvider provider.User, altair provider.Altair, otpDigit int) (entity.LoginResponse, *entity.ApplicationError) {
 	var loginResponse entity.LoginResponse
 
 	if time.Since(request.OTPSentTime.UTC()).Seconds() > otpRetryDuration.Seconds() {
@@ -31,7 +31,7 @@ func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDura
 
 	valid, err := totp.ValidateCustom(request.OTPCode, base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%s", os.Getenv("OTP_SECRET"), request.PhoneNumber))), request.OTPSentTime.UTC(), totp.ValidateOpts{
 		Algorithm: otp.AlgorithmSHA512,
-		Digits:    4,
+		Digits:    otp.Digits(otpDigit),
 		Period:    uint(otpRetryDuration.Seconds()),
 	})
 	if err != nil {

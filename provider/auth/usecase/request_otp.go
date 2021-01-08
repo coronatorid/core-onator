@@ -28,7 +28,7 @@ const OTPMessage = "JANGAN BERIKAN KODE OTP INI KE SIAPAPUN, TERMASUK KE PIHAK C
 type RequestOTP struct{}
 
 // Perform otp request process
-func (r *RequestOTP) Perform(ctx provider.Context, request entity.RequestOTP, regex *regexp.Regexp, cache provider.Cache, textPublisher provider.TextPublisher, otpRetryDuration time.Duration) (*entity.RequestOTPResponse, *entity.ApplicationError) {
+func (r *RequestOTP) Perform(ctx provider.Context, request entity.RequestOTP, regex *regexp.Regexp, cache provider.Cache, textPublisher provider.TextPublisher, otpRetryDuration time.Duration, otpDigit int) (*entity.RequestOTPResponse, *entity.ApplicationError) {
 	if err := r.validation(request, regex); err != nil {
 		return nil, err
 	}
@@ -40,7 +40,7 @@ func (r *RequestOTP) Perform(ctx provider.Context, request entity.RequestOTP, re
 	otpResponse := r.setLatestRequestCache(ctx, request, cache)
 	otpCode, err := totp.GenerateCodeCustom(base32.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%sX%s", os.Getenv("OTP_SECRET"), request.PhoneNumber))), otpResponse.SentTime, totp.ValidateOpts{
 		Algorithm: otp.AlgorithmSHA512,
-		Digits:    4,
+		Digits:    otp.Digits(otpDigit),
 		Period:    uint(otpRetryDuration.Seconds()),
 	})
 	if err != nil {

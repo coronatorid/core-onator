@@ -35,18 +35,18 @@ func (m *MockAuth) EXPECT() *MockAuthMockRecorder {
 }
 
 // Login mocks base method
-func (m *MockAuth) Login(ctx provider.Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError) {
+func (m *MockAuth) Login(ctx provider.Context, request entity.Login, otpDigit int) (entity.LoginResponse, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Login", ctx, request)
+	ret := m.ctrl.Call(m, "Login", ctx, request, otpDigit)
 	ret0, _ := ret[0].(entity.LoginResponse)
 	ret1, _ := ret[1].(*entity.ApplicationError)
 	return ret0, ret1
 }
 
 // Login indicates an expected call of Login
-func (mr *MockAuthMockRecorder) Login(ctx, request interface{}) *gomock.Call {
+func (mr *MockAuthMockRecorder) Login(ctx, request, otpDigit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Login", reflect.TypeOf((*MockAuth)(nil).Login), ctx, request)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Login", reflect.TypeOf((*MockAuth)(nil).Login), ctx, request, otpDigit)
 }
 
 // Logout mocks base method
@@ -64,18 +64,18 @@ func (mr *MockAuthMockRecorder) Logout(ctx, request interface{}) *gomock.Call {
 }
 
 // RequestOTP mocks base method
-func (m *MockAuth) RequestOTP(ctx provider.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError) {
+func (m *MockAuth) RequestOTP(ctx provider.Context, request entity.RequestOTP, otpDigit int) (*entity.RequestOTPResponse, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RequestOTP", ctx, request)
+	ret := m.ctrl.Call(m, "RequestOTP", ctx, request, otpDigit)
 	ret0, _ := ret[0].(*entity.RequestOTPResponse)
 	ret1, _ := ret[1].(*entity.ApplicationError)
 	return ret0, ret1
 }
 
 // RequestOTP indicates an expected call of RequestOTP
-func (mr *MockAuthMockRecorder) RequestOTP(ctx, request interface{}) *gomock.Call {
+func (mr *MockAuthMockRecorder) RequestOTP(ctx, request, otpDigit interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RequestOTP", reflect.TypeOf((*MockAuth)(nil).RequestOTP), ctx, request)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RequestOTP", reflect.TypeOf((*MockAuth)(nil).RequestOTP), ctx, request, otpDigit)
 }
 
 // RenewTextPublisher mocks base method

@@ -116,7 +116,7 @@ func TestAuth(t *testing.T) {
 			_ = os.Setenv("OTP_RETRY_DURATION", "30s")
 			authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider, altair, testhelper.WhatsappPublisher{Controller: mockCtrl}.NewWhatsappPublisher)
 
-			response, err := authProvider.RequestOTP(ctx, request)
+			response, err := authProvider.RequestOTP(ctx, request, 4)
 
 			assert.Nil(t, err)
 			assert.Equal(t, request.PhoneNumber, response.PhoneNumber)

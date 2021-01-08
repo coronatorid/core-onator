@@ -67,7 +67,7 @@ func TestLogin(t *testing.T) {
 			}).Return(oauthAccessToken, nil)
 
 			login := &usecase.Login{}
-			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair)
+			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair, 4)
 			assert.Nil(t, err)
 		})
 
@@ -100,7 +100,7 @@ func TestLogin(t *testing.T) {
 				HTTPStatus: http.StatusUnprocessableEntity,
 			}
 
-			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair)
+			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair, 4)
 			assert.Equal(t, expectedErr.Error(), err.Error())
 			assert.Equal(t, expectedErr.HTTPStatus, err.HTTPStatus)
 		})
@@ -134,7 +134,7 @@ func TestLogin(t *testing.T) {
 				HTTPStatus: http.StatusUnprocessableEntity,
 			}
 
-			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair)
+			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair, 4)
 			assert.Equal(t, expectedErr.Error(), err.Error())
 			assert.Equal(t, expectedErr.HTTPStatus, err.HTTPStatus)
 		})

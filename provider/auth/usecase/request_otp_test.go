@@ -52,7 +52,7 @@ func TestRequestOTP(t *testing.T) {
 			textPublisher.EXPECT().Publish(ctx, request.PhoneNumber, gomock.Any()).Return(nil)
 
 			uc := usecase.RequestOTP{}
-			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration)
+			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration, 4)
 
 			assert.Nil(t, err)
 			assert.Equal(t, request.PhoneNumber, response.PhoneNumber)
@@ -86,7 +86,7 @@ func TestRequestOTP(t *testing.T) {
 			textPublisher.EXPECT().Publish(ctx, request.PhoneNumber, gomock.Any()).Return(nil)
 
 			uc := usecase.RequestOTP{}
-			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration)
+			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration, 4)
 
 			assert.Nil(t, err)
 			assert.Equal(t, request.PhoneNumber, response.PhoneNumber)
@@ -110,7 +110,7 @@ func TestRequestOTP(t *testing.T) {
 			textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
 
 			uc := usecase.RequestOTP{}
-			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration)
+			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration, 4)
 
 			expectedError := &entity.ApplicationError{
 				HTTPStatus: http.StatusTooEarly,
@@ -142,7 +142,7 @@ func TestRequestOTP(t *testing.T) {
 			textPublisher.EXPECT().Publish(ctx, request.PhoneNumber, gomock.Any()).Return(errors.New("unexpected error"))
 
 			uc := usecase.RequestOTP{}
-			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration)
+			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration, 4)
 
 			expectedError := util.CreateInternalServerError(ctx)
 
@@ -161,7 +161,7 @@ func TestRequestOTP(t *testing.T) {
 			textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
 
 			uc := usecase.RequestOTP{}
-			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration)
+			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration, 4)
 
 			expectedError := &entity.ApplicationError{
 				Err:        []error{errors.New("Phone number request is invalid, make sure it's not empty, the length is less than 12 and use Indonesian phone number")},
@@ -183,7 +183,7 @@ func TestRequestOTP(t *testing.T) {
 			textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
 
 			uc := usecase.RequestOTP{}
-			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration)
+			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration, 4)
 
 			expectedError := &entity.ApplicationError{
 				Err:        []error{errors.New("Phone number request is invalid, make sure it's not empty, the length is less than 12 and use Indonesian phone number")},
@@ -205,7 +205,7 @@ func TestRequestOTP(t *testing.T) {
 			textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
 
 			uc := usecase.RequestOTP{}
-			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration)
+			response, err := uc.Perform(ctx, request, regexIndonesianPhoneNumber, cache, textPublisher, otpRetryDuration, 4)
 
 			expectedError := &entity.ApplicationError{
 				Err:        []error{errors.New("Phone number request is invalid, make sure it's not empty, the length is less than 12 and use Indonesian phone number")},

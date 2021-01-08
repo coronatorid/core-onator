@@ -1,6 +1,7 @@
 # Coronator
 
 [![Coverage Status](https://coveralls.io/repos/github/coronatorid/core-onator/badge.svg?branch=master)](https://coveralls.io/github/coronatorid/core-onator?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/coronatorid/core-onator)](https://goreportcard.com/report/github.com/coronatorid/core-onator)
 
 Coronator is corona detection application that aim perfect contact tracing between it's user anonymously.
 

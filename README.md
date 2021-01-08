@@ -64,13 +64,14 @@ All diagram related to core-onator.
 
 ### Database Diagram
 
-![coronator](https://user-images.githubusercontent.com/20650401/103537305-c32e1380-4ec6-11eb-98db-bffc41f6878d.png)
+![coronator](https://user-images.githubusercontent.com/20650401/103976861-78541a80-51aa-11eb-9c70-bd408e3f8b6e.png)
 
 ```
 Table users {
   id int [pk, increment] // auto-increment
   phone varchar(255) [not null]
   state tinyint [not null,note: '1 -> active, 0 -> inactive']
+  role tinyint [not null,note: 'null -> admin, 1 -> superadmin']
   created_at datetime [not null]
   updated_at datetime [not null]
 

@@ -37,6 +37,7 @@ func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDura
 	if err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("login")).
 			Msg("error when validating otp")
@@ -49,6 +50,7 @@ func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDura
 	if errProvider != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("login")).
 			Msg("error when create or find user")
@@ -66,6 +68,7 @@ func (l *Login) Perform(ctx provider.Context, request entity.Login, otpRetryDura
 	if entityError != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("login")).
 			Msg("error when granting access token")

@@ -100,6 +100,7 @@ func runWithSQLAnalyzer(ctx provider.Context, executionLevel, function string, f
 	if err := f(); err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Str("execution_level", executionLevel).
 			Str("status", "failed").

@@ -17,6 +17,7 @@ func (l *Logout) Perform(ctx provider.Context, request entity.RevokeTokenRequest
 	if err := altair.RevokeToken(ctx, request); err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("logout")).
 			Msg("error when revoking altair token")

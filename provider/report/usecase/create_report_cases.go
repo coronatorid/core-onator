@@ -17,6 +17,7 @@ func (c *CreateReportCases) Perform(ctx provider.Context, insertable entity.Repo
 	if err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("report").Str("create_report_cases")).
 			Msg("error when creating report cases")
@@ -27,6 +28,7 @@ func (c *CreateReportCases) Perform(ctx provider.Context, insertable entity.Repo
 	if err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("report").Str("create_report_cases")).
 			Msg("error when getting last inserted id")

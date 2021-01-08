@@ -49,7 +49,7 @@ func (i *InAppCron) Run() {
 					return
 				case <-time.After(cronRunner.Delay()):
 					if err := cronRunner.Run(); err != nil {
-						log.Error().Err(err).Msg(fmt.Sprintf("Failed to run %s in application cronjob", cronRunner.Name()))
+						log.Error().Stack().Err(err).Msg(fmt.Sprintf("Failed to run %s in application cronjob", cronRunner.Name()))
 					} else {
 						log.Info().Msg(fmt.Sprintf("Success run %s in application cronjob", cronRunner.Name()))
 					}

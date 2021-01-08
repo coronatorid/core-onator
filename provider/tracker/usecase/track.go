@@ -21,6 +21,7 @@ func (t *Track) Perform(ctx provider.Context, userID int, request entity.TrackRe
 	if err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("tracker").Str("track")).
 			Msg("error when creating tracker")
@@ -31,6 +32,7 @@ func (t *Track) Perform(ctx provider.Context, userID int, request entity.TrackRe
 	if err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("tracker").Str("track")).
 			Msg("error when finding tracker data")

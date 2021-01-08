@@ -70,6 +70,7 @@ func (n *Network) do(ctx provider.Context, client *sling.Sling, cfg provider.Net
 		if err != nil {
 			log.Error().
 				Err(err).
+				Stack().
 				Str("request_id", util.GetRequestID(ctx)).
 				Array("tags", zerolog.Arr().Str("provider").Str("infra").Str("adapter").Str("network")).
 				Msg("error generating client request")
@@ -100,6 +101,7 @@ func (n *Network) do(ctx provider.Context, client *sling.Sling, cfg provider.Net
 		if resp.StatusCode >= http.StatusBadRequest {
 			log.Error().
 				Err(err).
+				Stack().
 				Str("request_id", util.GetRequestID(ctx)).
 				Str("response_status", resp.Status).
 				Array("tags", zerolog.Arr().Str("provider").Str("infra").Str("adapter").Str("network")).

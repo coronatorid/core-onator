@@ -26,6 +26,7 @@ func (c *Create) Perform(ctx provider.Context, userInsertable entity.UserInserta
 	if err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("user").Str("create")).
 			Msg("error when creating user")
@@ -36,6 +37,7 @@ func (c *Create) Perform(ctx provider.Context, userInsertable entity.UserInserta
 	if err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("user").Str("create")).
 			Msg("error when creating user")

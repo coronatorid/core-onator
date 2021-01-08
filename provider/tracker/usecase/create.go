@@ -17,6 +17,7 @@ func (t *Create) Perform(ctx provider.Context, locationInsertable entity.Locatio
 	if err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("tracker").Str("create")).
 			Msg("error when creating tracker")
@@ -28,6 +29,7 @@ func (t *Create) Perform(ctx provider.Context, locationInsertable entity.Locatio
 	if err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("tracker").Str("create")).
 			Msg("error when creating tracker")

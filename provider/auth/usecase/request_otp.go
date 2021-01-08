@@ -46,6 +46,7 @@ func (r *RequestOTP) Perform(ctx provider.Context, request entity.RequestOTP, re
 	if err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("request_otp")).
 			Msg("error when generating otp code")
@@ -56,6 +57,7 @@ func (r *RequestOTP) Perform(ctx provider.Context, request entity.RequestOTP, re
 	if err := textPublisher.Publish(ctx, request.PhoneNumber, fmt.Sprintf(OTPMessage, otpCode)); err != nil {
 		log.Error().
 			Err(err).
+			Stack().
 			Str("request_id", util.GetRequestID(ctx)).
 			Array("tags", zerolog.Arr().Str("provider").Str("auth").Str("request_otp")).
 			Msg("error when publishing message to whatsapp")

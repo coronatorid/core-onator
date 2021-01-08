@@ -12,4 +12,5 @@ import (
 type Report interface {
 	CreateReportCases(ctx Context, insertable entity.ReportInsertable, tx TX) (int, *entity.ApplicationError)
 	UploadFile(ctx Context, userID int, fileHeader *multipart.FileHeader) (string, *entity.ApplicationError)
+	CreateReportAndUploadFile(ctx Context, userID int, fileHeader *multipart.FileHeader) *entity.ApplicationError
 }

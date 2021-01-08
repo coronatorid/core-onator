@@ -1,17 +1,20 @@
 package api
 
 import (
+	"net/http"
+
+	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
 )
 
 // Report api handler
 type Report struct {
-	authProvider provider.Auth
+	reportProvider provider.Report
 }
 
 // NewReport create new request otp handler object
-func NewReport(authProvider provider.Auth) *Report {
-	return &Report{authProvider: authProvider}
+func NewReport(reportProvider provider.Report) *Report {
+	return &Report{reportProvider: reportProvider}
 }
 
 // Path return api path
@@ -26,25 +29,32 @@ func (r *Report) Method() string {
 
 // Handle request otp
 func (r *Report) Handle(context provider.APIContext) {
-	// header, err := context.FormFile("file")
-	// if err != nil {
+	userID := context.Get("user-id").(int)
+	if userID <= 0 {
+		_ = context.JSON(http.StatusBadRequest, map[string]interface{}{
+			"errors":  []entity.APIError{entity.ErrorBadRequest()},
+			"message": "Bad request",
+		})
+		return
+	}
 
-	// }
+	fileHeader, err := context.FormFile("file")
+	if err != nil {
+		_ = context.JSON(http.StatusBadRequest, map[string]interface{}{
+			"errors":  []entity.APIError{entity.ErrorBadRequest()},
+			"message": "Bad request",
+		})
+		return
+	}
 
-	// if header.Size > MaxUploadSize {
+	if err := r.reportProvider.CreateReportAndUploadFile(context, userID, fileHeader); err != nil {
+		_ = context.JSON(err.HTTPStatus, map[string]interface{}{
+			"errors":  err.ErrorString(),
+			"message": err.Error(),
+		})
+	}
 
-	// }
-
-	// multipartFile, err := header.Open()
-	// if err != nil {
-
-	// }
-	// defer multipartFile.Close()
-
-	// content, err := ioutil.ReadAll(multipartFile)
-	// if err != nil {
-
-	// }
-
-	// fmt.Println(content)
+	context.JSON(http.StatusCreated, map[string]interface{}{
+		"message": "Report has been successfully submitted",
+	})
 }

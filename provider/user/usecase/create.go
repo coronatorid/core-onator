@@ -22,7 +22,7 @@ func (c *Create) Perform(ctx provider.Context, userInsertable entity.UserInserta
 	_, _ = h.Write([]byte(fmt.Sprintf("%sXXX%s", userInsertable.PhoneNumber, os.Getenv("APP_ENCRIPTION_KEY"))))
 	phoneNumber := fmt.Sprintf("%x", h.Sum(nil))
 
-	result, err := db.ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", phoneNumber)
+	result, err := db.ExecContext(ctx, "user-create", "insert into users (phone, state, role, created_at, updated_at) values(?, 1, 0, now(), now())", phoneNumber)
 	if err != nil {
 		log.Error().
 			Err(err).

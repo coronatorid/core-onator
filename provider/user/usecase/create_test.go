@@ -38,7 +38,7 @@ func TestCreate(t *testing.T) {
 			result := mockProvider.NewMockResult(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", compiledPhoneNumber).Return(result, nil)
+			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, role, created_at, updated_at) values(?, 1, 0, now(), now())", compiledPhoneNumber).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(99), nil)
 
 			create := &usecase.Create{}
@@ -54,7 +54,7 @@ func TestCreate(t *testing.T) {
 			}
 
 			db := mockProvider.NewMockDB(mockCtrl)
-			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", compiledPhoneNumber).Return(nil, errors.New("unexpected error"))
+			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, role, created_at, updated_at) values(?, 1, 0, now(), now())", compiledPhoneNumber).Return(nil, errors.New("unexpected error"))
 
 			expectedError := util.CreateInternalServerError(ctx)
 
@@ -74,7 +74,7 @@ func TestCreate(t *testing.T) {
 			result := mockProvider.NewMockResult(mockCtrl)
 			db := mockProvider.NewMockDB(mockCtrl)
 
-			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, created_at, updated_at) values(?, 1, now(), now())", compiledPhoneNumber).Return(result, nil)
+			db.EXPECT().ExecContext(ctx, "user-create", "insert into users (phone, state, role, created_at, updated_at) values(?, 1, 0, now(), now())", compiledPhoneNumber).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(0), errors.New("unexpected error"))
 
 			expectedError := util.CreateInternalServerError(ctx)

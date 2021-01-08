@@ -22,6 +22,7 @@ func Fabricate(db provider.DB) *Report {
 // FabricateAPI fabricating report related API
 func (r *Report) FabricateAPI(engine provider.APIEngine) {
 	engine.InjectAPI(api.NewReport(r))
+	engine.InjectAPI(api.NewFindReport(r))
 }
 
 // CreateReportCases create new reported cases data

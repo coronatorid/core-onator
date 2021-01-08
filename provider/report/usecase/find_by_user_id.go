@@ -10,6 +10,9 @@ import (
 	"github.com/codefluence-x/aurelia"
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
+	"github.com/coronatorid/core-onator/util"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 // FindByUserID find reported cases by user id
@@ -34,6 +37,12 @@ func (f *FindByUserID) Perform(ctx provider.Context, userID int, db provider.DB)
 			HTTPStatus: http.StatusNotFound,
 		}
 	} else if err != nil {
+		log.Error().
+			Err(err).
+			Str("request_id", util.GetRequestID(ctx)).
+			Stack().
+			Array("tags", zerolog.Arr().Str("provider").Str("report").Str("find_by_user_id")).
+			Msg("failed find")
 		return reportedCases, &entity.ApplicationError{
 			Err:        []error{errors.New("service unavailable")},
 			HTTPStatus: http.StatusServiceUnavailable,

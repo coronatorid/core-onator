@@ -30,3 +30,10 @@ func RemoveTempTestFiles(configPath string) {
 		panic(err)
 	}
 }
+
+func GenerateDir(path string) {
+	err := os.Mkdir(path, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+}

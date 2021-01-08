@@ -64,7 +64,7 @@ func (c *UploadFile) Perform(ctx provider.Context, userID int, fileHeader *multi
 		return "", util.CreateInternalServerError(ctx)
 	}
 
-	filePath := fmt.Sprintf("./storage/%d/", userID)
+	filePath := fmt.Sprintf("storage/%d/", userID)
 	err = os.MkdirAll(filePath, os.ModePerm)
 	if err != nil {
 		log.Error().

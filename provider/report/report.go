@@ -41,3 +41,9 @@ func (r *Report) CreateReportAndUploadFile(ctx provider.Context, userID int, fil
 	uploadFileAndCreate := usecase.UploadFileAndCreate{}
 	return uploadFileAndCreate.Perform(ctx, userID, fileHeader, r.db, r)
 }
+
+// FindByUserID ...
+func (r *Report) FindByUserID(ctx provider.Context, userID int) (entity.ReportedCases, *entity.ApplicationError) {
+	findByUserID := usecase.FindByUserID{}
+	return findByUserID.Perform(ctx, userID, r.db)
+}

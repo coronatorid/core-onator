@@ -64,3 +64,32 @@ func (mr *MockReportMockRecorder) UploadFile(ctx, userID, fileHeader interface{}
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UploadFile", reflect.TypeOf((*MockReport)(nil).UploadFile), ctx, userID, fileHeader)
 }
+
+// CreateReportAndUploadFile mocks base method
+func (m *MockReport) CreateReportAndUploadFile(ctx provider.Context, userID int, fileHeader *multipart.FileHeader) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateReportAndUploadFile", ctx, userID, fileHeader)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// CreateReportAndUploadFile indicates an expected call of CreateReportAndUploadFile
+func (mr *MockReportMockRecorder) CreateReportAndUploadFile(ctx, userID, fileHeader interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReportAndUploadFile", reflect.TypeOf((*MockReport)(nil).CreateReportAndUploadFile), ctx, userID, fileHeader)
+}
+
+// FindByUserID mocks base method
+func (m *MockReport) FindByUserID(ctx provider.Context, userID int) (entity.ReportedCases, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindByUserID", ctx, userID)
+	ret0, _ := ret[0].(entity.ReportedCases)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// FindByUserID indicates an expected call of FindByUserID
+func (mr *MockReportMockRecorder) FindByUserID(ctx, userID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByUserID", reflect.TypeOf((*MockReport)(nil).FindByUserID), ctx, userID)
+}

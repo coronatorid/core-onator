@@ -28,7 +28,7 @@ func TestUploadFile(t *testing.T) {
 			path, err := uploadFile.Perform(ctx, userID, fh)
 			assert.Nil(t, err)
 
-			assert.Regexp(t, "./storage/1/", path)
+			assert.Regexp(t, "storage/1/", path)
 
 			testhelper.RemoveTempTestFiles("./normal_scenario/")
 		})

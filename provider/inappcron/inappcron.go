@@ -12,7 +12,7 @@ import (
 
 // InAppCron stands for in application cronjob
 type InAppCron struct {
-	cronList   map[string]provider.InAppCronAdapter
+	cronList   []provider.InAppCronAdapter
 	ctx        context.Context
 	cancelFunc context.CancelFunc
 	wg         *sync.WaitGroup
@@ -22,7 +22,7 @@ type InAppCron struct {
 func Fabricate() *InAppCron {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	return &InAppCron{
-		cronList:   map[string]provider.InAppCronAdapter{},
+		cronList:   []provider.InAppCronAdapter{},
 		ctx:        ctx,
 		cancelFunc: cancelFunc,
 		wg:         &sync.WaitGroup{},
@@ -31,32 +31,28 @@ func Fabricate() *InAppCron {
 
 // Inject new in application cronjob adapter
 func (i *InAppCron) Inject(inAppCronAdapter ...provider.InAppCronAdapter) {
-	i.wg.Add(len(inAppCronAdapter))
-	for _, cron := range inAppCronAdapter {
-		i.cronList[cron.Name()] = cron
-	}
+	i.cronList = append(i.cronList, inAppCronAdapter...)
 }
 
 // Run inapp cron
 func (i *InAppCron) Run() {
 	for _, cron := range i.cronList {
-		cron := cron
+		i.wg.Add(1)
+		cronRunner := cron
 		go func() {
 			for {
 				select {
 				case <-i.ctx.Done():
-					log.Info().Msg(fmt.Sprintf("Stopping %s in application cronjob", cron.Name()))
-					cron.Close()
+					log.Info().Msg(fmt.Sprintf("Stopping %s in application cronjob", cronRunner.Name()))
+					cronRunner.Close()
 					i.wg.Done()
 					return
-				default:
-					if err := cron.Run(); err != nil {
-						log.Info().Msg(fmt.Sprintf("Failed to run %s in application cronjob", cron.Name()))
+				case <-time.After(cronRunner.Delay()):
+					if err := cronRunner.Run(); err != nil {
+						log.Error().Err(err).Msg(fmt.Sprintf("Failed to run %s in application cronjob", cronRunner.Name()))
 					} else {
-						log.Info().Msg(fmt.Sprintf("Success run %s in application cronjob", cron.Name()))
+						log.Info().Msg(fmt.Sprintf("Success run %s in application cronjob", cronRunner.Name()))
 					}
-					time.Sleep(cron.Delay())
-
 				}
 			}
 		}()

@@ -7,6 +7,7 @@ import (
 
 	"github.com/coronatorid/core-onator/provider/api"
 	"github.com/coronatorid/core-onator/provider/api/command"
+	"github.com/coronatorid/core-onator/provider/inappcron"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,8 +16,8 @@ func TestRun(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	apiEngine := api.Fabricate()
-	runAPICMd := command.NewRun(apiEngine)
+	apiEngine := api.Fabricate(inappcron.Fabricate())
+	runAPICMd := command.NewRun(apiEngine, inappcron.Fabricate())
 
 	t.Run("Use", func(t *testing.T) {
 		assert.Equal(t, "run:api", runAPICMd.Use())

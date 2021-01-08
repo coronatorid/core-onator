@@ -7,6 +7,7 @@ import (
 
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/provider/auth/api"
+	"github.com/coronatorid/core-onator/provider/auth/inappcron"
 	"github.com/coronatorid/core-onator/provider/auth/usecase"
 
 	"github.com/coronatorid/core-onator/entity"
@@ -17,14 +18,15 @@ type Auth struct {
 	regexIndonesianPhoneNumber *regexp.Regexp
 	otpRetryDuration           time.Duration
 
-	cache         provider.Cache
-	textPublisher provider.TextPublisher
-	userProvider  provider.User
-	altair        provider.Altair
+	cache                       provider.Cache
+	textPublisher               provider.TextPublisher
+	userProvider                provider.User
+	altair                      provider.Altair
+	whatsappPublisherFabricator func() (provider.TextPublisher, error)
 }
 
 // Fabricate auth service for coronator
-func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher, userProvider provider.User, altair provider.Altair) (*Auth, error) {
+func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher, userProvider provider.User, altair provider.Altair, whatsappPublisherFabricator func() (provider.TextPublisher, error)) (*Auth, error) {
 	regexIndonesianPhoneNumber, _ := regexp.Compile(`^\+62\d{10,12}`)
 	d, err := time.ParseDuration(os.Getenv("OTP_RETRY_DURATION"))
 	if err != nil {
@@ -35,10 +37,11 @@ func Fabricate(cache provider.Cache, textPublisher provider.TextPublisher, userP
 		regexIndonesianPhoneNumber: regexIndonesianPhoneNumber,
 		otpRetryDuration:           d,
 
-		cache:         cache,
-		textPublisher: textPublisher,
-		userProvider:  userProvider,
-		altair:        altair,
+		cache:                       cache,
+		textPublisher:               textPublisher,
+		userProvider:                userProvider,
+		altair:                      altair,
+		whatsappPublisherFabricator: whatsappPublisherFabricator,
 	}, nil
 }
 
@@ -47,6 +50,11 @@ func (a *Auth) FabricateAPI(engine provider.APIEngine) {
 	engine.InjectAPI(api.NewRequestOTP(a))
 	engine.InjectAPI(api.NewLogin(a))
 	engine.InjectAPI(api.NewLogout(a))
+}
+
+// FabricateInAppCronjob fabricating inappcronjob related process
+func (a *Auth) FabricateInAppCronjob(cron provider.InAppCron) {
+	cron.Inject(inappcron.NewRenewTextPublisher(a, a.whatsappPublisherFabricator))
 }
 
 // RequestOTP send otp based on request by the client

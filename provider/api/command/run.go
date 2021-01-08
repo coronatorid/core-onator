@@ -16,12 +16,13 @@ import (
 
 // Run is a command to run api engine
 type Run struct {
-	engine provider.APIEngine
+	engine     provider.APIEngine
+	inappCronn provider.InAppCron
 }
 
 // NewRun return CLI to run api engine
-func NewRun(engine provider.APIEngine) *Run {
-	return &Run{engine: engine}
+func NewRun(engine provider.APIEngine, inappCronn provider.InAppCron) *Run {
+	return &Run{engine: engine, inappCronn: inappCronn}
 }
 
 // Use return how the command used
@@ -47,6 +48,8 @@ func (r *Run) Run(args []string) {
 		_ = r.engine.Run()
 	}()
 
+	r.inappCronn.Run()
+
 	// Wait for interrupt signal to gracefully shutdown the server with
 	// a timeout of 3 seconds.
 	quit := make(chan os.Signal)
@@ -58,6 +61,9 @@ func (r *Run) Run(args []string) {
 
 	// omit the error
 	_ = r.engine.Shutdown(ctx)
+
+	// Closing inappcron
+	r.inappCronn.Close()
 
 	fmt.Println("\nGracefully shutdown the server...")
 }

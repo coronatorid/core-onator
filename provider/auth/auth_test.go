@@ -28,7 +28,7 @@ func TestAuthFabricate(t *testing.T) {
 	t.Run("Fabricate", func(t *testing.T) {
 		t.Run("When everything is okay it will not return error", func(t *testing.T) {
 			_ = os.Setenv("OTP_RETRY_DURATION", "30s")
-			_, err := auth.Fabricate(cache, textPublisher, userProvider, altair)
+			_, err := auth.Fabricate(cache, textPublisher, userProvider, altair, testhelper.WhatsappPublisher{Controller: mockCtrl}.NewWhatsappPublisher)
 
 			assert.Nil(t, err)
 		})
@@ -46,7 +46,7 @@ func TestAuthFabricateFailParseDuration(t *testing.T) {
 	t.Run("Fabricate", func(t *testing.T) {
 		t.Run("When duration is invalid then it return error", func(t *testing.T) {
 			_ = os.Setenv("OTP_RETRY_DURATION", "abc")
-			_, err := auth.Fabricate(cache, textPublisher, userProvider, altair)
+			_, err := auth.Fabricate(cache, textPublisher, userProvider, altair, testhelper.WhatsappPublisher{Controller: mockCtrl}.NewWhatsappPublisher)
 
 			assert.NotNil(t, err)
 		})
@@ -58,6 +58,20 @@ func TestAuth(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
+	t.Run("FabricateInAppCronjob", func(t *testing.T) {
+		inappCron := mockProvider.NewMockInAppCron(mockCtrl)
+		inappCron.EXPECT().Inject(gomock.Any()).Times(1)
+
+		cache := mockProvider.NewMockCache(mockCtrl)
+		textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)
+		userProvider := mockProvider.NewMockUser(mockCtrl)
+		altair := mockProvider.NewMockAltair(mockCtrl)
+
+		_ = os.Setenv("OTP_RETRY_DURATION", "30s")
+		authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider, altair, testhelper.WhatsappPublisher{Controller: mockCtrl}.NewWhatsappPublisher)
+		authProvider.FabricateInAppCronjob(inappCron)
+	})
+
 	t.Run("InjectAPI", func(t *testing.T) {
 		apiEngine := mockProvider.NewMockAPIEngine(mockCtrl)
 		apiEngine.EXPECT().InjectAPI(gomock.Any()).Times(3)
@@ -68,7 +82,7 @@ func TestAuth(t *testing.T) {
 		altair := mockProvider.NewMockAltair(mockCtrl)
 
 		_ = os.Setenv("OTP_RETRY_DURATION", "30s")
-		authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider, altair)
+		authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider, altair, testhelper.WhatsappPublisher{Controller: mockCtrl}.NewWhatsappPublisher)
 		authProvider.FabricateAPI(apiEngine)
 	})
 
@@ -100,7 +114,7 @@ func TestAuth(t *testing.T) {
 			altair := mockProvider.NewMockAltair(mockCtrl)
 
 			_ = os.Setenv("OTP_RETRY_DURATION", "30s")
-			authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider, altair)
+			authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider, altair, testhelper.WhatsappPublisher{Controller: mockCtrl}.NewWhatsappPublisher)
 
 			response, err := authProvider.RequestOTP(ctx, request)
 
@@ -116,7 +130,7 @@ func TestAuth(t *testing.T) {
 		altair := mockProvider.NewMockAltair(mockCtrl)
 
 		_ = os.Setenv("OTP_RETRY_DURATION", "30s")
-		authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider, altair)
+		authProvider, _ := auth.Fabricate(cache, textPublisher, userProvider, altair, testhelper.WhatsappPublisher{Controller: mockCtrl}.NewWhatsappPublisher)
 
 		assert.NotPanics(t, func() {
 			textPublisher := mockProvider.NewMockTextPublisher(mockCtrl)

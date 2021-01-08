@@ -66,6 +66,7 @@ All diagram related to core-onator.
 
 ![coronator](https://user-images.githubusercontent.com/20650401/103537305-c32e1380-4ec6-11eb-98db-bffc41f6878d.png)
 
+```
 Table users {
   id int [pk, increment] // auto-increment
   phone varchar(255) [not null]

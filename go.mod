@@ -22,4 +22,5 @@ require (
 	github.com/spf13/cobra v1.1.1
 	github.com/stretchr/testify v1.5.1
 	github.com/subosito/gotenv v1.2.0
+	gotest.tools v2.2.0+incompatible
 )

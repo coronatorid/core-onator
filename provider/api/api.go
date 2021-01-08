@@ -18,25 +18,27 @@ import (
 
 // API ...
 type API struct {
-	engine *echo.Echo
-	port   int
+	engine    *echo.Echo
+	port      int
+	inappcron provider.InAppCron
 }
 
 // Fabricate API
-func Fabricate() *API {
+func Fabricate(inappcron provider.InAppCron) *API {
 	engine := echo.New()
 	engine.Logger = &dummyLogger{}
 
 	return &API{
-		engine: engine,
-		port:   2019,
+		engine:    engine,
+		port:      2019,
+		inappcron: inappcron,
 	}
 }
 
 // FabricateCommand insert api related command
 func (a *API) FabricateCommand(cmd provider.Command) {
 	cmd.InjectCommand(
-		command.NewRun(a),
+		command.NewRun(a, a.inappcron),
 	)
 }
 

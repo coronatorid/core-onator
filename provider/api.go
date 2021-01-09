@@ -43,6 +43,9 @@ type APIContext interface {
 	// FormFile returns the multipart form file for the provided name.
 	FormFile(name string) (*multipart.FileHeader, error)
 
+	// File sends a response with the content of the file.
+	File(file string) error
+
 	// Cookie returns the named cookie provided in the request.
 	Cookie(name string) (*http.Cookie, error)
 

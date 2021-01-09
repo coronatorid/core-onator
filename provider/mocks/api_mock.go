@@ -178,6 +178,20 @@ func (mr *MockAPIContextMockRecorder) FormFile(name interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FormFile", reflect.TypeOf((*MockAPIContext)(nil).FormFile), name)
 }
 
+// File mocks base method
+func (m *MockAPIContext) File(file string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "File", file)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// File indicates an expected call of File
+func (mr *MockAPIContextMockRecorder) File(file interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "File", reflect.TypeOf((*MockAPIContext)(nil).File), file)
+}
+
 // Cookie mocks base method
 func (m *MockAPIContext) Cookie(name string) (*http.Cookie, error) {
 	m.ctrl.T.Helper()

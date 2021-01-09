@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"net/url"
+
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
 )
@@ -10,16 +12,20 @@ type DeleteReportedCases struct{}
 
 // Perform delete reported cases
 func (d *DeleteReportedCases) Perform(ctx provider.Context, userID int, reportProvider provider.Report) *entity.ApplicationError {
-	reportedCases, err := reportProvider.FindByUserID(ctx, userID)
-	if err != nil {
-
+	reportedCases, applicationErr := reportProvider.FindByUserID(ctx, userID)
+	if applicationErr != nil {
+		return applicationErr
 	}
 
-	if err := reportProvider.Delete(ctx, reportedCases.ID); err != nil {
-		return err
+	if applicationErr := reportProvider.Delete(ctx, reportedCases.ID); applicationErr != nil {
+		return applicationErr
 	}
 
-	_ = reportProvider.DeleteFile(ctx, reportedCases.ImagePath)
+	parsedURL, err := url.Parse(reportedCases.ImagePath)
+	if err == nil {
+		path := parsedURL.Path
+		_ = reportProvider.DeleteFile(ctx, path[1:len(path)])
+	}
 
 	return nil
 }

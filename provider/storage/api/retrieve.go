@@ -9,6 +9,9 @@ import (
 
 	"github.com/codefluence-x/aurelia"
 	"github.com/coronatorid/core-onator/provider"
+	"github.com/coronatorid/core-onator/util"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 // Retrieve api handler
@@ -32,30 +35,47 @@ func (r *Retrieve) Method() string {
 
 // Handle request otp
 func (r *Retrieve) Handle(context provider.APIContext) {
-	req := context.Request()
 
-	signature := req.URL.Query().Get("signature")
-	expiresAt := req.URL.Query().Get("expires_at")
+	signature := context.QueryParam("signature")
+	expiresAt := context.QueryParam("expires_at")
 
 	if signature == "" || expiresAt == "" {
 		context.NoContent(http.StatusBadRequest)
+		log.Error().
+			Str("request_id", util.GetRequestID(context)).
+			Array("tags", zerolog.Arr().Str("provider").Str("storage").Str("retrieve")).
+			Msg("request is bad")
 		return
 	}
 
 	expiresAtUnix, err := strconv.Atoi(expiresAt)
 	if err != nil {
+		log.Error().
+			Str("request_id", util.GetRequestID(context)).
+			Array("tags", zerolog.Arr().Str("provider").Str("storage").Str("retrieve")).
+			Msg("expires at is not valid")
 		context.NoContent(http.StatusBadRequest)
 		return
 	}
 
-	path := req.URL.Path
+	path := context.Request().URL.Path
 	if aurelia.Authenticate(os.Getenv("APP_ENCRIPTION_KEY"), fmt.Sprintf("%d%s", expiresAtUnix, path[1:len(path)]), signature) == false {
+		log.Error().
+			Str("request_id", util.GetRequestID(context)).
+			Array("tags", zerolog.Arr().Str("provider").Str("storage").Str("retrieve")).
+			Msg("signature is not valid")
 		context.NoContent(http.StatusUnauthorized)
 		return
 	}
 
 	if time.Now().After(time.Unix(int64(expiresAtUnix), 0)) {
+		log.Error().
+			Str("request_id", util.GetRequestID(context)).
+			Array("tags", zerolog.Arr().Str("provider").Str("storage").Str("retrieve")).
+			Msg("content already expired")
 		context.NoContent(http.StatusNotFound)
 		return
 	}
+
+	_ = context.File(path[1:len(path)])
 }

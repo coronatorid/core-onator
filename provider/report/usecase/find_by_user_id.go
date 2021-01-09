@@ -49,7 +49,7 @@ func (f *FindByUserID) Perform(ctx provider.Context, userID int, db provider.DB)
 		}
 	}
 
-	expiresAt := time.Now().Add(15 * time.Second).Unix()
+	expiresAt := time.Now().Add(60 * time.Second).Unix()
 	signature := aurelia.Hash(os.Getenv("APP_ENCRIPTION_KEY"), fmt.Sprintf("%d%s", expiresAt, reportedCases.ImagePath))
 	reportedCases.ImagePath = fmt.Sprintf("%s%s?signature=%s&expires_at=%d", os.Getenv("API_HOST"), reportedCases.ImagePath, signature, expiresAt)
 

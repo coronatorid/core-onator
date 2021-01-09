@@ -7,7 +7,7 @@ RUN apk --no-cache add curl tzdata
 
 COPY ./migration /opt/core-onator/migration
 
-RUN mkdir -p /opt/storage/
+RUN mkdir -p /opt/core-onator/storage/
 
 WORKDIR /opt/core-onator/
 

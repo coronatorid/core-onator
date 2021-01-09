@@ -52,6 +52,7 @@ func (r *ReportMeCreate) Handle(context provider.APIContext) {
 			"errors":  err.ErrorString(),
 			"message": err.Error(),
 		})
+		return
 	}
 
 	context.JSON(http.StatusCreated, map[string]interface{}{

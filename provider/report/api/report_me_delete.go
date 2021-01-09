@@ -7,28 +7,28 @@ import (
 	"github.com/coronatorid/core-onator/provider"
 )
 
-// FindReport api handler
-type FindReport struct {
+// ReportMeDelete api handler
+type ReportMeDelete struct {
 	reportProvider provider.Report
 }
 
-// NewFindReport find previously created report
-func NewFindReport(reportProvider provider.Report) *FindReport {
-	return &FindReport{reportProvider: reportProvider}
+// NewReportMeDelete find previously created report
+func NewReportMeDelete(reportProvider provider.Report) *ReportMeDelete {
+	return &ReportMeDelete{reportProvider: reportProvider}
 }
 
 // Path return api path
-func (r *FindReport) Path() string {
+func (r *ReportMeDelete) Path() string {
 	return "/reports"
 }
 
 // Method return api method
-func (r *FindReport) Method() string {
-	return "GET"
+func (r *ReportMeDelete) Method() string {
+	return "DELETE"
 }
 
 // Handle request otp
-func (r *FindReport) Handle(context provider.APIContext) {
+func (r *ReportMeDelete) Handle(context provider.APIContext) {
 	userID := context.Get("user-id").(int)
 	if userID <= 0 {
 		_ = context.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -38,7 +38,7 @@ func (r *FindReport) Handle(context provider.APIContext) {
 		return
 	}
 
-	data, err := r.reportProvider.FindByUserID(context, userID)
+	err := r.reportProvider.DeleteReportedCases(context, userID)
 	if err != nil {
 		_ = context.JSON(err.HTTPStatus, map[string]interface{}{
 			"errors":  err.ErrorString(),
@@ -46,5 +46,7 @@ func (r *FindReport) Handle(context provider.APIContext) {
 		})
 	}
 
-	_ = context.JSON(http.StatusOK, map[string]interface{}{"data": data})
+	_ = context.JSON(http.StatusCreated, map[string]interface{}{
+		"message": "Report has been successfully deleted",
+	})
 }

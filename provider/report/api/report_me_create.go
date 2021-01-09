@@ -7,28 +7,28 @@ import (
 	"github.com/coronatorid/core-onator/provider"
 )
 
-// Report api handler
-type Report struct {
+// ReportMeCreate api handler
+type ReportMeCreate struct {
 	reportProvider provider.Report
 }
 
-// NewReport create new request otp handler object
-func NewReport(reportProvider provider.Report) *Report {
-	return &Report{reportProvider: reportProvider}
+// NewReportMeCreate create new request otp handler object
+func NewReportMeCreate(reportProvider provider.Report) *ReportMeCreate {
+	return &ReportMeCreate{reportProvider: reportProvider}
 }
 
 // Path return api path
-func (r *Report) Path() string {
+func (r *ReportMeCreate) Path() string {
 	return "/reports"
 }
 
 // Method return api method
-func (r *Report) Method() string {
+func (r *ReportMeCreate) Method() string {
 	return "POST"
 }
 
 // Handle request otp
-func (r *Report) Handle(context provider.APIContext) {
+func (r *ReportMeCreate) Handle(context provider.APIContext) {
 	userID := context.Get("user-id").(int)
 	if userID <= 0 {
 		_ = context.JSON(http.StatusBadRequest, map[string]interface{}{

@@ -93,3 +93,31 @@ func (mr *MockReportMockRecorder) FindByUserID(ctx, userID interface{}) *gomock.
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByUserID", reflect.TypeOf((*MockReport)(nil).FindByUserID), ctx, userID)
 }
+
+// Delete mocks base method
+func (m *MockReport) Delete(ctx provider.Context, ID int) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Delete", ctx, ID)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// Delete indicates an expected call of Delete
+func (mr *MockReportMockRecorder) Delete(ctx, ID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockReport)(nil).Delete), ctx, ID)
+}
+
+// DeleteFile mocks base method
+func (m *MockReport) DeleteFile(ctx provider.Context, filePath string) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteFile", ctx, filePath)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// DeleteFile indicates an expected call of DeleteFile
+func (mr *MockReportMockRecorder) DeleteFile(ctx, filePath interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteFile", reflect.TypeOf((*MockReport)(nil).DeleteFile), ctx, filePath)
+}

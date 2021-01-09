@@ -21,8 +21,9 @@ func Fabricate(db provider.DB) *Report {
 
 // FabricateAPI fabricating report related API
 func (r *Report) FabricateAPI(engine provider.APIEngine) {
-	engine.InjectAPI(api.NewReport(r))
-	engine.InjectAPI(api.NewFindReport(r))
+	engine.InjectAPI(api.NewReportMe(r))
+	engine.InjectAPI(api.NewReportMeCreate(r))
+	engine.InjectAPI(api.NewReportMeDelete(r))
 }
 
 // CreateReportCases create new reported cases data
@@ -47,4 +48,22 @@ func (r *Report) CreateReportAndUploadFile(ctx provider.Context, userID int, fil
 func (r *Report) FindByUserID(ctx provider.Context, userID int) (entity.ReportedCases, *entity.ApplicationError) {
 	findByUserID := usecase.FindByUserID{}
 	return findByUserID.Perform(ctx, userID, r.db)
+}
+
+// Delete ...
+func (r *Report) Delete(ctx provider.Context, ID int) *entity.ApplicationError {
+	delete := usecase.Delete{}
+	return delete.Perform(ctx, ID, r.db)
+}
+
+// DeleteFile ...
+func (r *Report) DeleteFile(ctx provider.Context, filePath string) *entity.ApplicationError {
+	deleteFile := usecase.DeleteFile{}
+	return deleteFile.Perform(ctx, filePath)
+}
+
+// DeleteReportedCases ...
+func (r *Report) DeleteReportedCases(ctx provider.Context, userID int) *entity.ApplicationError {
+	deleteReportedCases := usecase.DeleteReportedCases{}
+	return deleteReportedCases.Perform(ctx, userID, r)
 }

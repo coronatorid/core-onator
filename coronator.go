@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/coronatorid/core-onator/provider/admin"
 	"github.com/coronatorid/core-onator/provider/inappcron"
 	"github.com/coronatorid/core-onator/provider/report"
 	"github.com/coronatorid/core-onator/provider/storage"
@@ -88,6 +89,10 @@ func main() {
 	// Storage
 	storageProvider := storage.Fabricate()
 	storageProvider.FabricateAPI(apiEngine)
+
+	// Admin
+	adminProvider := admin.Fabricate(altair, auth, user)
+	adminProvider.FabricateAPI(apiEngine)
 
 	if err := cmd.Execute(); err != nil {
 		panic(err)

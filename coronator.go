@@ -5,6 +5,7 @@ import (
 
 	"github.com/coronatorid/core-onator/provider/inappcron"
 	"github.com/coronatorid/core-onator/provider/report"
+	"github.com/coronatorid/core-onator/provider/storage"
 	"github.com/coronatorid/core-onator/provider/tracker"
 	"github.com/rs/zerolog"
 
@@ -83,6 +84,10 @@ func main() {
 	// Report
 	report := report.Fabricate(db)
 	report.FabricateAPI(apiEngine)
+
+	// Storage
+	storageProvider := storage.Fabricate()
+	storageProvider.FabricateAPI(apiEngine)
 
 	if err := cmd.Execute(); err != nil {
 		panic(err)

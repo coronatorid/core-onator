@@ -37,7 +37,7 @@ func (l *Login) Perform(ctx provider.Context, request entity.Login, userProvider
 	oauthAccessToken, err := altair.GrantToken(ctx, entity.GrantTokenRequest{
 		ResourceOwnerID: user.ID,
 		ResponseType:    "token",
-		Scopes:          "users",
+		Scopes:          "users admin",
 		ClientUID:       request.ClientUID,
 		ClientSecret:    request.ClientSecret,
 		RedirectURI:     "http://localhost:2019",

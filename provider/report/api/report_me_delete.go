@@ -44,6 +44,7 @@ func (r *ReportMeDelete) Handle(context provider.APIContext) {
 			"errors":  err.ErrorString(),
 			"message": err.Error(),
 		})
+		return
 	}
 
 	_ = context.JSON(http.StatusCreated, map[string]interface{}{

@@ -44,6 +44,7 @@ func (r *ReportMe) Handle(context provider.APIContext) {
 			"errors":  err.ErrorString(),
 			"message": err.Error(),
 		})
+		return
 	}
 
 	_ = context.JSON(http.StatusOK, map[string]interface{}{"data": data})

@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/coronatorid/core-onator/entity"
+	"github.com/coronatorid/core-onator/provider/auth"
 	"github.com/coronatorid/core-onator/provider/auth/usecase"
 	mockProvider "github.com/coronatorid/core-onator/provider/mocks"
 	"github.com/coronatorid/core-onator/testhelper"
@@ -28,6 +29,7 @@ func TestLogin(t *testing.T) {
 	otpSecret := "rahasia"
 
 	os.Setenv("OTP_SECRET", otpSecret)
+	os.Setenv("OTP_RETRY_DURATION", otpRetryDuration.String())
 
 	t.Run("Perform", func(t *testing.T) {
 		t.Run("When request login success it will return login response", func(t *testing.T) {
@@ -66,8 +68,9 @@ func TestLogin(t *testing.T) {
 				RedirectURI:     "http://localhost:2019",
 			}).Return(oauthAccessToken, nil)
 
+			authProvider, _ := auth.Fabricate(nil, nil, nil, nil, nil)
 			login := &usecase.Login{}
-			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair, 4)
+			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair, 4, authProvider)
 			assert.Nil(t, err)
 		})
 
@@ -100,7 +103,8 @@ func TestLogin(t *testing.T) {
 				HTTPStatus: http.StatusUnprocessableEntity,
 			}
 
-			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair, 4)
+			authProvider, _ := auth.Fabricate(nil, nil, nil, nil, nil)
+			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair, 4, authProvider)
 			assert.Equal(t, expectedErr.Error(), err.Error())
 			assert.Equal(t, expectedErr.HTTPStatus, err.HTTPStatus)
 		})
@@ -134,7 +138,8 @@ func TestLogin(t *testing.T) {
 				HTTPStatus: http.StatusUnprocessableEntity,
 			}
 
-			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair, 4)
+			authProvider, _ := auth.Fabricate(nil, nil, nil, nil, nil)
+			_, err := login.Perform(ctx, request, otpRetryDuration, userProvider, altair, 4, authProvider)
 			assert.Equal(t, expectedErr.Error(), err.Error())
 			assert.Equal(t, expectedErr.HTTPStatus, err.HTTPStatus)
 		})

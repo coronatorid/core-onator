@@ -66,7 +66,7 @@ func (a *Auth) RequestOTP(ctx provider.Context, request entity.RequestOTP, otpDi
 // Login ...
 func (a *Auth) Login(ctx provider.Context, request entity.Login, otpDigit int) (entity.LoginResponse, *entity.ApplicationError) {
 	login := &usecase.Login{}
-	return login.Perform(ctx, request, a.otpRetryDuration, a.userProvider, a.altair, otpDigit)
+	return login.Perform(ctx, request, a.otpRetryDuration, a.userProvider, a.altair, otpDigit, a)
 }
 
 // Logout ...
@@ -78,4 +78,10 @@ func (a *Auth) Logout(ctx provider.Context, request entity.RevokeTokenRequest) *
 // RenewTextPublisher session
 func (a *Auth) RenewTextPublisher(textPublisher provider.TextPublisher) {
 	a.textPublisher = textPublisher
+}
+
+// ValidateOTP ...
+func (a *Auth) ValidateOTP(ctx provider.Context, request entity.Login, otpDigit int) *entity.ApplicationError {
+	validateOTP := usecase.ValidateOTP{}
+	return validateOTP.Perform(ctx, request, a.otpRetryDuration, otpDigit)
 }

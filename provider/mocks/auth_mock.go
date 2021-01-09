@@ -89,3 +89,17 @@ func (mr *MockAuthMockRecorder) RenewTextPublisher(textPublisher interface{}) *g
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RenewTextPublisher", reflect.TypeOf((*MockAuth)(nil).RenewTextPublisher), textPublisher)
 }
+
+// ValidateOTP mocks base method
+func (m *MockAuth) ValidateOTP(ctx provider.Context, request entity.Login, otpDigit int) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ValidateOTP", ctx, request, otpDigit)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// ValidateOTP indicates an expected call of ValidateOTP
+func (mr *MockAuthMockRecorder) ValidateOTP(ctx, request, otpDigit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ValidateOTP", reflect.TypeOf((*MockAuth)(nil).ValidateOTP), ctx, request, otpDigit)
+}

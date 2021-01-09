@@ -12,4 +12,5 @@ type Auth interface {
 	Logout(ctx Context, request entity.RevokeTokenRequest) *entity.ApplicationError
 	RequestOTP(ctx Context, request entity.RequestOTP, otpDigit int) (*entity.RequestOTPResponse, *entity.ApplicationError)
 	RenewTextPublisher(textPublisher TextPublisher)
+	ValidateOTP(ctx Context, request entity.Login, otpDigit int) *entity.ApplicationError
 }

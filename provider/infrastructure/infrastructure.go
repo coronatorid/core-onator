@@ -41,7 +41,6 @@ type Infrastructure struct {
 		host string
 	}
 
-	whatsappMutex   *sync.Once
 	whatsapp        *whatsapp.Conn
 	whatsappSession whatsapp.Session
 
@@ -60,7 +59,6 @@ func Fabricate() (*Infrastructure, error) {
 	i := &Infrastructure{
 		mysqlMutex:       &sync.Once{},
 		memcachedMutex:   &sync.Once{},
-		whatsappMutex:    &sync.Once{},
 		kafkaMutex:       &sync.Once{},
 		kafkaWriterMutex: &sync.Once{},
 	}
@@ -170,13 +168,11 @@ func (i *Infrastructure) WhatsappOldSession() (*whatsapp.Conn, error) {
 	}
 
 	var err error
-	i.whatsappMutex.Do(func() {
-		i.whatsapp = i.Whatsapp()
-		_, err = i.whatsapp.RestoreWithSession(i.whatsappSession)
-	})
+
+	i.whatsapp = i.Whatsapp()
+	_, err = i.whatsapp.RestoreWithSession(i.whatsappSession)
 
 	if err != nil {
-		i.whatsappMutex = &sync.Once{}
 		return nil, err
 	}
 

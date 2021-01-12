@@ -1,0 +1,13 @@
+package constant
+
+// ReportedCasesStatus ...
+type ReportedCasesStatus int
+
+const (
+	// ReportedCasesConfirmed ...
+	ReportedCasesConfirmed ReportedCasesStatus = iota
+	// ReportedCasesRejected ...
+	ReportedCasesRejected
+	// ReportedCasesPending ...
+	ReportedCasesPending
+)

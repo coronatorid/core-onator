@@ -3,6 +3,7 @@ package report
 import (
 	"mime/multipart"
 
+	"github.com/coronatorid/core-onator/constant"
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/provider/report/api"
@@ -66,4 +67,16 @@ func (r *Report) DeleteFile(ctx provider.Context, filePath string) *entity.Appli
 func (r *Report) DeleteReportedCases(ctx provider.Context, userID int) *entity.ApplicationError {
 	deleteReportedCases := usecase.DeleteReportedCases{}
 	return deleteReportedCases.Perform(ctx, userID, r)
+}
+
+// Count ...
+func (r *Report) Count(ctx provider.Context, status constant.ReportedCasesStatus) (int, *entity.ApplicationError) {
+	count := usecase.Count{}
+	return count.Perform(ctx, status, r.db)
+}
+
+// List ...
+func (r *Report) List(ctx provider.Context, status constant.ReportedCasesStatus, requestMeta entity.RequestMeta) ([]entity.ReportedCases, *entity.ApplicationError) {
+	list := usecase.List{}
+	return list.Perform(ctx, status, requestMeta, r.db)
 }

@@ -25,8 +25,8 @@ func Fabricate(altair provider.Altair, authProvider provider.Auth, userProvider 
 
 // FabricateAPI fabricating auth related API
 func (a *Admin) FabricateAPI(engine provider.APIEngine) {
-	engine.InjectAPI(api.NewRequestOTP(a))
-	engine.InjectAPI(api.NewLogin(a))
+	engine.InjectAPI(api.NewAuthorizationRequestOTP(a))
+	engine.InjectAPI(api.NewAuthorizationLogin(a))
 }
 
 // Login with admin flow

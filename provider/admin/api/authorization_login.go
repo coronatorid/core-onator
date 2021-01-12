@@ -9,28 +9,28 @@ import (
 	"github.com/coronatorid/core-onator/provider"
 )
 
-// Login api handler
-type Login struct {
+// AuthorizationLogin api handler
+type AuthorizationLogin struct {
 	adminProvider provider.Admin
 }
 
-// NewLogin create new request otp handler object
-func NewLogin(adminProvider provider.Admin) *Login {
-	return &Login{adminProvider: adminProvider}
+// NewAuthorizationLogin create new request otp handler object
+func NewAuthorizationLogin(adminProvider provider.Admin) *AuthorizationLogin {
+	return &AuthorizationLogin{adminProvider: adminProvider}
 }
 
 // Path return api path
-func (r *Login) Path() string {
+func (r *AuthorizationLogin) Path() string {
 	return "/administrations/authorization/login"
 }
 
 // Method return api method
-func (r *Login) Method() string {
+func (r *AuthorizationLogin) Method() string {
 	return "POST"
 }
 
 // Handle request otp
-func (r *Login) Handle(context provider.APIContext) {
+func (r *AuthorizationLogin) Handle(context provider.APIContext) {
 	var request entity.Login
 	if err := json.NewDecoder(context.Request().Body).Decode(&request); err != nil {
 		_ = context.JSON(http.StatusBadRequest, map[string]interface{}{

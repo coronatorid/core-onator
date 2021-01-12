@@ -38,9 +38,9 @@ func (r *Report) UploadFile(ctx provider.Context, userID int, fileHeader *multip
 	return uploadFile.Perform(ctx, userID, fileHeader)
 }
 
-// CreateReportAndUploadFile ...
-func (r *Report) CreateReportAndUploadFile(ctx provider.Context, userID int, fileHeader *multipart.FileHeader) *entity.ApplicationError {
-	uploadFileAndCreate := usecase.UploadFileAndCreate{}
+// CreateReportedCases ...
+func (r *Report) CreateReportedCases(ctx provider.Context, userID int, fileHeader *multipart.FileHeader) *entity.ApplicationError {
+	uploadFileAndCreate := usecase.CreateReportedCases{}
 	return uploadFileAndCreate.Perform(ctx, userID, fileHeader, r.db, r)
 }
 

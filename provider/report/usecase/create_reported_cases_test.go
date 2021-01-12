@@ -7,7 +7,7 @@ import (
 )
 
 // Template... we need to deliver it fast
-func TestUploadFileAndCreate(t *testing.T) {
+func TestCreatedReportedCases(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 }

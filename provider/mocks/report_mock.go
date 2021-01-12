@@ -50,33 +50,18 @@ func (mr *MockReportMockRecorder) Create(ctx, insertable, tx interface{}) *gomoc
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockReport)(nil).Create), ctx, insertable, tx)
 }
 
-// UploadFile mocks base method
-func (m *MockReport) UploadFile(ctx provider.Context, userID int, fileHeader *multipart.FileHeader) (string, *entity.ApplicationError) {
+// Delete mocks base method
+func (m *MockReport) Delete(ctx provider.Context, ID int) *entity.ApplicationError {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UploadFile", ctx, userID, fileHeader)
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(*entity.ApplicationError)
-	return ret0, ret1
-}
-
-// UploadFile indicates an expected call of UploadFile
-func (mr *MockReportMockRecorder) UploadFile(ctx, userID, fileHeader interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UploadFile", reflect.TypeOf((*MockReport)(nil).UploadFile), ctx, userID, fileHeader)
-}
-
-// CreateReportAndUploadFile mocks base method
-func (m *MockReport) CreateReportAndUploadFile(ctx provider.Context, userID int, fileHeader *multipart.FileHeader) *entity.ApplicationError {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateReportAndUploadFile", ctx, userID, fileHeader)
+	ret := m.ctrl.Call(m, "Delete", ctx, ID)
 	ret0, _ := ret[0].(*entity.ApplicationError)
 	return ret0
 }
 
-// CreateReportAndUploadFile indicates an expected call of CreateReportAndUploadFile
-func (mr *MockReportMockRecorder) CreateReportAndUploadFile(ctx, userID, fileHeader interface{}) *gomock.Call {
+// Delete indicates an expected call of Delete
+func (mr *MockReportMockRecorder) Delete(ctx, ID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReportAndUploadFile", reflect.TypeOf((*MockReport)(nil).CreateReportAndUploadFile), ctx, userID, fileHeader)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockReport)(nil).Delete), ctx, ID)
 }
 
 // FindByUserID mocks base method
@@ -94,18 +79,19 @@ func (mr *MockReportMockRecorder) FindByUserID(ctx, userID interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByUserID", reflect.TypeOf((*MockReport)(nil).FindByUserID), ctx, userID)
 }
 
-// Delete mocks base method
-func (m *MockReport) Delete(ctx provider.Context, ID int) *entity.ApplicationError {
+// UploadFile mocks base method
+func (m *MockReport) UploadFile(ctx provider.Context, userID int, fileHeader *multipart.FileHeader) (string, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", ctx, ID)
-	ret0, _ := ret[0].(*entity.ApplicationError)
-	return ret0
+	ret := m.ctrl.Call(m, "UploadFile", ctx, userID, fileHeader)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
 }
 
-// Delete indicates an expected call of Delete
-func (mr *MockReportMockRecorder) Delete(ctx, ID interface{}) *gomock.Call {
+// UploadFile indicates an expected call of UploadFile
+func (mr *MockReportMockRecorder) UploadFile(ctx, userID, fileHeader interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockReport)(nil).Delete), ctx, ID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UploadFile", reflect.TypeOf((*MockReport)(nil).UploadFile), ctx, userID, fileHeader)
 }
 
 // DeleteFile mocks base method
@@ -120,6 +106,20 @@ func (m *MockReport) DeleteFile(ctx provider.Context, filePath string) *entity.A
 func (mr *MockReportMockRecorder) DeleteFile(ctx, filePath interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteFile", reflect.TypeOf((*MockReport)(nil).DeleteFile), ctx, filePath)
+}
+
+// CreateReportedCases mocks base method
+func (m *MockReport) CreateReportedCases(ctx provider.Context, userID int, fileHeader *multipart.FileHeader) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateReportedCases", ctx, userID, fileHeader)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// CreateReportedCases indicates an expected call of CreateReportedCases
+func (mr *MockReportMockRecorder) CreateReportedCases(ctx, userID, fileHeader interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateReportedCases", reflect.TypeOf((*MockReport)(nil).CreateReportedCases), ctx, userID, fileHeader)
 }
 
 // DeleteReportedCases mocks base method

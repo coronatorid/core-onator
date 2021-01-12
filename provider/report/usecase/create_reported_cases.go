@@ -9,11 +9,11 @@ import (
 	"github.com/coronatorid/core-onator/provider"
 )
 
-// UploadFileAndCreate data for reported cases
-type UploadFileAndCreate struct{}
+// CreateReportedCases data for reported cases
+type CreateReportedCases struct{}
 
 // Perform logic to new reported cases
-func (c *UploadFileAndCreate) Perform(ctx provider.Context, userID int, fileHeader *multipart.FileHeader, db provider.DB, report provider.Report) *entity.ApplicationError {
+func (c *CreateReportedCases) Perform(ctx provider.Context, userID int, fileHeader *multipart.FileHeader, db provider.DB, report provider.Report) *entity.ApplicationError {
 	var applicationError *entity.ApplicationError
 
 	db.Transaction(ctx, "report/upload_file_and_create_report", func(tx provider.TX) error {

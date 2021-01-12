@@ -47,7 +47,7 @@ func (r *ReportMeCreate) Handle(context provider.APIContext) {
 		return
 	}
 
-	if err := r.reportProvider.CreateReportAndUploadFile(context, userID, fileHeader); err != nil {
+	if err := r.reportProvider.CreateReportedCases(context, userID, fileHeader); err != nil {
 		_ = context.JSON(err.HTTPStatus, map[string]interface{}{
 			"errors":  err.ErrorString(),
 			"message": err.Error(),

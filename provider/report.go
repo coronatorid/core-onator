@@ -10,7 +10,7 @@ import (
 
 // Report provider handle all reporting logic from coronator
 type Report interface {
-	CreateReportCases(ctx Context, insertable entity.ReportInsertable, tx TX) (int, *entity.ApplicationError)
+	Create(ctx Context, insertable entity.ReportInsertable, tx TX) (int, *entity.ApplicationError)
 	UploadFile(ctx Context, userID int, fileHeader *multipart.FileHeader) (string, *entity.ApplicationError)
 	CreateReportAndUploadFile(ctx Context, userID int, fileHeader *multipart.FileHeader) *entity.ApplicationError
 	FindByUserID(ctx Context, userID int) (entity.ReportedCases, *entity.ApplicationError)

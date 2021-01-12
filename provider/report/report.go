@@ -26,10 +26,10 @@ func (r *Report) FabricateAPI(engine provider.APIEngine) {
 	engine.InjectAPI(api.NewReportMeDelete(r))
 }
 
-// CreateReportCases create new reported cases data
-func (r *Report) CreateReportCases(ctx provider.Context, insertable entity.ReportInsertable, tx provider.TX) (int, *entity.ApplicationError) {
-	createReportCases := usecase.CreateReportCases{}
-	return createReportCases.Perform(ctx, insertable, tx)
+// Create create new reported cases data
+func (r *Report) Create(ctx provider.Context, insertable entity.ReportInsertable, tx provider.TX) (int, *entity.ApplicationError) {
+	create := usecase.Create{}
+	return create.Perform(ctx, insertable, tx)
 }
 
 // UploadFile into coronator storage

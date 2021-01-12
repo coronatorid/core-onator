@@ -32,7 +32,7 @@ func (c *UploadFileAndCreate) Perform(ctx provider.Context, userID int, fileHead
 			return err
 		}
 
-		_, err = report.CreateReportCases(ctx, entity.ReportInsertable{ImagePath: path, UserID: userID}, tx)
+		_, err = report.Create(ctx, entity.ReportInsertable{ImagePath: path, UserID: userID}, tx)
 		if err != nil {
 			applicationError = err
 			return err

@@ -8,11 +8,11 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// CreateReportCases data
-type CreateReportCases struct{}
+// Create data
+type Create struct{}
 
 // Perform logic to new reported cases
-func (c *CreateReportCases) Perform(ctx provider.Context, insertable entity.ReportInsertable, tx provider.TX) (int, *entity.ApplicationError) {
+func (c *Create) Perform(ctx provider.Context, insertable entity.ReportInsertable, tx provider.TX) (int, *entity.ApplicationError) {
 	result, err := tx.ExecContext(ctx, "reported-cases-create", "insert into reported_cases (`user_id`, `status`, `image_path`, `image_deleted`, `telegram_message_id`, `telegram_image_url`, `created_at`, `updated_at`) values(?, 2, ?, 0, '', '', now(), now())", insertable.UserID, insertable.ImagePath)
 	if err != nil {
 		log.Error().

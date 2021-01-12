@@ -18,7 +18,7 @@ func TestReport(t *testing.T) {
 	ctx := testhelper.NewTestContext()
 	db := mockProvider.NewMockDB(mockCtrl)
 	reportProvider := report.Fabricate(db)
-	t.Run("CreateReportCases", func(t *testing.T) {
+	t.Run("Create", func(t *testing.T) {
 		insertable := entity.ReportInsertable{
 			UserID:    10,
 			ImagePath: "/opt/api/storage/xxx.png",
@@ -30,7 +30,7 @@ func TestReport(t *testing.T) {
 		tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into reported_cases (`user_id`, `status`, `image_path`, `image_deleted`, `telegram_message_id`, `telegram_image_url`, `created_at`, `updated_at`) values(?, 2, ?, 0, '', '', now(), now())", insertable.UserID, insertable.ImagePath).Return(result, nil)
 		result.EXPECT().LastInsertId().Return(int64(99), nil)
 
-		ID, err := reportProvider.CreateReportCases(ctx, insertable, tx)
+		ID, err := reportProvider.Create(ctx, insertable, tx)
 
 		assert.Nil(t, err)
 		assert.Equal(t, 99, ID)

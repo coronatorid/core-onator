@@ -32,7 +32,7 @@ func TestCreate(t *testing.T) {
 			tx.EXPECT().ExecContext(ctx, "reported-cases-create", "insert into reported_cases (`user_id`, `status`, `image_path`, `image_deleted`, `telegram_message_id`, `telegram_image_url`, `created_at`, `updated_at`) values(?, 2, ?, 0, '', '', now(), now())", insertable.UserID, insertable.ImagePath).Return(result, nil)
 			result.EXPECT().LastInsertId().Return(int64(99), nil)
 
-			createReportCases := &usecase.CreateReportCases{}
+			createReportCases := &usecase.Create{}
 			ID, err := createReportCases.Perform(ctx, insertable, tx)
 
 			assert.Nil(t, err)
@@ -50,7 +50,7 @@ func TestCreate(t *testing.T) {
 
 			expectedError := util.CreateInternalServerError(ctx)
 
-			createReportCases := &usecase.CreateReportCases{}
+			createReportCases := &usecase.Create{}
 			ID, err := createReportCases.Perform(ctx, insertable, tx)
 
 			assert.Equal(t, expectedError.Error(), err.Error())
@@ -72,7 +72,7 @@ func TestCreate(t *testing.T) {
 
 			expectedError := util.CreateInternalServerError(ctx)
 
-			createReportCases := &usecase.CreateReportCases{}
+			createReportCases := &usecase.Create{}
 			ID, err := createReportCases.Perform(ctx, insertable, tx)
 
 			assert.Equal(t, expectedError.Error(), err.Error())

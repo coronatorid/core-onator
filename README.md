@@ -36,8 +36,11 @@ Here is step by step if you want to contribute to core-onator.
 
 1. clone this repo `git clone git@github.com:coronatorid/core-onator.git`
 2. Run the migration (make sure mysql is on and the schema is already created) `go run coronator.go db:migrate`
-3. Don't forget to run Altair.
-4. Run coronator `go run coronator.go run:api`
+3. Login whatsapp `go run coronator.go whatsapp:login`
+4. Scan the barcode with your phone
+5. Copy all of the value into your .env
+6. Don't forget to run Altair.
+7. Lastly run coronator `go run coronator.go run:api`
 
 
 ### Contribution
@@ -54,6 +57,10 @@ This one seems like a good idea, we will have on in near future.
 ## Diagram
 
 All diagram related to core-onator.
+
+### API
+
+[Here](https://documenter.getpostman.com/view/3666028/TVzSiwcQ).
 
 ### Business Flow Diagram
 

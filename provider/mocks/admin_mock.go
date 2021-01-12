@@ -5,6 +5,7 @@
 package mockProvider
 
 import (
+	constant "github.com/coronatorid/core-onator/constant"
 	entity "github.com/coronatorid/core-onator/entity"
 	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
@@ -62,4 +63,19 @@ func (m *MockAdmin) RequestOTP(ctx provider.Context, request entity.RequestOTP) 
 func (mr *MockAdminMockRecorder) RequestOTP(ctx, request interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RequestOTP", reflect.TypeOf((*MockAdmin)(nil).RequestOTP), ctx, request)
+}
+
+// Authenticate mocks base method
+func (m *MockAdmin) Authenticate(ctx provider.Context, userID int, allowedRole []constant.UserRole) (entity.User, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Authenticate", ctx, userID, allowedRole)
+	ret0, _ := ret[0].(entity.User)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// Authenticate indicates an expected call of Authenticate
+func (mr *MockAdminMockRecorder) Authenticate(ctx, userID, allowedRole interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Authenticate", reflect.TypeOf((*MockAdmin)(nil).Authenticate), ctx, userID, allowedRole)
 }

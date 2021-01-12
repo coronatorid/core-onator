@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/coronatorid/core-onator/constant"
 	"github.com/coronatorid/core-onator/entity"
 	"github.com/coronatorid/core-onator/provider"
 	"github.com/coronatorid/core-onator/util"
@@ -23,7 +24,7 @@ func (l *Login) Perform(ctx provider.Context, request entity.Login, userProvider
 		return loginResponse, err
 	}
 
-	if user.Role == 0 {
+	if user.Role == constant.UserRoleNormal.Int() {
 		return loginResponse, &entity.ApplicationError{
 			Err:        []error{errors.New("only admin can use this feature")},
 			HTTPStatus: http.StatusForbidden,

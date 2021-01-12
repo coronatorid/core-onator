@@ -91,7 +91,7 @@ func main() {
 	storageProvider.FabricateAPI(apiEngine)
 
 	// Admin
-	adminProvider := admin.Fabricate(altair, auth, user)
+	adminProvider := admin.Fabricate(altair, auth, user, report)
 	adminProvider.FabricateAPI(apiEngine)
 
 	if err := cmd.Execute(); err != nil {

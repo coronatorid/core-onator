@@ -16,7 +16,7 @@ type Count struct{}
 func (c *Count) Perform(ctx provider.Context, status constant.ReportedCasesStatus, db provider.DB) (int, *entity.ApplicationError) {
 	var total int
 
-	rows := db.QueryRowContext(ctx, "list-report", "select count(id) where status = ?", status)
+	rows := db.QueryRowContext(ctx, "list-report", "select count(id) from reported_cases where status = ?", status)
 	if err := rows.Scan(&total); err != nil {
 		log.Error().
 			Err(err).

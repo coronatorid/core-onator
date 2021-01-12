@@ -5,6 +5,7 @@
 package mockProvider
 
 import (
+	constant "github.com/coronatorid/core-onator/constant"
 	entity "github.com/coronatorid/core-onator/entity"
 	provider "github.com/coronatorid/core-onator/provider"
 	gomock "github.com/golang/mock/gomock"
@@ -64,6 +65,21 @@ func (mr *MockReportMockRecorder) Delete(ctx, ID interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*MockReport)(nil).Delete), ctx, ID)
 }
 
+// Find mocks base method
+func (m *MockReport) Find(ctx provider.Context, ID int) (entity.ReportedCases, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Find", ctx, ID)
+	ret0, _ := ret[0].(entity.ReportedCases)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// Find indicates an expected call of Find
+func (mr *MockReportMockRecorder) Find(ctx, ID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockReport)(nil).Find), ctx, ID)
+}
+
 // FindByUserID mocks base method
 func (m *MockReport) FindByUserID(ctx provider.Context, userID int) (entity.ReportedCases, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
@@ -77,6 +93,36 @@ func (m *MockReport) FindByUserID(ctx provider.Context, userID int) (entity.Repo
 func (mr *MockReportMockRecorder) FindByUserID(ctx, userID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindByUserID", reflect.TypeOf((*MockReport)(nil).FindByUserID), ctx, userID)
+}
+
+// Count mocks base method
+func (m *MockReport) Count(ctx provider.Context, status constant.ReportedCasesStatus) (int, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Count", ctx, status)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// Count indicates an expected call of Count
+func (mr *MockReportMockRecorder) Count(ctx, status interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Count", reflect.TypeOf((*MockReport)(nil).Count), ctx, status)
+}
+
+// List mocks base method
+func (m *MockReport) List(ctx provider.Context, status constant.ReportedCasesStatus, requestMeta entity.RequestMeta) ([]entity.ReportedCases, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "List", ctx, status, requestMeta)
+	ret0, _ := ret[0].([]entity.ReportedCases)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// List indicates an expected call of List
+func (mr *MockReportMockRecorder) List(ctx, status, requestMeta interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockReport)(nil).List), ctx, status, requestMeta)
 }
 
 // UploadFile mocks base method

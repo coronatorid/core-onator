@@ -13,6 +13,7 @@ import (
 type Report interface {
 	Create(ctx Context, insertable entity.ReportInsertable, tx TX) (int, *entity.ApplicationError)
 	Delete(ctx Context, ID int) *entity.ApplicationError
+	Find(ctx Context, ID int) (entity.ReportedCases, *entity.ApplicationError)
 	FindByUserID(ctx Context, userID int) (entity.ReportedCases, *entity.ApplicationError)
 	Count(ctx Context, status constant.ReportedCasesStatus) (int, *entity.ApplicationError)
 	List(ctx Context, status constant.ReportedCasesStatus, requestMeta entity.RequestMeta) ([]entity.ReportedCases, *entity.ApplicationError)

@@ -51,6 +51,12 @@ func (r *Report) FindByUserID(ctx provider.Context, userID int) (entity.Reported
 	return findByUserID.Perform(ctx, userID, r.db)
 }
 
+// Find ...
+func (r *Report) Find(ctx provider.Context, ID int) (entity.ReportedCases, *entity.ApplicationError) {
+	find := usecase.Find{}
+	return find.Perform(ctx, ID, r.db)
+}
+
 // Delete ...
 func (r *Report) Delete(ctx provider.Context, ID int) *entity.ApplicationError {
 	delete := usecase.Delete{}

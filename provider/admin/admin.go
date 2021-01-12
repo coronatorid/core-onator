@@ -31,6 +31,7 @@ func (a *Admin) FabricateAPI(engine provider.APIEngine) {
 	engine.InjectAPI(api.NewAuthorizationRequestOTP(a))
 	engine.InjectAPI(api.NewAuthorizationLogin(a))
 	engine.InjectAPI(api.NewReportList(a))
+	engine.InjectAPI(api.NewReportDelete(a))
 }
 
 // Login with admin flow
@@ -55,4 +56,10 @@ func (a *Admin) Authenticate(ctx provider.Context, userID int, allowedRole []con
 func (a *Admin) ReportList(ctx provider.Context, userID int, status constant.ReportedCasesStatus, requestMeta entity.RequestMeta) ([]entity.ReportedCases, entity.ResponseMeta, *entity.ApplicationError) {
 	reportList := usecase.ReportList{}
 	return reportList.Perform(ctx, userID, status, requestMeta, a, a.reportProvider)
+}
+
+// ReportDelete ...
+func (a *Admin) ReportDelete(ctx provider.Context, userID, reportedCases int) *entity.ApplicationError {
+	reportDelete := usecase.ReportDelete{}
+	return reportDelete.Perform(ctx, userID, reportedCases, a, a.reportProvider)
 }

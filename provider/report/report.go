@@ -86,3 +86,21 @@ func (r *Report) List(ctx provider.Context, status constant.ReportedCasesStatus,
 	list := usecase.List{}
 	return list.Perform(ctx, status, requestMeta, r.db)
 }
+
+// UpdateState ...
+func (r *Report) UpdateState(ctx provider.Context, state constant.ReportedCasesStatus, ID int) *entity.ApplicationError {
+	updateState := &usecase.UpdateState{}
+	return updateState.Perform(ctx, state, ID, r.db)
+}
+
+// Reject ...
+func (r *Report) Reject(ctx provider.Context, ID int) *entity.ApplicationError {
+	reject := &usecase.Reject{}
+	return reject.Perform(ctx, ID, r)
+}
+
+// Confirm ...
+func (r *Report) Confirm(ctx provider.Context, ID int) *entity.ApplicationError {
+	reject := &usecase.Confirm{}
+	return reject.Perform(ctx, ID, r)
+}

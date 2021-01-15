@@ -181,3 +181,45 @@ func (mr *MockReportMockRecorder) DeleteReportedCases(ctx, userID interface{}) *
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteReportedCases", reflect.TypeOf((*MockReport)(nil).DeleteReportedCases), ctx, userID)
 }
+
+// UpdateState mocks base method
+func (m *MockReport) UpdateState(ctx provider.Context, state constant.ReportedCasesStatus, ID int) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateState", ctx, state, ID)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// UpdateState indicates an expected call of UpdateState
+func (mr *MockReportMockRecorder) UpdateState(ctx, state, ID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateState", reflect.TypeOf((*MockReport)(nil).UpdateState), ctx, state, ID)
+}
+
+// Reject mocks base method
+func (m *MockReport) Reject(ctx provider.Context, ID int) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Reject", ctx, ID)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// Reject indicates an expected call of Reject
+func (mr *MockReportMockRecorder) Reject(ctx, ID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Reject", reflect.TypeOf((*MockReport)(nil).Reject), ctx, ID)
+}
+
+// Confirm mocks base method
+func (m *MockReport) Confirm(ctx provider.Context, ID int) *entity.ApplicationError {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Confirm", ctx, ID)
+	ret0, _ := ret[0].(*entity.ApplicationError)
+	return ret0
+}
+
+// Confirm indicates an expected call of Confirm
+func (mr *MockReportMockRecorder) Confirm(ctx, ID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Confirm", reflect.TypeOf((*MockReport)(nil).Confirm), ctx, ID)
+}

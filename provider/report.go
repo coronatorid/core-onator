@@ -23,4 +23,8 @@ type Report interface {
 
 	CreateReportedCases(ctx Context, userID int, fileHeader *multipart.FileHeader) *entity.ApplicationError
 	DeleteReportedCases(ctx Context, userID int) *entity.ApplicationError
+
+	UpdateState(ctx Context, state constant.ReportedCasesStatus, ID int) *entity.ApplicationError
+	Reject(ctx Context, ID int) *entity.ApplicationError
+	Confirm(ctx Context, ID int) *entity.ApplicationError
 }

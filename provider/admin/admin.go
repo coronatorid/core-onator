@@ -32,34 +32,47 @@ func (a *Admin) FabricateAPI(engine provider.APIEngine) {
 	engine.InjectAPI(api.NewAuthorizationLogin(a))
 	engine.InjectAPI(api.NewReportList(a))
 	engine.InjectAPI(api.NewReportDelete(a))
+	engine.InjectAPI(api.NewReportStatus(a))
 }
 
 // Login with admin flow
 func (a *Admin) Login(ctx provider.Context, request entity.Login) (entity.LoginResponse, *entity.ApplicationError) {
-	login := usecase.Login{}
+	login := &usecase.Login{}
 	return login.Perform(ctx, request, a.userProvider, a.altair, a.authProvider)
 }
 
 // RequestOTP with admin flow
 func (a *Admin) RequestOTP(ctx provider.Context, request entity.RequestOTP) (*entity.RequestOTPResponse, *entity.ApplicationError) {
-	requestOTP := usecase.RequestOTP{}
+	requestOTP := &usecase.RequestOTP{}
 	return requestOTP.Perform(ctx, request, a.userProvider, a.authProvider)
 }
 
 // Authenticate admin
 func (a *Admin) Authenticate(ctx provider.Context, userID int, allowedRole []constant.UserRole) (entity.User, *entity.ApplicationError) {
-	authenticate := usecase.Authenticate{}
+	authenticate := &usecase.Authenticate{}
 	return authenticate.Perform(ctx, userID, allowedRole, a.userProvider)
 }
 
 // ReportList ...
 func (a *Admin) ReportList(ctx provider.Context, userID int, status constant.ReportedCasesStatus, requestMeta entity.RequestMeta) ([]entity.ReportedCases, entity.ResponseMeta, *entity.ApplicationError) {
-	reportList := usecase.ReportList{}
+	reportList := &usecase.ReportList{}
 	return reportList.Perform(ctx, userID, status, requestMeta, a, a.reportProvider)
 }
 
 // ReportDelete ...
 func (a *Admin) ReportDelete(ctx provider.Context, userID, reportedCases int) *entity.ApplicationError {
-	reportDelete := usecase.ReportDelete{}
+	reportDelete := &usecase.ReportDelete{}
 	return reportDelete.Perform(ctx, userID, reportedCases, a, a.reportProvider)
+}
+
+// ReportReject ...
+func (a *Admin) ReportReject(ctx provider.Context, adminID, reportedCasesID int) (entity.ReportedCases, *entity.ApplicationError) {
+	reportReject := &usecase.ReportReject{}
+	return reportReject.Perform(ctx, adminID, reportedCasesID, a, a.reportProvider)
+}
+
+// ReportConfirm ...
+func (a *Admin) ReportConfirm(ctx provider.Context, adminID, reportedCasesID int) (entity.ReportedCases, *entity.ApplicationError) {
+	reportReject := &usecase.ReportConfirm{}
+	return reportReject.Perform(ctx, adminID, reportedCasesID, a, a.reportProvider)
 }

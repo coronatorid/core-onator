@@ -10,8 +10,8 @@ import (
 type ReportDelete struct{}
 
 // Perform delete report
-func (r *ReportDelete) Perform(ctx provider.Context, userID, reportedCasesID int, adminProvider provider.Admin, reportProvider provider.Report) *entity.ApplicationError {
-	if _, err := adminProvider.Authenticate(ctx, userID, []constant.UserRole{constant.UserRoleSuperAdmin}); err != nil {
+func (r *ReportDelete) Perform(ctx provider.Context, adminID, reportedCasesID int, adminProvider provider.Admin, reportProvider provider.Report) *entity.ApplicationError {
+	if _, err := adminProvider.Authenticate(ctx, adminID, []constant.UserRole{constant.UserRoleSuperAdmin}); err != nil {
 		return err
 	}
 

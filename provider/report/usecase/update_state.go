@@ -14,7 +14,7 @@ type UpdateState struct{}
 
 // Perform update state logic
 func (u *UpdateState) Perform(ctx provider.Context, state constant.ReportedCasesStatus, ID int, db provider.DB) *entity.ApplicationError {
-	_, err := db.ExecContext(ctx, "delete-reported-cases", "update reported_cases set state = ? where id = ?", state, ID)
+	_, err := db.ExecContext(ctx, "delete-reported-cases", "update reported_cases set status = ? where id = ?", state, ID)
 	if err != nil {
 		log.Error().
 			Err(err).

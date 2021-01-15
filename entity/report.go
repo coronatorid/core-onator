@@ -18,3 +18,8 @@ type ReportedCases struct {
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }
+
+// ReportStatus ...
+type ReportStatus struct {
+	Status string `json:"status"`
+}

@@ -66,24 +66,24 @@ func (mr *MockAdminMockRecorder) RequestOTP(ctx, request interface{}) *gomock.Ca
 }
 
 // Authenticate mocks base method
-func (m *MockAdmin) Authenticate(ctx provider.Context, userID int, allowedRole []constant.UserRole) (entity.User, *entity.ApplicationError) {
+func (m *MockAdmin) Authenticate(ctx provider.Context, adminID int, allowedRole []constant.UserRole) (entity.User, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Authenticate", ctx, userID, allowedRole)
+	ret := m.ctrl.Call(m, "Authenticate", ctx, adminID, allowedRole)
 	ret0, _ := ret[0].(entity.User)
 	ret1, _ := ret[1].(*entity.ApplicationError)
 	return ret0, ret1
 }
 
 // Authenticate indicates an expected call of Authenticate
-func (mr *MockAdminMockRecorder) Authenticate(ctx, userID, allowedRole interface{}) *gomock.Call {
+func (mr *MockAdminMockRecorder) Authenticate(ctx, adminID, allowedRole interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Authenticate", reflect.TypeOf((*MockAdmin)(nil).Authenticate), ctx, userID, allowedRole)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Authenticate", reflect.TypeOf((*MockAdmin)(nil).Authenticate), ctx, adminID, allowedRole)
 }
 
 // ReportList mocks base method
-func (m *MockAdmin) ReportList(ctx provider.Context, userID int, status constant.ReportedCasesStatus, requestMeta entity.RequestMeta) ([]entity.ReportedCases, entity.ResponseMeta, *entity.ApplicationError) {
+func (m *MockAdmin) ReportList(ctx provider.Context, adminID int, status constant.ReportedCasesStatus, requestMeta entity.RequestMeta) ([]entity.ReportedCases, entity.ResponseMeta, *entity.ApplicationError) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReportList", ctx, userID, status, requestMeta)
+	ret := m.ctrl.Call(m, "ReportList", ctx, adminID, status, requestMeta)
 	ret0, _ := ret[0].([]entity.ReportedCases)
 	ret1, _ := ret[1].(entity.ResponseMeta)
 	ret2, _ := ret[2].(*entity.ApplicationError)
@@ -91,21 +91,51 @@ func (m *MockAdmin) ReportList(ctx provider.Context, userID int, status constant
 }
 
 // ReportList indicates an expected call of ReportList
-func (mr *MockAdminMockRecorder) ReportList(ctx, userID, status, requestMeta interface{}) *gomock.Call {
+func (mr *MockAdminMockRecorder) ReportList(ctx, adminID, status, requestMeta interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReportList", reflect.TypeOf((*MockAdmin)(nil).ReportList), ctx, userID, status, requestMeta)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReportList", reflect.TypeOf((*MockAdmin)(nil).ReportList), ctx, adminID, status, requestMeta)
 }
 
 // ReportDelete mocks base method
-func (m *MockAdmin) ReportDelete(ctx provider.Context, userID, reportedCasesID int) *entity.ApplicationError {
+func (m *MockAdmin) ReportDelete(ctx provider.Context, adminID, reportedCasesID int) *entity.ApplicationError {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReportDelete", ctx, userID, reportedCasesID)
+	ret := m.ctrl.Call(m, "ReportDelete", ctx, adminID, reportedCasesID)
 	ret0, _ := ret[0].(*entity.ApplicationError)
 	return ret0
 }
 
 // ReportDelete indicates an expected call of ReportDelete
-func (mr *MockAdminMockRecorder) ReportDelete(ctx, userID, reportedCasesID interface{}) *gomock.Call {
+func (mr *MockAdminMockRecorder) ReportDelete(ctx, adminID, reportedCasesID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReportDelete", reflect.TypeOf((*MockAdmin)(nil).ReportDelete), ctx, userID, reportedCasesID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReportDelete", reflect.TypeOf((*MockAdmin)(nil).ReportDelete), ctx, adminID, reportedCasesID)
+}
+
+// ReportReject mocks base method
+func (m *MockAdmin) ReportReject(ctx provider.Context, adminID, reportedCasesID int) (entity.ReportedCases, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReportReject", ctx, adminID, reportedCasesID)
+	ret0, _ := ret[0].(entity.ReportedCases)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// ReportReject indicates an expected call of ReportReject
+func (mr *MockAdminMockRecorder) ReportReject(ctx, adminID, reportedCasesID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReportReject", reflect.TypeOf((*MockAdmin)(nil).ReportReject), ctx, adminID, reportedCasesID)
+}
+
+// ReportConfirm mocks base method
+func (m *MockAdmin) ReportConfirm(ctx provider.Context, adminID, reportedCasesID int) (entity.ReportedCases, *entity.ApplicationError) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReportConfirm", ctx, adminID, reportedCasesID)
+	ret0, _ := ret[0].(entity.ReportedCases)
+	ret1, _ := ret[1].(*entity.ApplicationError)
+	return ret0, ret1
+}
+
+// ReportConfirm indicates an expected call of ReportConfirm
+func (mr *MockAdminMockRecorder) ReportConfirm(ctx, adminID, reportedCasesID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReportConfirm", reflect.TypeOf((*MockAdmin)(nil).ReportConfirm), ctx, adminID, reportedCasesID)
 }

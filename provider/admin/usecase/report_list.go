@@ -10,7 +10,7 @@ import (
 type ReportList struct{}
 
 // Perform report list logic
-func (r *ReportList) Perform(ctx provider.Context, userID int, status constant.ReportedCasesStatus, requestMeta entity.RequestMeta, adminProvider provider.Admin, reportProvider provider.Report) ([]entity.ReportedCases, entity.ResponseMeta, *entity.ApplicationError) {
+func (r *ReportList) Perform(ctx provider.Context, adminID int, status constant.ReportedCasesStatus, requestMeta entity.RequestMeta, adminProvider provider.Admin, reportProvider provider.Report) ([]entity.ReportedCases, entity.ResponseMeta, *entity.ApplicationError) {
 	var reportedCases []entity.ReportedCases
 	var err *entity.ApplicationError
 	var total int
@@ -19,7 +19,7 @@ func (r *ReportList) Perform(ctx provider.Context, userID int, status constant.R
 	responseMeta.Limit = requestMeta.Limit
 	responseMeta.Offset = requestMeta.Offset
 
-	if _, err = adminProvider.Authenticate(ctx, userID, []constant.UserRole{constant.UserRoleSuperAdmin}); err != nil {
+	if _, err = adminProvider.Authenticate(ctx, adminID, []constant.UserRole{constant.UserRoleSuperAdmin}); err != nil {
 		return reportedCases, responseMeta, err
 	}
 

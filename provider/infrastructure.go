@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/coronatorid/core-onator/entity"
+	"github.com/segmentio/kafka-go"
 )
 
 //go:generate mockgen -source=./infrastructure.go -destination=./mocks/infrastructure_mock.go -package mockProvider
@@ -95,4 +96,9 @@ type Rows interface {
 	Next() bool
 	NextResultSet() bool
 	Scan(dest ...interface{}) error
+}
+
+// KafkaPublisher provide publish function to kafka
+type KafkaPublisher interface {
+	WriteMessages(ctx Context, msgs ...kafka.Message) error
 }

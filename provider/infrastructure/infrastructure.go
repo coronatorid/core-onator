@@ -225,6 +225,11 @@ func (i *Infrastructure) KafkaWriter() *kafka.Writer {
 	return i.kafkaWriter
 }
 
+// KafkaPublisher create new kafka writer connection
+func (i *Infrastructure) KafkaPublisher() provider.KafkaPublisher {
+	return adapter.AdaptKafkaPublisher(i.KafkaWriter())
+}
+
 // KafkaConsumer create new kafka reader connection
 func (i *Infrastructure) KafkaConsumer(consumerGroup, topic string) *kafka.Reader {
 	consumerKey := fmt.Sprintf("%s-%s", consumerGroup, topic)

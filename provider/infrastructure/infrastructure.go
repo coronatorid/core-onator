@@ -119,6 +119,9 @@ func (i *Infrastructure) Close() {
 		return true
 	})
 
+	if i.kafkaWriter != nil {
+		_ = i.kafkaWriter.Close()
+	}
 }
 
 // DB wrapper for default golang sql
